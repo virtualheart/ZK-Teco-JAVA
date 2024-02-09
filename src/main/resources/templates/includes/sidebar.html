@@ -1,0 +1,74 @@
+<div th:fragment="sidebar">
+  <!--[if lt IE 8]>
+  <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+  <![endif]-->
+  <!-- preloader area start -->
+  <div id="preloader">
+    <div class="loader"></div>
+  </div>
+  <!-- preloader area end -->
+  <!-- page container area start -->
+  <div class="page-container">
+    <!-- sidebar menu area start -->
+    <div class="sidebar-menu">
+      <div class="sidebar-header">
+        <div class="logo">
+          <a href="#"><img th:src="@{/assets/images/icon/logo.png}" alt="logo"></a>
+        </div>
+      </div>
+      <div class="main-menu">
+        <div class="menu-inner">
+          <nav>
+            <ul class="metismenu" id="menu">
+              <li class="active">
+                <a th:href="@{/admin/dashboard}" aria-expanded="true"><i class="ti-dashboard"></i><span>dashboard</span></a>
+              </li>
+
+              <li>
+                <a href="javascript:void(0)" aria-expanded="true"><i class="ti-user"></i><span>Users</span></a>
+                <ul class="collapse">
+                  <li><a th:href="@{/admin/add/user}">Add User</a></li>
+                  <li><a th:href="@{/admin/list/user/db}">List users(DB) </a></li>
+                  <li><a th:href="@{/admin/list/user/device}">List users(Device)</a></li>
+                </ul>
+              </li>
+
+              <li>
+                <a href="javascript:void(0)" aria-expanded="true"><i class="ti-stats-up"></i><span>Attendance</span></a>
+                <ul class="collapse">
+                  <li><a th:href="@{/admin/add/attendance}">Add Attendance</a></li>
+                  <li><a th:href="@{/admin/attendance/db}">Attendance Report(DB)</a></li>
+                  <li><a th:href="@{/admin/attendance/device}">Attendance Report(Device)</a></li>
+                </ul>
+              </li>
+
+              <li>
+                <a href="javascript:void(0)" aria-expanded="true"><i class="ti-thumb-up"></i><span>Devices</span></a>
+                <ul class="collapse">
+                  <li><a th:href="@{/admin/add/device}">Add Device</a></li>
+                  <li><a th:href="@{/admin/list/Devices}">List Devices </a></li>
+                </ul>
+              </li>
+
+              <!--             <li>
+                            <a href="javascript:void(0)" aria-expanded="true"><i class="ti-pie-chart"></i><span>Configration</span></a>
+                            <ul class="collapse">
+                              <li><a href="{admin/add/user}"></a></li>
+                              <li><a href="{admin/list/user/db}">List Devices </a></li>
+                            </ul>
+                          </li> -->
+
+              <li>
+                <a href="javascript:void(0)" aria-expanded="true"><i class="ti-settings"></i><span>Settings</span></a>
+                <ul class="collapse">
+                  <li><a th:href="@{/admin/test/device}">Settings</a></li>
+                  <li><a th:href="@{/admin/profile}">Profile </a></li>
+                </ul>
+              </li>
+
+            </ul>
+          </nav>
+        </div>
+      </div>
+    </div>
+    <!-- sidebar menu area end -->

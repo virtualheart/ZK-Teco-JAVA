@@ -1,0 +1,145 @@
+<div th:replace="/includes/header::header"></div>
+<div th:replace="/includes/sidebar::sidebar"></div>
+<div class="main-content">
+    <!-- header area start -->
+    <div class="header-area">
+        <div class="row align-items-center">
+            <!-- nav and search button -->
+            <div class="col-md-6 col-sm-8 clearfix">
+                <div class="nav-btn pull-left">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
+            <!-- profile info & task notification -->
+            <div class="col-md-6 col-sm-4 clearfix">
+                <ul class="notification-area pull-right">
+                    <li id="full-view"><i class="ti-fullscreen"></i></li>
+                    <li id="full-view-exit"><i class="ti-zoom-out"></i></li>
+
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!-- header area end -->
+    <!-- page title area start -->
+    <div class="page-title-area">
+        <div class="row align-items-center">
+            <div class="col-sm-6">
+                <div class="breadcrumbs-area clearfix">
+                    <ul class="breadcrumbs pull-left">
+                        <li><a href="index.html">Users</a></li>
+                        <li><span>Add User</span></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-sm-6 clearfix">
+                <div class="user-profile pull-right">
+                    <img alt="avatar" class="avatar user-thumb" th:src="@{/assets/images/author/avatar.png}">
+                    <h4 class="user-name dropdown-toggle" data-toggle="dropdown">Admin <i class="fa fa-angle-down"></i>
+                    </h4>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item" href="#">Message</a>
+                        <a class="dropdown-item" href="#">Settings</a>
+                        <a class="dropdown-item" href="./logout">Log Out</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-12">
+        <div class="card mt-5">
+            <div class="card-body">
+                <h4 class="header-title">Server side</h4>
+                <form class="needs-validation" action="#" th:action="@{/admin/add/user}" method="post" th:object="${employeeModel}">
+
+                    <div class="form-row">
+                        <div class="col-md-4 mb-3">
+                            <label for="validationCustom01">Employee name</label>
+                            <input class="form-control" id="validationCustom01" name="name" placeholder="Employee name" required
+                                   type="text" th:field="*{employeeName}">
+                            <div class="invalid-feedback">
+                                Please Enter a Employee Name.
+                            </div>
+                            <div class="valid-feedback">
+                                Looks good!
+                            </div>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label for="validationCustom02">Pin Number</label>
+                            <input class="form-control" id="validationCustom02" name="pin" placeholder="Password number" required
+                                   type="number"  th:field="*{password}">
+                            <div class="invalid-feedback">
+                                Please Enter Employee PIN(Number).
+                            </div>
+                            <div class="valid-feedback">
+                                Looks good!
+                            </div>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label for="validationCustomUsername">Employee IDs</label>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" id="inputGroupPrepend">@</span>
+                                </div>
+                                <input aria-describedby="inputGroupPrepend" name="empid" class="form-control" id="validationCustomUsername"
+                                       placeholder="Employee Id" required type="number" th:field="*{employeeId}" >
+                                <div class="invalid-feedback">
+                                    Please choose a Employee ID.
+                                </div>
+                                <div class="valid-feedback">
+                                    Looks good!
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="col-md-6 mb-3">
+                            <label for="validationCustom03">RF-Card</label>
+                            <input class="form-control" id="validationCustom03" name="rfCardNumber" placeholder="Card Number"
+                                   type="number" th:field="*{cardNumber}" >
+                            <div class="invalid-feedback">
+                                Please provide a valid Card number.
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="validationCustom04" class="col-form-label">Role(Device Only)</label>
+
+                            <select name="UserRole" id="validationCustom04" class="custom-select" required th:field="*{userRole}" >
+                                <option value="" disabled selected>Select User Type</option>
+                                <option th:each="role : ${T(com.gac.employee.attendance.enums.UserRole).values()}"
+                                        th:value="${role.name()}" th:text="${#strings.capitalize(role.name().toLowerCase()) + ' User'}">
+                                </option>
+                            </select>
+                            <div class="invalid-feedback">
+                                Please provide a valid state.
+                            </div>
+                        </div>
+<!--                        <div class="col-md-3 mb-3">-->
+<!--                            <label for="validationCustom05">Zip</label>-->
+<!--                            <input class="form-control" id="validationCustom05" placeholder="Zip" required=""-->
+<!--                                   type="text">-->
+<!--                            <div class="invalid-feedback">-->
+<!--                                Please provide a valid zip.-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                    <div class="form-group">-->
+<!--                        <div class="form-check">-->
+<!--                            <input class="form-check-input" id="invalidCheck" type="checkbox" value="">-->
+<!--                            <label class="form-check-label" for="invalidCheck">-->
+<!--                                Sync to Device-->
+<!--                            </label>-->
+<!--                            <div class="invalid-feedback">-->
+<!--                                You must agree before submitting.-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                    </div>-->
+                    <button class="btn btn-primary" type="submit">Submit form</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div th:replace="/includes/footer::footer"></div>

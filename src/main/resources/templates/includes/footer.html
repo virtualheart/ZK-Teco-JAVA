@@ -1,0 +1,32 @@
+<div th:fragment="footer">
+
+    <!-- footer area start-->
+    <div class="footer-area">
+        <p th:text="'© Copyright ' + ${#dates.year(new java.util.Date())} + '. All rights reserved. Featherleafz'">
+            © Copyright Y. All rights reserved. <a href="#">Featherleafz</a>.
+        </p>
+    </div>
+    <!-- footer area end-->
+    <!-- jquery latest version -->
+    <script th:src="@{/assets/js/vendor/jquery-2.2.4.min.js}"></script>
+    <!-- bootstrap 4 js -->
+    <script th:src="@{/assets/js/popper.min.js}"></script>
+    <script th:src="@{/assets/js/bootstrap.min.js}"></script>
+    <script th:src="@{/assets/js/owl.carousel.min.js}"></script>
+    <script th:src="@{/assets/js/metisMenu.min.js}"></script>
+    <script th:src="@{/assets/js/jquery.slimscroll.min.js}"></script>
+    <script th:src="@{/assets/js/jquery.slicknav.min.js}"></script>
+    <!-- Start datatable js -->
+    <script th:src="@{/assets/datatable/js/jquery.dataTables.js}"></script>
+    <script th:src="@{/assets/datatable/js/jquery.dataTables.min.js}"></script>
+    <script th:src="@{/assets/datatable/js/dataTables.bootstrap4.min.js}"></script>
+    <script th:src="@{/assets/datatable/js/dataTables.responsive.min.js}"></script>
+    <script th:src="@{/assets/datatable/js/responsive.bootstrap.min.js}"></script>
+
+    <!-- others plugins -->
+    <script th:src="@{/assets/js/plugins.js}"></script>
+    <script th:src="@{/assets/js/scripts.js}"></script>
+    </body>
+
+    </html>
+</div>
