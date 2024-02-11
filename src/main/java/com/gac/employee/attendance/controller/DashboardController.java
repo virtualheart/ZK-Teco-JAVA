@@ -22,7 +22,6 @@ public class DashboardController {
 
     @Autowired
     private EmployeeService employeeService;
-    
     @Autowired
     private DeviceService deviceService;
     @Autowired
@@ -34,7 +33,7 @@ public class DashboardController {
     public String dashboard(Model model) throws IOException, ParseException, DeviceNotConnectException{
         deviceService.connectto();
         model.addAttribute("deviceStatus",deviceService.deviceOnlineCheck());
-        model.addAttribute("deviceTime",deviceService.GetDeviceTimeDate());
+        model.addAttribute("deviceTime",deviceService.getDeviceTimeDate());
         model.addAttribute("attendanceRecords",deviceService.getAttendanceList());
         model.addAttribute("checkout",attendanceRecordService.getTodayCheckoutCount());
         model.addAttribute("checkin",attendanceRecordService.getTodayCheckinCount());
@@ -65,9 +64,12 @@ public class DashboardController {
 
     @GetMapping("/list/user/device")
     public String addEmployee(Model model) throws Exception {
-        employeeService.connectto();
+        if (employeeService.connectto()) {
+            model.addAttribute("employeeList", employeeService.getAllEmployeeFromDevice());
+        } else {
+            model.addAttribute("employeeList", null);
+        }
         model.addAttribute("uri", "admin/list/user/device");
-        model.addAttribute("employeeList",employeeService.getAllEmployeeFromDevice());
         employeeService.end();
         return "admin/listEmployee";
     }
@@ -90,15 +92,27 @@ public class DashboardController {
     // Post methods
     @PostMapping("/synktimedate")
     public String setTime(Model model) throws IOException, DeviceNotConnectException {
-        deviceService.connectto();
-    	deviceService.synkTimDate();
+        if (deviceService.connectto()) {
+            deviceService.synkTimDate();
+            model.addAttribute("mgs","Device Time Set Successfully.");
+        }
         deviceService.end();
     	return "redirect:/admin/dashboard";
     }
 
     @PostMapping("/add/user")
-    public String setaddUser(EmployeeModel employeeModel) throws DeviceNotConnectException, IOException, ParseException {
+    public String setaddUser(EmployeeModel employeeModel) throws IOException {
         employeeService.addUser(employeeModel);
         return "redirect:/admin/add/user";
+    }
+
+    @PostMapping("/poweroff")
+    public String DevicePowerDown(Model model) throws DeviceNotConnectException, IOException, ParseException {
+        if (deviceService.connectto()) {
+            deviceService.devicePowerDown();
+            model.addAttribute("mgs","Device Shutdown Successfully.");
+        }
+        deviceService.end();
+        return "redirect:/admin/dashboard";
     }
 }

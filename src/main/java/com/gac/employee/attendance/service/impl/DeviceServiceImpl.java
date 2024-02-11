@@ -44,16 +44,19 @@ public class DeviceServiceImpl implements DeviceService {
 //			}
 //	}
 
-	public void connectto() throws DeviceNotConnectException, IOException {
+	public boolean connectto() throws IOException {
 		try {
 			terminal = deviceGateway.getClient();
 
 //			terminal= new ZKTerminal("192.168.1.201", 4370);
 //			terminal.connect();
 //			terminal.connectAuth(0);
+
+			return true;
 		}catch (DeviceNotConnectException e){
 			System.out.println();
 		}
+		return false;
 	}
 
 	@Override
@@ -71,7 +74,12 @@ public class DeviceServiceImpl implements DeviceService {
 	}
 
 	@Override
-	public String GetDeviceTimeDate() throws IOException, ParseException {
+	public void devicePowerDown() throws IOException, ParseException {
+		terminal.Poweroff();
+	}
+
+	@Override
+	public String getDeviceTimeDate() throws IOException, ParseException {
 		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("hh:mm a - dd/MM/yyyy");
 		Date date;
 		try{

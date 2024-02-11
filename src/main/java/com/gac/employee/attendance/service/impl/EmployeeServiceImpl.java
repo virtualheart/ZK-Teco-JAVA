@@ -31,12 +31,14 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Autowired
     private DeviceService deviceService;
     ZKTerminal terminal;
-    public void connectto() throws IOException {
+    public boolean connectto() throws IOException {
         try {
             terminal = deviceGateway.getClient();
+            return true;
         }catch (DeviceNotConnectException e){
             System.out.println();
         }
+        return false;
     }
     @Override
     public List<EmployeeModel> getAllEmployeeFromDB(){

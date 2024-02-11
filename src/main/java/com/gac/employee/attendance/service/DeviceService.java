@@ -12,10 +12,11 @@ public interface DeviceService {
     void addNewEmployee(UserInfo userInfo) throws IOException, ParseException, DeviceNotConnectException;
 
     boolean synkTimDate() throws IOException,DeviceNotConnectException;
-    String GetDeviceTimeDate() throws IOException, ParseException, DeviceNotConnectException;
+    void devicePowerDown() throws DeviceNotConnectException, IOException, ParseException;
+    String getDeviceTimeDate() throws IOException, ParseException, DeviceNotConnectException;
     boolean deviceOnlineCheck() throws IOException, ParseException, DeviceNotConnectException;
     List<AttendanceRecordModel> getAttendanceList() throws ParseException, DeviceNotConnectException, IOException;
     void end() throws IOException;
-    void connectto() throws DeviceNotConnectException, IOException ;
+    boolean connectto() throws IOException ;
 
 }
