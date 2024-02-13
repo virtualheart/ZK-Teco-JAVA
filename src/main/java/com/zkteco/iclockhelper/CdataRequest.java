@@ -84,7 +84,7 @@ public class CdataRequest extends ZKRequest {
 		this.info = "";
     }
 
-    public static CdataRequest fromReq(HttpExchange exchange) throws Exception {
+    public static CdataRequest fromReq(HttpExchange exchange) throws Exception, IOException {
         String requestMethod = exchange.getRequestMethod();
         BufferedReader br = new BufferedReader(new InputStreamReader(exchange.getRequestBody()));
         String query = exchange.getRequestURI().getQuery();

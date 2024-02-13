@@ -110,7 +110,7 @@ public enum ErrorCode {
         }
     }
 
-    ErrorCode(int code, String errorMessage) {
+    private ErrorCode(int code, String errorMessage) {
         this.code = code;
         this.errorMessage = errorMessage;
     }

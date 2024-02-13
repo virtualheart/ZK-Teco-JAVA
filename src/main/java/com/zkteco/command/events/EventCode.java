@@ -32,7 +32,7 @@ public enum EventCode {
 
     private final int code;
 
-    EventCode(int code) {
+    private EventCode(int code) {
         this.code = code;
     }
 

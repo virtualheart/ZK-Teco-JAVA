@@ -162,7 +162,7 @@ public enum CommandCode {
 	
     private final int code;
 
-    CommandCode(int code) {
+    private CommandCode(int code) {
         this.code = code;
     }
 

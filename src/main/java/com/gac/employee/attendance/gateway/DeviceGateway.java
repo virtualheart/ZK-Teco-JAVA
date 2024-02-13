@@ -5,8 +5,6 @@ import com.gac.employee.attendance.repo.DeviceRepository;
 import com.zkteco.Exception.DeviceNotConnectException;
 import com.zkteco.terminal.ZKTerminal;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;

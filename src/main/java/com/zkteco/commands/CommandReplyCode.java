@@ -26,7 +26,7 @@ public enum CommandReplyCode {
 
     private final int code;
 
-    CommandReplyCode(int code) {
+    private CommandReplyCode(int code) {
         this.code = code;
     }
 

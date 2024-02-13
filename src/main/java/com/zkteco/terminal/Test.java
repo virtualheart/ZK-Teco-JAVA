@@ -3,7 +3,8 @@ package com.zkteco.terminal;
 import java.io.IOException;
 import java.util.List;
 
-import com.zkteco.commands.AttendanceRecord;
+import com.zkteco.Enum.OnOffenum;
+import com.zkteco.commands.SmsInfo;
 import com.zkteco.commands.UserInfo;
 import com.zkteco.commands.ZKCommandReply;
 import com.zkteco.iclockhelper.ZKTecoHttpServer;
@@ -27,51 +28,57 @@ public class Test {
         ZKTerminal terminal = new ZKTerminal("192.168.1.201", 4370);
         ZKCommandReply reply = terminal.connect();
         reply = terminal.connectAuth(0);
-//        reply = terminal.disableDevice();
-        System.out.println(terminal.getDeviceTime());
-//        terminal.disconnect();
+        reply = terminal.disableDevice();
+        
+        System.out.println(reply.getCode());
 
-//        reply = terminal.connect();
-//        reply = terminal.connectAuth(0);
-//        reply = terminal.disableDevice();
-//        terminal.disconnect();
+        
+      
 
-//        System.out.println(terminal.getDeviceTime());
+      reply = terminal.enableDevice();
+      System.out.println(reply.getCode());
 
-//                try {
-//            List<AttendanceRecord> attendanceRecord = terminal.getAttendanceRecords();
+//      try {
+//      List<SmsInfo> SmsInfo = terminal.getYourSmsList(1);
 //
-//            // Access and print user information
-//            for (AttendanceRecord attendance : attendanceRecord) {
-//                  System.out.println("User ID: " + attendance.getUserID());
-//                  System.out.println("User SN: " + attendance.getUserSN());
-//                  System.out.println("Verify State: " + attendance.getVerifyState());
-//                  System.out.println("Verify Type: " + attendance.getVerifyType());
-//                  System.out.println("Record Time: " + attendance.getRecordTime());
-//                  System.out.println("------------------------");
-//            }
-//        } catch (IOException e) {
-//            e.printStackTrace(); // Handle exceptions appropriately
-//        }
-//        System.out.println("--------end----------------");
-//
-//        try {
-//            List<AttendanceRecord> attendanceRecord1 = terminal.getAttendanceRecords();
-//
-//            // Access and print user information
-//            for (AttendanceRecord attendance : attendanceRecord1) {
-//                System.out.println("User ID: " + attendance.getUserID());
-//                System.out.println("User SN: " + attendance.getUserSN());
-//                System.out.println("Verify State: " + attendance.getVerifyState());
-//                System.out.println("Verify Type: " + attendance.getVerifyType());
-//                System.out.println("Record Time: " + attendance.getRecordTime());
-//                System.out.println("------------------------");
-//            }
-//        } catch (IOException e) {
-//            e.printStackTrace(); // Handle exceptions appropriately
-//        }
+//      // Access and print user information
+//	      for (SmsInfo smsinfo : SmsInfo) {
+//	            System.out.println("tag: " + smsinfo.getTag());
+//	            System.out.println("ID: " + smsinfo.getID());
+//	            System.out.println("validMinutes: " + smsinfo.getID());
+//	            System.out.println("reserved: " + smsinfo.getReserved());
+//	            System.out.println("startTime: " + smsinfo.getStartTime());
+//	            System.out.println("content: " + smsinfo.getContent());
+//	            System.out.println("------------------------");
+//	      }
+//	  } catch (IOException e) {
+//	      e.printStackTrace(); // Handle exceptions appropriately
+//	  }  
+//	        
+//        
         //
-
+//                try {
+//                    List<UserInfo> userList = terminal.getAllUsers();
+//        
+//                    // Access and print user information
+//                    for (UserInfo user : userList) {
+//        	              System.out.println("User ID: " + user.getUserid());
+//        	              System.out.println("Name: " + user.getName());
+//        	              System.out.println("Password: " + user.getPassword());
+//        	              System.out.println("Card Number: " + user.getCardno());
+//        	              System.out.println("Group Number: " + user.getGroupNumber());
+//        	              System.out.println("User TimeZone Flag: " + user.getUserTimeZoneFlag());
+//        	              System.out.println("TimeZone1: " + user.getTimeZone1()); 
+//        	              System.out.println("TimeZone2: " + user.getTimeZone2());
+//        	              System.out.println("TimeZone3: " + user.getTimeZone3());
+//        	              System.out.println("User Serial Number: " + user.getUid());
+//        	              System.out.println("Role: " + user.getRole());
+//                          System.out.println("------------------------");
+//                    }
+//                } catch (IOException e) {
+//                    e.printStackTrace(); // Handle exceptions appropriately
+//                }              
+////                
         
 //        ZKTecoHttpServer xk =new ZKTecoHttpServer(8000);
 //        
@@ -100,7 +107,11 @@ public class Test {
 //
 //      reply = terminal.enableRealtime(EventCode.EF_FINGER);//enableDevice();
 
-        
+//      System.out.println(terminal.getCommKey());
+//      
+//      reply = terminal.setCommKey(0);
+
+
 //      while (true) {
 //          int[] response = terminal.readResponse();
 //          
@@ -123,8 +134,9 @@ public class Test {
 //        System.out.println(reply.getCode());
 
 //        reply = terminal.Poweroff();
+//    System.out.println(terminal.isVoiceOn());
 
-      reply = terminal.ClearAdminData();
+//      reply = terminal.ClearAdminData();       
 //      reply = terminal.enableDevice();
 
 //      reply = terminal.FreeDeviceBuffer();
@@ -133,6 +145,9 @@ public class Test {
 //        reply = terminal.delUser(80);
 //        reply = terminal.setUserGroup(9,1);
         
+//      System.out.println(terminal.getDeviceIP());
+//      reply = terminal.setIPAddress("192.168.1.201");
+
 //      System.out.println(terminal.getDeviceName());
 //        System.out.println("free : " + terminal.getDeviceStatus().get("userCapacity"));
 //        System.out.println("free : " + terminal.getDeviceStatus().get("faceCount"));
