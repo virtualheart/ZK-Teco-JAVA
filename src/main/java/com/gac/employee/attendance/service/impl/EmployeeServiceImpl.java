@@ -6,9 +6,9 @@ import com.gac.employee.attendance.repo.AttendanceRecordRepository;
 import com.gac.employee.attendance.repo.EmployeeRepository;
 import com.gac.employee.attendance.service.DeviceService;
 import com.gac.employee.attendance.service.EmployeeService;
+import com.zkteco.Enum.UserRoleEnum;
 import com.zkteco.Exception.DeviceNotConnectException;
 import com.zkteco.commands.UserInfo;
-import com.zkteco.commands.UserRole;
 import com.zkteco.terminal.ZKTerminal;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -18,6 +18,7 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
@@ -43,6 +44,11 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public List<EmployeeModel> getAllEmployeeFromDB(){
         return empRepo.findAll();
+    }
+
+    @Override
+    public Optional<EmployeeModel> getEmployeeFromDB(int empId) {
+        return empRepo.findById(empId);
     }
 
     public List<EmployeeModel> getAllEmployeeFromDevice() throws Exception {
@@ -73,7 +79,7 @@ public class EmployeeServiceImpl implements EmployeeService {
         userInfo.setName(employeeModel.getEmployeeName());
         userInfo.setPassword(String.valueOf(employeeModel.getPassword()));
         userInfo.setCardno(employeeModel.getCardNumber());
-        userInfo.setRole(UserRole.USER_DEFAULT);
+        userInfo.setRole(UserRoleEnum.USER_DEFAULT);
         userInfo.setUserid(String.valueOf(employeeModel.getEmployeeId()));
         employeeModel.setUserRole(com.gac.employee.attendance.enums.UserRole.USER_DEFAULT);
         try {

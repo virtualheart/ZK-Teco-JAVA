@@ -56,8 +56,8 @@
                 <div class="">
                     <div class="card">
                         <div class="card-body">
-                            <h4 class="header-title" th:if="${uri == 'admin/list/user/device'}">Employee List(Device)</h4>
-                            <h4 class="header-title" th:unless="${uri == 'admin/list/user/device'}">Employee List(Database)</h4>
+                            <h4 class="header-title" th:if="${uri == 'admin/attendance/device'}">Employee List(Device)</h4>
+                            <h4 class="header-title" th:unless="${uri == 'admin/attendance/db'}">Employee List(Database)</h4>
                             <div class="single-table">
                                 <div class="table-responsive">
                                     <table class="table table-hover text-center">
@@ -68,6 +68,7 @@
                                             <th scope="col">Role</th>
                                             <th scope="col">PassKey</th>
                                             <th scope="col">RF Number</th>
+                                            <th scope="col">Action</th>
                                         </tr>
                                         </thead>
                                         <tbody>
@@ -77,6 +78,14 @@
                                             <td th:text="${employee.userRole}">v</td>
                                             <td th:text="${employee.password}">password</td>
                                             <td th:text="${employee.cardNumber}">cardNumber</td>
+                                            <td>
+                                                <a th:href="@{'/employee/' + ${employee.id}}" class="btn btn-primary">
+                                                    <span class="ti-direction-alt"></span>
+                                                </a>
+                                                <a href="#" class="btn btn-danger" th:onclick="'deleteEmployee(' + ${employee.id} + ')'; return false;">
+                                                    <i class="fa fa-trash"></i>
+                                                </a>
+                                            </td>
                                         </tr>
                                         </tbody>
                                     </table>
@@ -90,3 +99,19 @@
         </div>
     </div>
     <div th:replace="/includes/footer::footer"></div>
+
+    <script>
+        function deleteEmployee(employeeId) {
+            // Make an AJAX request to the server to delete the employee
+            $.ajax({
+                type: 'DELETE',
+                url: 'admin/deleteEmployee/' + employeeId,
+                success: function (data) {
+                    alert("User Deleted...!")
+                },
+                error: function (error) {
+                    // Handle error, e.g., show an error message
+                }
+            });
+        }
+    </script>

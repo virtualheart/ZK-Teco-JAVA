@@ -9,7 +9,7 @@ import jakarta.persistence.*;
 public class EmployeeModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int Id;
+    private int id;
     @Column(unique = true)
     private int employeeId;
 
@@ -17,8 +17,9 @@ public class EmployeeModel {
     @Enumerated(EnumType.ORDINAL)
     private UserRole userRole;
 
+    @Column(nullable = true)
     private int password;
-//    Column(unique=true)
+    @Column(nullable = true)
     private int cardNumber;
 
     public int getEmployeeId() {
@@ -58,5 +59,13 @@ public class EmployeeModel {
 
     public void setCardNumber(int cardNumber) {
         this.cardNumber = cardNumber;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 }

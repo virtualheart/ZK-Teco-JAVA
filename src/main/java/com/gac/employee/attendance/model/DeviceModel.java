@@ -17,10 +17,11 @@ public class DeviceModel {
 	private Date created_date;
 	private String alias;
 	private String devicesn;
+	private int devicecommkey;
 	private String status;
 	private String type;
 	private int enable;
-	private String fw_version;
+	private String fw_version; // fingerprint version
 	private String ip_address;
 	private int port;
 	@Temporal(TemporalType.DATE)
@@ -32,6 +33,10 @@ public class DeviceModel {
 	private DeviceSupport support_remote_palm_print;
 	private String model;
 	private int primaryDevice;
+
+	private String fa_version;  // face version
+	private String OEMVendor;
+	private String Platform;
 
 	public int getDeviceid() {
 		return deviceid;
@@ -187,5 +192,37 @@ public class DeviceModel {
 
 	public void setPrimaryDevice(int primaryDevice) {
 		this.primaryDevice = primaryDevice;
+	}
+
+	public int getDevicecommkey() {
+		return devicecommkey;
+	}
+
+	public void setDevicecommkey(int devicecommkey) {
+		this.devicecommkey = devicecommkey;
+	}
+
+	public String getFa_version() {
+		return fa_version;
+	}
+
+	public void setFa_version(String fa_version) {
+		this.fa_version = fa_version;
+	}
+
+	public String getOEMVendor() {
+		return OEMVendor;
+	}
+
+	public void setOEMVendor(String OEMVendor) {
+		this.OEMVendor = OEMVendor;
+	}
+
+	public String getPlatform() {
+		return Platform;
+	}
+
+	public void setPlatform(String platform) {
+		Platform = platform;
 	}
 }
