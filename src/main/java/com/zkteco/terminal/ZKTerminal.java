@@ -269,7 +269,7 @@ public class ZKTerminal {
           return new ZKCommandReply(replyCode, sessionId, replyId, payloads);
     }
     
-    // Restart Devices 
+    // Restart Devices
     public ZKCommandReply restart() throws IOException, ParseException {
         int[] toSend = ZKCommand.getPacket(CommandCodeEnum.CMD_RESTART, sessionId, replyNo, null);
         byte[] buf = new byte[toSend.length];
@@ -286,16 +286,17 @@ public class ZKTerminal {
         if (replyCode == CommandReplyCodeEnum.CMD_ACK_OK) {
 //             boolean first = true;
         }
-          
+
         socket.close();
         int replyId = response[6] + (response[7] * 0x100);
         int[] payloads = new int[response.length - 8];
         System.arraycopy(response, 8, payloads, 0, payloads.length);
         return new ZKCommandReply(replyCode, sessionId, replyId, payloads);
     }
-    
+
 
  // Get all devices Attendance Data
+
     public List<AttendanceRecord> getAttendanceRecords() throws IOException, ParseException {
         int[] toSend = ZKCommand.getPacket(CommandCodeEnum.CMD_ATTLOG_RRQ, sessionId, replyNo, null);
         byte[] buf = new byte[toSend.length];
@@ -311,32 +312,74 @@ public class ZKTerminal {
         int[] response = readResponse();
         CommandReplyCodeEnum replyCode = CommandReplyCodeEnum.decode(response[0] + (response[1] * 0x100));
         List<AttendanceRecord> attendanceRecords = new ArrayList<>();
+        StringBuilder attendanceBuffer = new StringBuilder();
 
         if (replyCode == CommandReplyCodeEnum.CMD_PREPARE_DATA) {
             boolean first = true;
+
             int lastDataRead;
 
             do {
                 int[] readData = readResponse();
+
                 lastDataRead = readData.length;
+
                 String readPacket = HexUtils.bytesToHex(readData);
-                String attendanceHex = readPacket.substring(first ? 24 : 16);
-                List<AttendanceRecord> records = processAttendanceHex(attendanceHex);
-                attendanceRecords.addAll(records);
+
+                attendanceBuffer.append(readPacket.substring(first ? 24 : 16));
+
                 first = false;
             } while (lastDataRead == 1032);
         } else {
-            System.out.println(response.length);
-            String attendanceHex = HexUtils.bytesToHex(response).substring(24);
-            List<AttendanceRecord> records = processAttendanceHex(attendanceHex);
-            attendanceRecords.addAll(records);
+            attendanceBuffer.append(HexUtils.bytesToHex(response).substring(24));
         }
 
+        String attendance = attendanceBuffer.toString();
+
+        while (attendance.length() > 0) {
+            String record = attendance.substring(0, 80);
+
+            int seq = Integer.valueOf(record.substring(2, 4) + record.substring(0, 2), 16);
+
+            record = record.substring(4);
+
+            String userId = Character.toString((char) Integer.valueOf(record.substring(0, 2), 16).intValue())
+                    + Character.toString((char) Integer.valueOf(record.substring(2, 4), 16).intValue())
+                    + Character.toString((char) Integer.valueOf(record.substring(4, 6), 16).intValue())
+                    + Character.toString((char) Integer.valueOf(record.substring(6, 8), 16).intValue())
+                    + Character.toString((char) Integer.valueOf(record.substring(8, 10), 16).intValue())
+                    + Character.toString((char) Integer.valueOf(record.substring(10, 12), 16).intValue())
+                    + Character.toString((char) Integer.valueOf(record.substring(12, 14), 16).intValue())
+                    + Character.toString((char) Integer.valueOf(record.substring(14, 16), 16).intValue())
+                    + Character.toString((char) Integer.valueOf(record.substring(16, 18), 16).intValue());
+
+            record = record.substring(48);
+
+            int method = Integer.valueOf(record.substring(0, 2), 16);
+            AttendanceTypeEnum attendanceType = AttendanceTypeEnum.values()[method];
+
+            record = record.substring(2);
+
+            long encDate = Integer.valueOf(record.substring(6, 8), 16) * 0x1000000L
+                    + (Integer.valueOf(record.substring(4, 6), 16) * 0x10000L)
+                    + (Integer.valueOf(record.substring(2, 4), 16) * 0x100L)
+                    + (Integer.valueOf(record.substring(0, 2), 16));
+
+            Date attendanceDate = HexUtils.extractDate(encDate);
+
+            record = record.substring(8);
+
+            int operation = Integer.valueOf(record.substring(0, 2), 16);
+            AttendanceStateEnum attendanceState = AttendanceStateEnum.values()[operation];
+
+            attendance = attendance.substring(80);
+            AttendanceRecord attendanceRecord = new AttendanceRecord(seq, userId.trim(), attendanceType, attendanceDate, attendanceState);
+            attendanceRecords.add(attendanceRecord);
+        }
         return attendanceRecords;
     }
 
-
-    public List<AttendanceRecord> getAttendanceRecordsForDateRange(String startTime, String endTime) throws IOException, ParseException {
+    public List<AttendanceRecord> getAttendanceRecordsForDateRange(String startTime,String endTime) throws IOException, ParseException {
         int[] toSend = ZKCommand.getPacket(CommandCodeEnum.CMD_ATTLOG_RRQ, sessionId, replyNo, null);
         byte[] buf = new byte[toSend.length];
         int index = 0;
@@ -351,50 +394,37 @@ public class ZKTerminal {
         int[] response = readResponse();
         CommandReplyCodeEnum replyCode = CommandReplyCodeEnum.decode(response[0] + (response[1] * 0x100));
         List<AttendanceRecord> attendanceRecords = new ArrayList<>();
+        StringBuilder attendanceBuffer = new StringBuilder();
 
         if (replyCode == CommandReplyCodeEnum.CMD_PREPARE_DATA) {
             boolean first = true;
+
             int lastDataRead;
 
             do {
                 int[] readData = readResponse();
-                lastDataRead = readData.length;
-                String readPacket = HexUtils.bytesToHex(readData);
-                String attendanceHex = readPacket.substring(first ? 24 : 16);
-                List<AttendanceRecord> records = processAttendanceHex(attendanceHex);
 
-                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                Date startDate = dateFormat.parse(startTime);
-                Date endDate = dateFormat.parse(endTime);
-                
-                for (AttendanceRecord record : records) {
-                	Date recordDate = record.getRecordTime(); 
-                    if (recordDate.after(startDate) && recordDate.before(endDate)) {
-                        attendanceRecords.add(record);
-                    }
-                }
+                lastDataRead = readData.length;
+
+                String readPacket = HexUtils.bytesToHex(readData);
+
+                attendanceBuffer.append(readPacket.substring(first ? 24 : 16));
 
                 first = false;
             } while (lastDataRead == 1032);
         } else {
-            System.out.println(response.length);
-            String attendanceHex = HexUtils.bytesToHex(response).substring(24);
-            List<AttendanceRecord> records = processAttendanceHex(attendanceHex);
-            attendanceRecords.addAll(records);
+            attendanceBuffer.append(HexUtils.bytesToHex(response).substring(24));
         }
 
-        return attendanceRecords;
-    }
-    
-    // Helper method to process attendance hex string
-    private List<AttendanceRecord> processAttendanceHex(String attendanceHex) throws ParseException {
-        List<AttendanceRecord> records = new ArrayList<>();
-        int recordLength = 80;  // Adjust this based on the actual length of your attendance records
+        String attendance = attendanceBuffer.toString();
 
-        while (attendanceHex.length() >= recordLength) {
-            String record = attendanceHex.substring(0, recordLength);
+        while (attendance.length() > 0) {
+            String record = attendance.substring(0, 80);
+
             int seq = Integer.valueOf(record.substring(2, 4) + record.substring(0, 2), 16);
+
             record = record.substring(4);
+
             String userId = Character.toString((char) Integer.valueOf(record.substring(0, 2), 16).intValue())
                     + Character.toString((char) Integer.valueOf(record.substring(2, 4), 16).intValue())
                     + Character.toString((char) Integer.valueOf(record.substring(4, 6), 16).intValue())
@@ -406,9 +436,12 @@ public class ZKTerminal {
                     + Character.toString((char) Integer.valueOf(record.substring(16, 18), 16).intValue());
 
             record = record.substring(48);
+
             int method = Integer.valueOf(record.substring(0, 2), 16);
-            record = record.substring(2);
             AttendanceTypeEnum attendanceType = AttendanceTypeEnum.values()[method];
+
+            record = record.substring(2);
+
             long encDate = Integer.valueOf(record.substring(6, 8), 16) * 0x1000000L
                     + (Integer.valueOf(record.substring(4, 6), 16) * 0x10000L)
                     + (Integer.valueOf(record.substring(2, 4), 16) * 0x100L)
@@ -417,20 +450,24 @@ public class ZKTerminal {
             Date attendanceDate = HexUtils.extractDate(encDate);
 
             record = record.substring(8);
+
             int operation = Integer.valueOf(record.substring(0, 2), 16);
             AttendanceStateEnum attendanceState = AttendanceStateEnum.values()[operation];
-            // Create AttendanceRecord object
-            AttendanceRecord attendanceRecord = new AttendanceRecord(seq, userId, attendanceType, attendanceDate, attendanceState);
-            
-            // Add the record to the list
-            records.add(attendanceRecord);
 
-            attendanceHex = attendanceHex.substring(recordLength);
+            attendance = attendance.substring(80);
+            AttendanceRecord attendanceRecord = new AttendanceRecord(seq, userId.trim(), attendanceType, attendanceDate, attendanceState);
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            Date startDate = dateFormat.parse(startTime);
+            Date endDate = dateFormat.parse(endTime);
+
+            if (attendanceDate.after(startDate) && attendanceDate.before(endDate)) {
+                attendanceRecords.add(attendanceRecord);
+            }
         }
+        return attendanceRecords;
+    }
 
-        return records;
-    }    
-    
+
     // Clear All Admin from device
     public ZKCommandReply ClearAdminData() throws IOException, ParseException {
         int[] toSend = ZKCommand.getPacket(CommandCodeEnum.CMD_CLEAR_ADMIN, sessionId, replyNo, null);
@@ -455,9 +492,59 @@ public class ZKTerminal {
         return new ZKCommandReply(replyCode, sessionId, replyId, payloads);
     }
 
+    public ZKCommandReply clearOpLogData() throws IOException, ParseException {
+        int[] toSend = ZKCommand.getPacket(CommandCodeEnum.CMD_CLEAR_OPLOG, sessionId, replyNo, null);
+        byte[] buf = new byte[toSend.length];
+        int index = 0;
+        for (int byteToSend : toSend) {
+            buf[index++] = (byte) byteToSend;
+        }
+
+        DatagramPacket packet = new DatagramPacket(buf, buf.length,address, port);
+        socket.send(packet);
+        replyNo++;
+
+        int[] response = readResponse();
+        CommandReplyCodeEnum replyCode = CommandReplyCodeEnum.decode(response[0] + (response[1] * 0x100));
+
+        if (replyCode == CommandReplyCodeEnum.CMD_ACK_OK) {
+//              boolean first = true;
+        }
+        socket.close();
+        int replyId = response[6] + (response[7] * 0x100);
+        int[] payloads = new int[response.length - 8];
+        System.arraycopy(response, 8, payloads, 0, payloads.length);
+        return new ZKCommandReply(replyCode, sessionId, replyId, payloads);
+    }
+
+    public ZKCommandReply resetDevice() throws IOException, ParseException {
+        int[] toSend = ZKCommand.getPacket(CommandCodeEnum.CMD_CLEAR_DATA, sessionId, replyNo, null);
+        byte[] buf = new byte[toSend.length];
+        int index = 0;
+        for (int byteToSend : toSend) {
+            buf[index++] = (byte) byteToSend;
+        }
+
+        DatagramPacket packet = new DatagramPacket(buf, buf.length,address, port);
+        socket.send(packet);
+        replyNo++;
+
+        int[] response = readResponse();
+        CommandReplyCodeEnum replyCode = CommandReplyCodeEnum.decode(response[0] + (response[1] * 0x100));
+
+        if (replyCode == CommandReplyCodeEnum.CMD_ACK_OK) {
+//              boolean first = true;
+        }
+        socket.close();
+        int replyId = response[6] + (response[7] * 0x100);
+        int[] payloads = new int[response.length - 8];
+        System.arraycopy(response, 8, payloads, 0, payloads.length);
+        return new ZKCommandReply(replyCode, sessionId, replyId, payloads);
+    }
+
 
     // Clear All AttLog Data
-    public ZKCommandReply ClearAttLogData() throws IOException, ParseException {
+    public ZKCommandReply clearAttLogData() throws IOException, ParseException {
         int[] toSend = ZKCommand.getPacket(CommandCodeEnum.CMD_CLEAR_ATTLOG, sessionId, replyNo, null);
         byte[] buf = new byte[toSend.length];
         int index = 0;
@@ -479,10 +566,141 @@ public class ZKTerminal {
         System.arraycopy(response, 8, payloads, 0, payloads.length);
         return new ZKCommandReply(replyCode, sessionId, replyId, payloads);
     }
-    
+
+    //~IsOnlyRFMachine
+    public String IsOnlyRFMachine() throws IOException {
+        int[] toSend = ZKCommand.getPackets(CommandCodeEnum.CMD_OPTIONS_RRQ, sessionId, replyNo, "~IsOnlyRFMachine".getBytes());
+        byte[] buf = new byte[toSend.length];
+        int index = 0;
+
+        for (int byteToSend : toSend) {
+            buf[index++] = (byte) byteToSend;
+        }
+
+        DatagramPacket packet = new DatagramPacket(buf, buf.length, address, port);
+        socket.send(packet);
+        replyNo++;
+
+        int[] response = readResponse();
+        CommandReplyCodeEnum replyCode = CommandReplyCodeEnum.decode(response[0] + (response[1] * 0x100));
+
+        if (replyCode == CommandReplyCodeEnum.CMD_ACK_OK) {
+            byte[] byteArray = new byte[response.length - 8];
+            for (int i = 0; i < byteArray.length; i++) {
+                byteArray[i] = (byte) (response[8 + i] & 0xFF);
+            }
+
+            String responseString = new String(byteArray, StandardCharsets.US_ASCII);
+
+            String[] responseParts = responseString.split("=", 2);
+
+            if (responseParts.length == 2) {
+                return responseParts[1].split("\0")[0];
+            }
+        }
+        return "";
+    }
+
+    public String getFirmwareVersion() throws IOException {
+        int[] toSend = ZKCommand.getPackets(CommandCodeEnum.CMD_GET_VERSION, sessionId, replyNo,null);
+        byte[] buf = new byte[toSend.length];
+        int index = 0;
+
+        for (int byteToSend : toSend) {
+            buf[index++] = (byte) byteToSend;
+        }
+
+        DatagramPacket packet = new DatagramPacket(buf, buf.length, address, port);
+        socket.send(packet);
+        replyNo++;
+
+        int[] response = readResponse();
+        CommandReplyCodeEnum replyCode = CommandReplyCodeEnum.decode(response[0] + (response[1] * 0x100));
+
+        if (replyCode == CommandReplyCodeEnum.CMD_ACK_OK) {
+            byte[] byteArray = new byte[response.length - 8];
+            for (int i = 0; i < byteArray.length; i++) {
+                byteArray[i] = (byte) (response[8 + i] & 0xFF);
+            }
+
+            String responseString = new String(byteArray, StandardCharsets.US_ASCII);
+
+            return responseString.trim();
+        }
+        return "";
+    }
+
+
+    public String getProductTime() throws IOException {
+        int[] toSend = ZKCommand.getPackets(CommandCodeEnum.CMD_OPTIONS_RRQ, sessionId, replyNo, "~ProductTime".getBytes());
+        byte[] buf = new byte[toSend.length];
+        int index = 0;
+
+        for (int byteToSend : toSend) {
+            buf[index++] = (byte) byteToSend;
+        }
+
+        DatagramPacket packet = new DatagramPacket(buf, buf.length, address, port);
+        socket.send(packet);
+        replyNo++;
+
+        int[] response = readResponse();
+        CommandReplyCodeEnum replyCode = CommandReplyCodeEnum.decode(response[0] + (response[1] * 0x100));
+
+        if (replyCode == CommandReplyCodeEnum.CMD_ACK_OK) {
+            byte[] byteArray = new byte[response.length - 8];
+            for (int i = 0; i < byteArray.length; i++) {
+                byteArray[i] = (byte) (response[8 + i] & 0xFF);
+            }
+
+            String responseString = new String(byteArray, StandardCharsets.US_ASCII);
+
+            String[] responseParts = responseString.split("=", 2);
+
+            if (responseParts.length == 2) {
+                return responseParts[1].split("\0")[0];
+            }
+        }
+        return "";
+    }
+
+
     // Get Device Name
     public String getDeviceName() throws IOException {
         int[] toSend = ZKCommand.getPackets(CommandCodeEnum.CMD_OPTIONS_RRQ, sessionId, replyNo, "~DeviceName".getBytes());
+        byte[] buf = new byte[toSend.length];
+        int index = 0;
+
+        for (int byteToSend : toSend) {
+            buf[index++] = (byte) byteToSend;
+        }
+
+        DatagramPacket packet = new DatagramPacket(buf, buf.length, address, port);
+        socket.send(packet);
+        replyNo++;
+
+        int[] response = readResponse();
+        CommandReplyCodeEnum replyCode = CommandReplyCodeEnum.decode(response[0] + (response[1] * 0x100));
+
+        if (replyCode == CommandReplyCodeEnum.CMD_ACK_OK) {
+            byte[] byteArray = new byte[response.length - 8];
+            for (int i = 0; i < byteArray.length; i++) {
+                byteArray[i] = (byte) (response[8 + i] & 0xFF);
+            }
+
+            String responseString = new String(byteArray, StandardCharsets.US_ASCII);
+
+            String[] responseParts = responseString.split("=", 2);
+
+            if (responseParts.length == 2) {
+                return responseParts[1].split("\0")[0];
+            }
+        }
+        return "";
+    }
+
+    public String getPIN2Width() throws IOException {
+        int[] toSend = ZKCommand.getPackets(CommandCodeEnum.CMD_OPTIONS_RRQ, sessionId, replyNo, "~PIN2Width".getBytes());
         byte[] buf = new byte[toSend.length];
         int index = 0;
 
@@ -1145,6 +1363,8 @@ public class ZKTerminal {
         return new ZKCommandReply(replyCode, sessionId, replyId, payloads);
     }
 
+
+
     // wrong working i think
     public ZKCommandReply setDaylightSavingTime(OnOffenum state) throws IOException {
         byte[] DaylightSavingTime = ("DaylightSavingTime=" + state.getOnOffState()).getBytes();
@@ -1721,45 +1941,27 @@ public class ZKTerminal {
         return gettime.getDeviceDate();
     }
 
-    
-//    // Add enroll fingerprint (Work wrong)
-//    public boolean enrollUser(int uid, int tempId, String userId) throws IOException {
-//        // Prepare CMD_STARTENROLL command
-//        int[] startEnrollCommand = new int[]{0x61, 0x00, uid, uid >> 8, tempId, tempId >> 8};
-//
-//        // Create and send the packet
-//        int[] toSend = ZKCommand.getPacket(CommandCodeEnum.CMD_STARTENROLL, sessionId, replyNo, startEnrollCommand);
-//        byte[] buf = new byte[toSend.length];
-//        int index = 0;
-//        for (int byteToSend : toSend) {
-//            buf[index++] = (byte) (byteToSend & 0xFF);
-//        }
-//
-//        DatagramPacket packet = new DatagramPacket(buf, buf.length, address, port);
-//        socket.send(packet);
-//        
-//	      // Increment reply number
-//	      replyNo++;
-//	
-//	      // Read response from the device
-//	      int[] response = readResponse();
-//	      
-//	      // Decode response
-//	      CommandReplyCodeEnum replyCode = CommandReplyCodeEnum.decode(response[0] + (response[1] * 0x100));
-//	      int replyId = response[6] + (response[7] * 0x100);
-//	      int[] payloads = Arrays.copyOfRange(response, 8, response.length);
-//	
-//	      // TODO: Add specific logic for CMD_ACK_OK response
-//	      if (replyCode == CommandReplyCodeEnum.CMD_ACK_OK) {
-//	          // Log success or perform additional actions if needed
-//	      }
-//	
-//	      // Return ZKCommandReply
-////	      return new ZKCommandReply(replyCode, sessionId, replyId, payloads);
-//	  
-//
-//        return false;
-//    }
+    public int getState() throws IOException, ParseException {
+        int[] toSend = ZKCommand.getPacket(CommandCodeEnum.CMD_STATE_RRQ, sessionId, replyNo, null);
+        byte[] buf = new byte[toSend.length];
+        int index = 0;
+
+        for (int byteToSend : toSend) {
+            buf[index++] = (byte) byteToSend;
+        }
+
+        DatagramPacket packet = new DatagramPacket(buf, buf.length, address, port);
+        socket.send(packet);
+        replyNo++;
+        int[] response = readResponse();
+        CommandReplyCodeEnum replyCode = CommandReplyCodeEnum.decode(response[0] + (response[1] * 0x100));
+        int replyId = response[6] + (response[7] * 0x100);
+        int[] payloads = new int[response.length - 8];
+        System.arraycopy(response, 8, payloads, 0, payloads.length);
+        String payloadsStr = HexUtils.bytesToHex(payloads);
+        System.out.println(payloadsStr);
+        return 0;
+    }
 
     // 
     public ZKCommandReply cancelEnrollment() throws IOException {
@@ -2047,21 +2249,26 @@ public class ZKTerminal {
 
 		}
 
-        public ZKCommandReply enrollUser(int uid, int tempId, String userId) throws IOException {
-            // Prepare CMD_STARTENROLL command
-            int[] startEnrollCommand = new int[]{0x61, 0x00, uid, uid >> 8, tempId, tempId >> 8};
+        // enrolled user fingerprint capture
+        public ZKCommandReply enrollFinger(int uid, int tempId, String userId) throws IOException {
+            byte[] enroll_dat = new byte[26];
+            Arrays.fill(enroll_dat, (byte) 0);
+            System.arraycopy(userId.getBytes(), 0, enroll_dat, 0, userId.length());
+            enroll_dat[24] = (byte) tempId;
+            enroll_dat[25] = 0x01;
 
-            // Create and send the packet
-            int[] startEnrollPacket = ZKCommand.getPacket(CommandCodeEnum.CMD_CAPTUREFINGER, sessionId, replyNo, startEnrollCommand);
+            byte[] startEnrollCommand = {0x61, 0x00, (byte) uid, (byte) (uid >> 8), (byte) tempId, (byte) (tempId >> 8)};
+
+            // Concatenate enroll_dat and startEnrollCommand arrays
+            byte[] combinedArray = new byte[enroll_dat.length + startEnrollCommand.length];
+            System.arraycopy(enroll_dat, 0, combinedArray, 0, enroll_dat.length);
+            System.arraycopy(startEnrollCommand, 0, combinedArray, enroll_dat.length, startEnrollCommand.length);
+            int[] startEnrollPacket = ZKCommand.getPackets(CommandCodeEnum.CMD_STARTENROLL, sessionId, replyNo, combinedArray);
             sendPacket(startEnrollPacket);
-
-            // Increment reply number
             replyNo++;
 
-            // Read response from the device
             int[] response = readResponse();
 
-            // Decode response
             CommandReplyCodeEnum replyCode = CommandReplyCodeEnum.decode(response[0] + (response[1] * 0x100));
             int replyId = response[6] + (response[7] * 0x100);
             int[] payloads = Arrays.copyOfRange(response, 8, response.length);
@@ -2071,9 +2278,7 @@ public class ZKTerminal {
                 // Log success or perform additional actions if needed
             	
 //                return true;
-
             }
-            
 
             // Return ZKCommandReply
              return new ZKCommandReply(replyCode, sessionId, replyId, payloads);

@@ -35,8 +35,29 @@ public class Test {
       reply = terminal.disableDevice();
         System.out.println(reply.getCode());
 
+      reply = terminal.FreeDeviceBuffer();
 
-        System.out.println(reply.getCode());
+//      try {
+//          List<AttendanceRecord> attendanceRecord = terminal.getAttendanceRecordsForDateRange("2024-01-23 20:54:50", "2024-02-23 23:59:00");
+////          List<AttendanceRecord> attendanceRecord = terminal.getAttendanceRecords();
+//
+//
+//        // Access and print user information
+//        for (AttendanceRecord attendance : attendanceRecord) {
+//              System.out.println("User ID: " + attendance.getUserID());
+//              System.out.println("User SN: " + attendance.getUserSN());
+//              System.out.println("Verify State: " + attendance.getVerifyState());
+//              System.out.println("Verify Type: " + attendance.getVerifyType());
+//              System.out.println("Record Time: " + attendance.getRecordTime());
+//              System.out.println("------------------------");
+//        }
+//    } catch (IOException e) {
+//        e.printStackTrace(); // Handle exceptions appropriately
+//    }
+
+      System.out.println(reply.getCode());
+
+        System.out.println("sa" + reply.getCode());
 
         reply = terminal.enableDevice();
 

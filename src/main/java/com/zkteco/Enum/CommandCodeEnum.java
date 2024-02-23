@@ -156,8 +156,12 @@ public enum CommandCodeEnum {
 	_CMD_SAVE_USERTEMPS(110),
 	// (UNDOCUMENTED!) delete an specific user template (uid, fid)
 	_CMD_DEL_USER_TEMP(134),
-	
-	CMD_ACK_OK(2000);
+    // (UNDOCUMENTED) initialize buffer for partial reads!
+    _CMD_PREPARE_BUFFER(1503),
+    // (UNDOCUMENTED) ready a partial chunk of data from buffer
+    _CMD_READ_BUFFER(1504),
+
+    CMD_ACK_OK(2000);
 
 	
     private final int code;

@@ -133,7 +133,7 @@ public class DashboardController {
         return "admin/deviceList";
     }
 
-    @GetMapping("/device/capacity")
+    @GetMapping("/device/Capacity")
     public String deviceCapacity(Model model) throws IOException {
         if (deviceService.connectto()) {
             Map<String, String> userFriendlyKeys = Map.ofEntries(
