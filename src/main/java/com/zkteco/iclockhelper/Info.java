@@ -3,173 +3,84 @@ package com.zkteco.iclockhelper;
 import java.util.Map;
 
 public class Info {
-    public String getFwVersion() {
-		return fwVersion;
+    private String firmwareVersion;
+    private String userCount;
+    private String fpCount;
+    private String transactionCount;
+    private String ipAddress;
+    private String fpAlgorithmVersion;
+    private String faceAlgorithmVersion;
+    private String requiredFaceCount;
+    private String enrolledFaceCount;
+    private boolean fingerprintFunction;
+    private boolean faceFunction;
+    private boolean userPhotoFunction;
+
+    public Info() {
+		// TODO Auto-generated constructor stub
 	}
 
-	public int getFpCount() {
-		return fpCount;
-	}
+	
+	public String getFirmwareVersion() {
+        return firmwareVersion;
+    }
 
-	public String getTransactionCount() {
-		return transactionCount;
-	}
+    public String getUserCount() {
+        return userCount;
+    }
 
-	public int getUserCount() {
-		return userCount;
-	}
+    public String getFpCount() {
+        return fpCount;
+    }
 
-	public String getMainTime() {
-		return mainTime;
-	}
+    public String getTransactionCount() {
+        return transactionCount;
+    }
 
-	public int getMaxFingerCount() {
-		return maxFingerCount;
-	}
+    public String getIpAddress() {
+        return ipAddress;
+    }
 
-	public String getLockFunOn() {
-		return lockFunOn;
-	}
+    public String getFpAlgorithmVersion() {
+        return fpAlgorithmVersion;
+    }
 
-	public int getMaxAttLogCount() {
-		return maxAttLogCount;
-	}
+    public String getFaceAlgorithmVersion() {
+        return faceAlgorithmVersion;
+    }
 
-	public String getDeviceName() {
-		return deviceName;
-	}
+    public String getRequiredFaceCount() {
+        return requiredFaceCount;
+    }
 
-	public String getAlgVer() {
-		return algVer;
-	}
+    public String getEnrolledFaceCount() {
+        return enrolledFaceCount;
+    }
 
-	public String getFlashSize() {
-		return flashSize;
-	}
+    public boolean isFingerprintFunction() {
+        return fingerprintFunction;
+    }
 
-	public String getFreeFlashSize() {
-		return freeFlashSize;
-	}
+    public boolean isFaceFunction() {
+        return faceFunction;
+    }
 
-	public String getLanguage() {
-		return language;
-	}
-
-	public String getVolume() {
-		return volume;
-	}
-
-	public String getDtFmt() {
-		return dtFmt;
-	}
-
-	public String getIpAddress() {
-		return ipAddress;
-	}
-
-	public boolean isTft() {
-		return isTft;
-	}
-
-	public String getPlatform() {
-		return platform;
-	}
-
-	public String getBrightness() {
-		return brightness;
-	}
-
-	public String getBackupDev() {
-		return backupDev;
-	}
-
-	public String getOemVendor() {
-		return oemVendor;
-	}
-
-	public String getFpVersion() {
-		return fpVersion;
-	}
-
-	private final String fwVersion;
-    private final int fpCount;
-    private final String transactionCount;
-    private final int userCount;
-    private final String mainTime;
-    private final int maxFingerCount;
-    private final String lockFunOn;
-    private final int maxAttLogCount;
-    private final String deviceName;
-    private final String algVer;
-    private final String flashSize;
-    private final String freeFlashSize;
-    private final String language;
-    private final String volume;
-    private final String dtFmt;
-    private final String ipAddress;
-    private final boolean isTft;
-    private final String platform;
-    private final String brightness;
-    private final String backupDev;
-    private final String oemVendor;
-    private final String fpVersion;
+    public boolean isUserPhotoFunction() {
+        return userPhotoFunction;
+    }
 
     public Info(Map<String, Object> infoData) {
-		this.fwVersion = "";
-		this.fpCount = 0;
-		this.transactionCount = "";
-		this.userCount = 0;
-		this.mainTime = "";
-		this.maxFingerCount = 0;
-		this.lockFunOn = "";
-		this.maxAttLogCount = 0;
-		this.deviceName = "";
-		this.algVer = "";
-		this.flashSize = "";
-		this.freeFlashSize = "";
-		this.language = "";
-		this.volume = "";
-		this.dtFmt = "";
-		this.ipAddress = "";
-		this.isTft = false;
-		this.platform = "";
-		this.brightness = "";
-		this.backupDev = "";
-		this.oemVendor = "";
-		this.fpVersion = "";
-    	
-    }
-    
-    public Info(
-            String fwVersion, int fpCount, String transactionCount, int userCount,
-            String mainTime, int maxFingerCount, String lockFunOn, int maxAttLogCount,
-            String deviceName, String algVer, String flashSize, String freeFlashSize,
-            String language, String volume, String dtFmt, String ipAddress, boolean isTft,
-            String platform, String brightness, String backupDev, String oemVendor,
-            String fpVersion
-    ) {
-        this.fwVersion = fwVersion;
-        this.fpCount = fpCount;
-        this.transactionCount = transactionCount;
-        this.userCount = userCount;
-        this.mainTime = mainTime;
-        this.maxFingerCount = maxFingerCount;
-        this.lockFunOn = lockFunOn;
-        this.maxAttLogCount = maxAttLogCount;
-        this.deviceName = deviceName;
-        this.algVer = algVer;
-        this.flashSize = flashSize;
-        this.freeFlashSize = freeFlashSize;
-        this.language = language;
-        this.volume = volume;
-        this.dtFmt = dtFmt;
-        this.ipAddress = ipAddress;
-        this.isTft = isTft;
-        this.platform = platform;
-        this.brightness = brightness;
-        this.backupDev = backupDev;
-        this.oemVendor = oemVendor;
-        this.fpVersion = fpVersion;
+        this.firmwareVersion = (String) infoData.get("firmwareVersion");
+        this.userCount = (String) infoData.get("userCount");
+        this.fpCount = (String) infoData.get("fpCount");
+        this.transactionCount = (String) infoData.get("transactionCount");
+        this.ipAddress = (String) infoData.get("ipAddress");
+        this.fpAlgorithmVersion = (String) infoData.get("fpAlgorithmVersion");
+        this.faceAlgorithmVersion = (String) infoData.get("faceAlgorithmVersion");
+        this.requiredFaceCount = (String) infoData.get("requiredFaceCount");
+        this.enrolledFaceCount = (String) infoData.get("enrolledFaceCount");
+        this.fingerprintFunction = (boolean) infoData.getOrDefault("fingerprintFunction", false);
+        this.faceFunction = (boolean) infoData.getOrDefault("faceFunction", false);
+        this.userPhotoFunction = (boolean) infoData.getOrDefault("userPhotoFunction", false);
     }
 }
-

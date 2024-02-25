@@ -1,13 +1,18 @@
 package com.zkteco.terminal;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.text.ParseException;
 import java.util.List;
 
 import com.zkteco.Enum.OnOffenum;
+import com.zkteco.command.events.EventCode;
+import com.zkteco.commands.AttendanceRecord;
 import com.zkteco.commands.SmsInfo;
 import com.zkteco.commands.UserInfo;
 import com.zkteco.commands.ZKCommandReply;
 import com.zkteco.iclockhelper.ZKTecoHttpServer;
+import com.zkteco.utils.HexUtils;
 
 //import java.io.IOException;
 //import java.util.Calendar;
@@ -24,37 +29,62 @@ import com.zkteco.iclockhelper.ZKTecoHttpServer;
 public class Test {
 	
     public static void main(String[] args) throws Exception {
-      
-        ZKTerminal terminal = new ZKTerminal("192.168.1.201", 4370);
-        ZKCommandReply reply = terminal.connect();
-        reply = terminal.connectAuth(0);
-        reply = terminal.disableDevice();
-        
+      ZKTerminal terminal = new ZKTerminal("192.168.1.205", 4370);
+      ZKCommandReply reply = terminal.connect();
+      reply = terminal.connectAuth(100);
+      reply = terminal.disableDevice();
         System.out.println(reply.getCode());
 
-        
-      
-
-      reply = terminal.enableDevice();
-      System.out.println(reply.getCode());
+      reply = terminal.FreeDeviceBuffer();
 
 //      try {
-//      List<SmsInfo> SmsInfo = terminal.getYourSmsList(1);
+//          List<AttendanceRecord> attendanceRecord = terminal.getAttendanceRecordsForDateRange("2024-01-23 20:54:50", "2024-02-23 23:59:00");
+////          List<AttendanceRecord> attendanceRecord = terminal.getAttendanceRecords();
 //
-//      // Access and print user information
-//	      for (SmsInfo smsinfo : SmsInfo) {
-//	            System.out.println("tag: " + smsinfo.getTag());
-//	            System.out.println("ID: " + smsinfo.getID());
-//	            System.out.println("validMinutes: " + smsinfo.getID());
-//	            System.out.println("reserved: " + smsinfo.getReserved());
-//	            System.out.println("startTime: " + smsinfo.getStartTime());
-//	            System.out.println("content: " + smsinfo.getContent());
-//	            System.out.println("------------------------");
-//	      }
-//	  } catch (IOException e) {
-//	      e.printStackTrace(); // Handle exceptions appropriately
-//	  }  
-//	        
+//
+//        // Access and print user information
+//        for (AttendanceRecord attendance : attendanceRecord) {
+//              System.out.println("User ID: " + attendance.getUserID());
+//              System.out.println("User SN: " + attendance.getUserSN());
+//              System.out.println("Verify State: " + attendance.getVerifyState());
+//              System.out.println("Verify Type: " + attendance.getVerifyType());
+//              System.out.println("Record Time: " + attendance.getRecordTime());
+//              System.out.println("------------------------");
+//        }
+//    } catch (IOException e) {
+//        e.printStackTrace(); // Handle exceptions appropriately
+//    }
+
+      System.out.println(reply.getCode());
+
+        System.out.println("sa" + reply.getCode());
+
+        reply = terminal.enableDevice();
+
+        System.out.println(reply.getCode());
+
+
+    
+
+
+//    SmsInfo smsinfo = terminal.getYourSmsList(3);
+
+//    reply = terminal.setSms(253,1024,7680,System.currentTimeMillis(),"Dhana Test");
+
+//      
+//      try {
+//          SmsInfo smsinfo = terminal.getYourSmsList(1);
+//          
+//	    System.out.println("tag: " + smsinfo.getTag()); // 253 public , 254 private , 255 draft
+//	    System.out.println("ID: " + smsinfo.getId()); // 1  - 256 2 - 512 3 - 768 (id * 256)
+//	    System.out.println("validMinutes: " + smsinfo.getValidMinutes()); // (min * 256)
+//	    System.out.println("reserved: " + smsinfo.getReserved());
+//	    System.out.println("startTime: " + smsinfo.getStartTime());
+//	    System.out.println("content: " + smsinfo.getContent());
+//    	    System.out.println("------------------------");
+//    	  } catch (IOException e) {
+//    	      e.printStackTrace(); // Handle exceptions appropriately
+//    	  }  
 //        
         //
 //                try {
@@ -78,8 +108,24 @@ public class Test {
 //                } catch (IOException e) {
 //                    e.printStackTrace(); // Handle exceptions appropriately
 //                }              
-////                
-        
+//                
+      
+//      try {
+//          List<AttendanceRecord> attendanceRecord = terminal.getAttendanceRecordsForDateRange("2024-02-21 00:00:00", "2024-02-21 23:59:00");
+//          
+//        // Access and print user information
+//        for (AttendanceRecord attendance : attendanceRecord) {
+//              System.out.println("User ID: " + attendance.getUserID());
+//              System.out.println("User SN: " + attendance.getUserSN());            
+//              System.out.println("Verify State: " + attendance.getVerifyState());
+//              System.out.println("Verify Type: " + attendance.getVerifyType());
+//              System.out.println("Record Time: " + attendance.getRecordTime());
+//              System.out.println("------------------------");
+//        }
+//    } catch (IOException e) {
+//        e.printStackTrace(); // Handle exceptions appropriately
+//    }   
+      
 //        ZKTecoHttpServer xk =new ZKTecoHttpServer(8000);
 //        
 //        terminal.getYourSmsList(01);	

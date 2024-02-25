@@ -5,10 +5,12 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
+import com.zkteco.Enum.UserRoleEnum;
+
 public class UserInfo {
 
     private int uid;
-    private UserRole role;
+    private UserRoleEnum role;
     private String password;
     private String name;
     private long cardno;
@@ -37,11 +39,11 @@ public class UserInfo {
         this.uid = uid;
     }
 
-    public UserRole getRole() {
+    public UserRoleEnum getRole() {
         return role;
     }
 
-    public void setRole(UserRole userDefault) {
+    public void setRole(UserRoleEnum userDefault) {
         this.role = userDefault;
     }
 
@@ -117,7 +119,7 @@ public class UserInfo {
         this.timeZone3 = timeZone3;
     }
     
-    public UserInfo(int uid,String user_id,String name,String password,UserRole privilege,long cardno) {
+    public UserInfo(int uid,String user_id,String name,String password,UserRoleEnum privilege,long cardno) {
     	this.userid = user_id;
     	this.name = name;
     	this.role = privilege;
@@ -127,7 +129,7 @@ public class UserInfo {
     	this.uid = uid;
     }
 
-    public UserInfo(String user_id,String name,String password,UserRole privilege,long cardno) {
+    public UserInfo(String user_id,String name,String password,UserRoleEnum privilege,long cardno) {
     	this.userid = user_id;
     	this.name = name;
     	this.role = privilege;
@@ -150,19 +152,19 @@ public class UserInfo {
 
         switch (roleBits) {
             case 0b000:
-                user.setRole(UserRole.USER_DEFAULT);
+                user.setRole(UserRoleEnum.USER_DEFAULT);
                 break;
             case 0b001:
-                user.setRole(UserRole.USER_ENROLLER);
+                user.setRole(UserRoleEnum.USER_ENROLLER);
                 break;
             case 0b011:
-                user.setRole(UserRole.USER_MANAGER);
+                user.setRole(UserRoleEnum.USER_MANAGER);
                 break;
             case 0b111:
-                user.setRole(UserRole.USER_ADMIN);
+                user.setRole(UserRoleEnum.USER_ADMIN);
                 break;
             default:
-            	user.setRole(UserRole.USER_DEFAULT);
+            	user.setRole(UserRoleEnum.USER_DEFAULT);
                 break;
         }
 

@@ -1,35 +1,34 @@
 package com.zkteco.iclockhelper;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.net.http.HttpHeaders;
-import java.net.http.HttpRequest;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-
-import com.sun.net.httpserver.HttpContext;
+import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;
 
 public class ParsedRequest {
-    private final HttpRequest req;
+    private final HttpExchange exchange;
     private final String method;
     private final URI parseresult;
     private final Map<String, Object> params;
     private final byte[] body;
-    private final HttpHeaders headers;
+    private final Headers headers;
 
-    public ParsedRequest(HttpRequest req, String method, URI parseresult, Map<String, Object> params, byte[] body, HttpHeaders httpHeaders) {
-        this.req = req;
+    public ParsedRequest(HttpExchange exchange, String method, URI parseresult, Map<String, Object> params, byte[] body, Headers headers) {
+        this.exchange = exchange;
         this.method = method;
         this.parseresult = parseresult;
         this.params = params;
         this.body = body;
-        this.headers = httpHeaders;
+        this.headers = headers;
     }
 
-    public HttpRequest getReq() {
-        return req;
+    public HttpExchange getExchange() {
+        return exchange;
     }
 
     public String getMethod() {
@@ -48,29 +47,43 @@ public class ParsedRequest {
         return body;
     }
 
-    public HttpHeaders getHeaders() {
+    public Headers getHeaders() {
         return headers;
     }
 
-//    public static ParsedRequest fromReq(String query) throws URISyntaxException {
-//        Map<String, Object> params = new HashMap<>();
-//
-////        for (Map.Entry<String, List<String>> entry : query.endsWith("&")) {
-////            String key = entry.getKey();
-////            List<String> values = entry.getValue();
-////            params.put(key, values.size() > 1 ? values : values.get(0));
-////        }
-//        
-//        return null;
-//
-////        return new _ParsedRequest(
-////                req2,
-////                req2.,
-////                uri,
-////                params,
-//////                req.body() != null ? req.body() : new byte[0],
-////                new byte[0],
-////                req2.headers()
-////        );
-//    }
+    public static ParsedRequest fromHttpExchange(HttpExchange exchange) throws IOException, URISyntaxException {
+        String method = exchange.getRequestMethod();
+        URI uri = exchange.getRequestURI();
+
+        Map<String, Object> params = parseQueryParameters(uri.getQuery());
+
+        BufferedReader reader = new BufferedReader(new InputStreamReader(exchange.getRequestBody()));
+        StringBuilder body = new StringBuilder();
+        String line;
+        while ((line = reader.readLine()) != null) {
+            body.append(line);
+        }
+
+        Headers headers = exchange.getRequestHeaders();
+
+        return new ParsedRequest(exchange, method, uri, params, body.toString().getBytes(), headers);
+    }
+
+    private static Map<String, Object> parseQueryParameters(String query) throws URISyntaxException {
+        Map<String, Object> params = new HashMap<>();
+
+        if (query != null) {
+            String[] pairs = query.split("&");
+            for (String pair : pairs) {
+                String[] keyValue = pair.split("=");
+                String key = keyValue[0];
+                String value = keyValue.length > 1 ? keyValue[1] : "";
+                params.put(key, value);
+            }
+        }
+
+        return params;
+    }
+    
+
 }

@@ -13,4 +13,5 @@ public interface AttendanceRecordService {
     long getTodayCheckinCount();
     long getTodayCheckoutCount();
 
+
 }

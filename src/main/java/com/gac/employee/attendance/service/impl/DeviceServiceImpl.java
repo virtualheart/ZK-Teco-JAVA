@@ -2,17 +2,17 @@ package com.gac.employee.attendance.service.impl;
 
 import java.io.IOException;
 
+import java.net.BindException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 import com.gac.employee.attendance.enums.AttendanceState;
 import com.gac.employee.attendance.enums.AttendanceType;
+import com.gac.employee.attendance.enums.SmsEnum;
 import com.gac.employee.attendance.gateway.DeviceGateway;
 import com.gac.employee.attendance.model.AttendanceRecordModel;
+import com.gac.employee.attendance.model.SmsInfo;
 import com.gac.employee.attendance.repo.AttendanceRecordRepository;
 import com.zkteco.commands.AttendanceRecord;
 import com.zkteco.commands.UserInfo;
@@ -55,6 +55,14 @@ public class DeviceServiceImpl implements DeviceService {
 			return true;
 		}catch (DeviceNotConnectException e){
 			System.out.println();
+		} catch (BindException e){
+			System.out.println("BindException: " + e.getMessage());
+			if (e.getMessage().contains("Address already in use")) {
+				System.out.println("Address already in use. Closing the connection.");
+				terminal.disconnect();
+			} else {
+				System.out.println("Other BindException: " + e.getMessage());
+			}
 		}
 		return false;
 	}
@@ -76,6 +84,13 @@ public class DeviceServiceImpl implements DeviceService {
 	@Override
 	public void devicePowerDown() throws IOException, ParseException {
 		terminal.Poweroff();
+		terminal = null;
+	}
+
+	@Override
+	public void deviceRestart() throws IOException, ParseException {
+		terminal.restart();
+		terminal = null;
 	}
 
 	@Override
@@ -129,6 +144,122 @@ public class DeviceServiceImpl implements DeviceService {
 		}
 		return null;
 	}
+
+	@Override
+	public String getDeviceName() throws IOException {
+		if (terminal != null) {
+            return terminal.getDeviceName();
+		}
+		return null;
+	}
+
+	@Override
+	public Map<String, Integer> getDeviceCapacity() throws IOException {
+		if (terminal != null) {
+            return terminal.getDeviceStatus();
+		}
+		return null;
+	}
+
+	@Override
+	public String getSerialNumber() throws IOException {
+		if (terminal != null) {
+			return terminal.getSerialNumber();
+		}
+		return null;
+	}
+
+	@Override
+	public String getMAC() throws IOException {
+		if (terminal != null) {
+			return terminal.getMAC();
+		}
+		return null;
+	}
+
+	@Override
+	public String getFaceVersion() throws IOException {
+		if (terminal != null) {
+			return terminal.getFaceVersion();
+		}
+		return null;
+	}
+
+	@Override
+	public String getPlatform() throws IOException {
+		if (terminal != null) {
+			return terminal.getPlatform();
+		}
+		return null;
+	}
+
+	@Override
+	public boolean getWorkCode() throws IOException {
+		if (terminal != null) {
+			return terminal.getWorkCode();
+		}
+		return false;
+	}
+
+	@Override
+	public int getFPVersion() throws IOException {
+		if (terminal != null) {
+			return terminal.getFPVersion();
+		}
+		return 0;
+	}
+
+	@Override
+	public String getOEMVendor() throws IOException {
+		if (terminal != null) {
+			return terminal.getOEMVendor();
+		}
+		return null;
+	}
+
+	@Override
+	public List<SmsInfo> getSmsList() throws IOException, ParseException {
+		List<SmsInfo> smsInfoList = new ArrayList<>();
+
+		if (terminal != null) {
+			int i = 1;
+			com.zkteco.commands.SmsInfo smslist;
+
+			do {
+				smslist = terminal.getSms(i);
+
+				if (smslist != null) {
+					SmsInfo smsInfo = new SmsInfo();
+					smsInfo.setId(smslist.getId());
+					switch (smslist.getTag()) {
+						case 253:
+							smsInfo.setTag(SmsEnum.PUBLIC);
+							break;
+						case 254:
+							smsInfo.setTag(SmsEnum.PRIVATE);
+							break;
+						case 255:
+							smsInfo.setTag(SmsEnum.DRAFT);
+							break;
+					}
+					smsInfo.setContent(smslist.getContent());
+					smsInfo.setStartTime(smslist.getStartTime());
+					smsInfo.setValidMinutes(smslist.getValidMinutes());
+					smsInfo.setReserved(smslist.getReserved());
+
+					smsInfoList.add(smsInfo);
+				}
+
+				i++;
+			} while (smslist != null);
+
+			return smsInfoList;
+		}
+
+		return null;
+	}
+
+	@Override
 
 	public void end() throws IOException {
 		if (terminal != null)

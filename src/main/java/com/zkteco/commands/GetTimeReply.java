@@ -3,13 +3,14 @@ package com.zkteco.commands;
 import java.text.ParseException;
 import java.util.Date;
 
+import com.zkteco.Enum.CommandReplyCodeEnum;
 import com.zkteco.utils.HexUtils;
 
 public class GetTimeReply extends ZKCommandReply {
 
     private final Date deviceDate;
 
-    public GetTimeReply(CommandReplyCode code, int sessionId, int replyId, int[] payloads) throws ParseException {
+    public GetTimeReply(CommandReplyCodeEnum code, int sessionId, int replyId, int[] payloads) throws ParseException {
         super(code, sessionId, replyId, payloads);
 
         String payloadsStr = HexUtils.bytesToHex(payloads);

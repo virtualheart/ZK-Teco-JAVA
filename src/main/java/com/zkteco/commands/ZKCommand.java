@@ -3,13 +3,15 @@ package com.zkteco.commands;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 
+import com.zkteco.Enum.CommandCodeEnum;
+import com.zkteco.command.events.EventCode;
 import com.zkteco.utils.SecurityUtils;
 
 public class ZKCommand {
 
     public final static int[] PACKET_START = {0x50, 0x50, 0x82, 0x7d};
 
-    public static int[] getPacket(CommandCode commandCode, int sessionId, int replyNumber, int[] data) {
+    public static int[] getPacket(CommandCodeEnum commandCode, int sessionId, int replyNumber, int[] data) {
         int[] payloadForChecksum = new int[6 + (data == null ? 0 : data.length)];
         int[] finalPayload = new int[8 + (data == null ? 0 : data.length)];
 //        int[] finalPacket = new int[8 + finalPayload.length];
@@ -60,7 +62,7 @@ public class ZKCommand {
         return finalPayload;
     }
     
-    public static int[] getPackets(CommandCode commandCode, int sessionId, int replyNumber, byte[] data) {
+    public static int[] getPackets(CommandCodeEnum commandCode, int sessionId, int replyNumber, byte[] data) {
         int[] payloadForChecksum = new int[6 + (data == null ? 0 : data.length)];
         int[] finalPayload = new int[8 + (data == null ? 0 : data.length)];
 //        int[] finalPacket = new int[8 + finalPayload.length];
@@ -160,4 +162,5 @@ public class ZKCommand {
 //    }
 
 
+    
 }

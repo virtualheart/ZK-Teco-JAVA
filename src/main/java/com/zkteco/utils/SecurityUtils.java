@@ -68,7 +68,7 @@ public class SecurityUtils {
         response[2] ^= 'S';
         response[3] ^= 'O';
 
-        long finalKey = response[0] + (response[1] * 0x100L) + (response[2] * 0x10000L) + (response[3] * 0x1000000L);
+        long finalKey = response[0] + (response[1] * 0x100) + (response[2] * 0x10000) + (response[3] * 0x1000000);
 
         swp = (short) (finalKey >> 16);
         finalKey = (finalKey << 16) + swp;
@@ -119,6 +119,23 @@ public class SecurityUtils {
                 hexDump.append("\n");
             }
         }
-        System.out.println(hexDump);
+        System.out.println(hexDump.toString());
     }
+    
+    public static void printUnsignedBytes(byte[] byteArray) {
+        for (byte b : byteArray) {
+            System.out.print((b & 0xFF) + " ");
+        }
+        System.out.println();
+    }
+    
+    public static byte[] convertIntArrayToByteArray(int[] intArray) {
+        byte[] byteArray = new byte[intArray.length];
+        for (int i = 0; i < intArray.length; i++) {
+            byteArray[i] = (byte) (intArray[i] & 0xFF);
+        }
+        return byteArray;
+    }
+
+
 }

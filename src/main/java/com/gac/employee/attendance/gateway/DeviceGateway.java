@@ -17,6 +17,7 @@ public class DeviceGateway {
     private final DeviceRepository  deviceRepository;
     private static final String DEFAULT_IP = "192.168.1.205";
     private static final Integer DEFAULT_PORT = 4370;
+    private static final Integer DEFAULT_COMM = 0;
     private ZKTerminal terminal;
     public DeviceGateway(DeviceRepository deviceRepository) {
         this.deviceRepository = deviceRepository;
@@ -26,16 +27,17 @@ public class DeviceGateway {
     public ZKTerminal getClient() throws IOException, DeviceNotConnectException {
         if (getIPFromDB() != null && getPortFromDB() != null) {
             try {
-                System.out.println("Connecting from DB IP + " + getIPFromDB() + " Port " + getPortFromDB());
+                System.out.println("Connecting from DB IP " + getIPFromDB() + " Port " + getPortFromDB() + " Comm key " + getCommKeyFromDB());
                 terminal = new ZKTerminal(getIPFromDB(), getPortFromDB());
                 terminal.connect();
-                terminal.connectAuth(0);
+                terminal.connectAuth(getCommKeyFromDB());
                 return terminal;
             } catch (DeviceNotConnectException dne) {
                 System.out.println("Device Not Connect Exception");
+                System.out.println("Connecting from DB IP " + DEFAULT_IP + " Port " + DEFAULT_PORT + " Comm key " + DEFAULT_COMM);
                 terminal = new ZKTerminal(DEFAULT_IP, DEFAULT_PORT);
                 terminal.connect();
-                terminal.connectAuth(0);
+                terminal.connectAuth(DEFAULT_COMM);
                 return terminal;
             }
         }
@@ -52,6 +54,11 @@ public class DeviceGateway {
     public Integer getPortFromDB() {
         Optional<DeviceModel> device = deviceRepository.findById(1);
         return device.isPresent() ? device.get().getPort() : null;
+    }
+
+    public Integer getCommKeyFromDB(){
+        Optional<DeviceModel> device = deviceRepository.findById(1);
+        return device.isPresent() ? device.get().getDevicecommkey() : null;
     }
 
 }

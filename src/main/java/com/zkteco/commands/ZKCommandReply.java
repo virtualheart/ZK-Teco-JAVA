@@ -1,13 +1,15 @@
 package com.zkteco.commands;
 
+import com.zkteco.Enum.CommandReplyCodeEnum;
+
 public class ZKCommandReply {
     
-    private final CommandReplyCode code;
+    private final CommandReplyCodeEnum code;
     private final int sessionId;
     private final int replyId;
     private final int[] payloads;
 
-    public ZKCommandReply(CommandReplyCode code, int sessionId, int replyId, int[] payloads) {
+    public ZKCommandReply(CommandReplyCodeEnum code, int sessionId, int replyId, int[] payloads) {
         this.code = code;
         this.sessionId = sessionId;
         this.replyId = replyId;
@@ -17,7 +19,7 @@ public class ZKCommandReply {
     /**
      * @return the code
      */
-    public CommandReplyCode getCode() {
+    public CommandReplyCodeEnum getCode() {
         return code;
     }
 

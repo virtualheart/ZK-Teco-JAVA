@@ -2,14 +2,17 @@ package com.zkteco.commands;
 
 import java.util.Date;
 
+import com.zkteco.Enum.AttendanceStateEnum;
+import com.zkteco.Enum.AttendanceTypeEnum;
+
 public class AttendanceRecord {
     private int userSN;
     private String userID;
-    private AttendanceType verifyType;
+    private AttendanceTypeEnum verifyType;
     private Date recordTime;
-    private AttendanceState verifyState;
+    private AttendanceStateEnum verifyState;
 
-    public AttendanceRecord(int userSN, String userID, AttendanceType verifyType, Date recordTime, AttendanceState verifyState) {
+    public AttendanceRecord(int userSN, String userID, AttendanceTypeEnum verifyType, Date recordTime, AttendanceStateEnum verifyState) {
         this.userSN = userSN;
         this.userID = userID;
         this.verifyType = verifyType;
@@ -35,11 +38,11 @@ public class AttendanceRecord {
         this.userID = userID;
     }
 
-    public AttendanceType getVerifyType() {
+    public AttendanceTypeEnum getVerifyType() {
         return verifyType;
     }
 
-    public void setVerifyType(AttendanceType verifyType) {
+    public void setVerifyType(AttendanceTypeEnum verifyType) {
         this.verifyType = verifyType;
     }
 
@@ -51,11 +54,11 @@ public class AttendanceRecord {
         this.recordTime = recordTime;
     }
 
-    public AttendanceState getVerifyState() {
+    public AttendanceStateEnum getVerifyState() {
         return verifyState;
     }
 
-    public void setVerifyState(AttendanceState verifyState) {
+    public void setVerifyState(AttendanceStateEnum verifyState) {
         this.verifyState = verifyState;
     }
 
