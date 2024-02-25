@@ -11,7 +11,7 @@ import com.zkteco.Exception.DeviceNotConnectException;
 import com.zkteco.commands.UserInfo;
 
 public interface DeviceService {
-    boolean connectto() throws IOException ;
+    boolean connectTo() throws IOException ;
 
     void addNewEmployee(UserInfo userInfo) throws IOException, ParseException, DeviceNotConnectException;
     boolean synkTimDate() throws IOException,DeviceNotConnectException;

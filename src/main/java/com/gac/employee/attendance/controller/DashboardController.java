@@ -39,7 +39,7 @@ public class DashboardController {
 //    Dashboard
     @GetMapping({"/","/dashboard"})
     public String dashboard(Model model) throws IOException, ParseException, DeviceNotConnectException{
-        deviceService.connectto();
+        deviceService.connectTo();
         model.addAttribute("deviceStatus", deviceService.deviceOnlineCheck());
         model.addAttribute("deviceTime", deviceService.getDeviceTimeDate());
         model.addAttribute("attendanceRecords", deviceService.getAttendanceList());
@@ -74,7 +74,7 @@ public class DashboardController {
 
     @GetMapping("/list/device/sms")
     public String smsList(Model model) throws IOException, ParseException {
-        if (deviceService.connectto()){
+        if (deviceService.connectTo()){
             model.addAttribute("smslists",deviceService.getSmsList());
         }
         deviceService.end();
@@ -107,7 +107,7 @@ public class DashboardController {
 
     @GetMapping("/attendance/device")
     public String deviceAttendance(Model model) throws IOException, DeviceNotConnectException, ParseException {
-        if (deviceService.connectto()) {
+        if (deviceService.connectTo()) {
             model.addAttribute("uri", "admin/attendance/device");
             model.addAttribute("attendanceRecords", deviceService.getAttendanceList());
             deviceService.end();
@@ -135,7 +135,7 @@ public class DashboardController {
 
     @GetMapping("/device/Capacity")
     public String deviceCapacity(Model model) throws IOException {
-        if (deviceService.connectto()) {
+        if (deviceService.connectTo()) {
             Map<String, String> userFriendlyKeys = Map.ofEntries(
                     Map.entry("adminCount", "Admin Count"),
                     Map.entry("userCount", "User Count"),
@@ -171,7 +171,7 @@ public class DashboardController {
     // Post methods
     @PostMapping("/synktimedate")
     public String setTime(Model model) throws IOException, DeviceNotConnectException {
-        if (deviceService.connectto()) {
+        if (deviceService.connectTo()) {
             deviceService.synkTimDate();
             model.addAttribute("mgs","Device Time Set Successfully.");
         }
@@ -187,7 +187,7 @@ public class DashboardController {
 
     @PostMapping("/poweroff")
     public String DevicePowerDown(Model model) throws DeviceNotConnectException, IOException, ParseException {
-        if (deviceService.connectto()) {
+        if (deviceService.connectTo()) {
             deviceService.devicePowerDown();
             model.addAttribute("mgs","Device Shutdown Successfully.");
         }
@@ -196,7 +196,7 @@ public class DashboardController {
 
     @PostMapping("/restart")
     public String DeviceRestart(Model model) throws DeviceNotConnectException, IOException, ParseException {
-        if (deviceService.connectto()) {
+        if (deviceService.connectTo()) {
             deviceService.deviceRestart();
             model.addAttribute("mgs","Device Shutdown Successfully.");
         }

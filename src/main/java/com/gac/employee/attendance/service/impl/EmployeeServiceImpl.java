@@ -84,7 +84,7 @@ public class EmployeeServiceImpl implements EmployeeService {
         employeeModel.setUserRole(com.gac.employee.attendance.enums.UserRole.USER_DEFAULT);
         try {
             empRepo.save(employeeModel);
-            deviceService.connectto();
+            deviceService.connectTo();
             deviceService.addNewEmployee(userInfo);
         } catch (IOException | ParseException e) {
             throw new RuntimeException(e);

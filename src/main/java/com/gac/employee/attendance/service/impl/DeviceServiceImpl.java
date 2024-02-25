@@ -44,7 +44,7 @@ public class DeviceServiceImpl implements DeviceService {
 //			}
 //	}
 
-	public boolean connectto() throws IOException {
+	public boolean connectTo() throws IOException {
 		try {
 			terminal = deviceGateway.getClient();
 
