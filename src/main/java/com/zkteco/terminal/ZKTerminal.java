@@ -14,8 +14,6 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Arrays;
-//import java.util.Arrays;
-//import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
@@ -295,8 +293,7 @@ public class ZKTerminal {
     }
 
 
- // Get all devices Attendance Data
-
+    // Get all devices Attendance Data
     public List<AttendanceRecord> getAttendanceRecords() throws IOException, ParseException {
         int[] toSend = ZKCommand.getPacket(CommandCodeEnum.CMD_ATTLOG_RRQ, sessionId, replyNo, null);
         byte[] buf = new byte[toSend.length];
@@ -467,9 +464,8 @@ public class ZKTerminal {
         return attendanceRecords;
     }
 
-
     // Clear All Admin from device
-    public ZKCommandReply ClearAdminData() throws IOException, ParseException {
+    public ZKCommandReply clearAdminData() throws IOException, ParseException {
         int[] toSend = ZKCommand.getPacket(CommandCodeEnum.CMD_CLEAR_ADMIN, sessionId, replyNo, null);
         byte[] buf = new byte[toSend.length];
         int index = 0;
@@ -569,7 +565,7 @@ public class ZKTerminal {
 
     //~IsOnlyRFMachine
     public String IsOnlyRFMachine() throws IOException {
-        int[] toSend = ZKCommand.getPackets(CommandCodeEnum.CMD_OPTIONS_RRQ, sessionId, replyNo, "~IsOnlyRFMachine".getBytes());
+        int[] toSend = ZKCommand.getPacketByte(CommandCodeEnum.CMD_OPTIONS_RRQ, sessionId, replyNo, "~IsOnlyRFMachine".getBytes());
         byte[] buf = new byte[toSend.length];
         int index = 0;
 
@@ -601,8 +597,9 @@ public class ZKTerminal {
         return "";
     }
 
+    // Get device FirmVerion
     public String getFirmwareVersion() throws IOException {
-        int[] toSend = ZKCommand.getPackets(CommandCodeEnum.CMD_GET_VERSION, sessionId, replyNo,null);
+        int[] toSend = ZKCommand.getPacket(CommandCodeEnum.CMD_GET_VERSION, sessionId, replyNo,null);
         byte[] buf = new byte[toSend.length];
         int index = 0;
 
@@ -632,7 +629,7 @@ public class ZKTerminal {
 
 
     public String getProductTime() throws IOException {
-        int[] toSend = ZKCommand.getPackets(CommandCodeEnum.CMD_OPTIONS_RRQ, sessionId, replyNo, "~ProductTime".getBytes());
+        int[] toSend = ZKCommand.getPacketByte(CommandCodeEnum.CMD_OPTIONS_RRQ, sessionId, replyNo, "~ProductTime".getBytes());
         byte[] buf = new byte[toSend.length];
         int index = 0;
 
@@ -667,7 +664,7 @@ public class ZKTerminal {
 
     // Get Device Name
     public String getDeviceName() throws IOException {
-        int[] toSend = ZKCommand.getPackets(CommandCodeEnum.CMD_OPTIONS_RRQ, sessionId, replyNo, "~DeviceName".getBytes());
+        int[] toSend = ZKCommand.getPacketByte(CommandCodeEnum.CMD_OPTIONS_RRQ, sessionId, replyNo, "~DeviceName".getBytes());
         byte[] buf = new byte[toSend.length];
         int index = 0;
 
@@ -700,7 +697,7 @@ public class ZKTerminal {
     }
 
     public String getPIN2Width() throws IOException {
-        int[] toSend = ZKCommand.getPackets(CommandCodeEnum.CMD_OPTIONS_RRQ, sessionId, replyNo, "~PIN2Width".getBytes());
+        int[] toSend = ZKCommand.getPacketByte(CommandCodeEnum.CMD_OPTIONS_RRQ, sessionId, replyNo, "~PIN2Width".getBytes());
         byte[] buf = new byte[toSend.length];
         int index = 0;
 
@@ -734,7 +731,7 @@ public class ZKTerminal {
 
     //
     public String getShowState() throws IOException {
-        int[] toSend = ZKCommand.getPackets(CommandCodeEnum.CMD_OPTIONS_RRQ, sessionId, replyNo, "~ShowState".getBytes());
+        int[] toSend = ZKCommand.getPacketByte(CommandCodeEnum.CMD_OPTIONS_RRQ, sessionId, replyNo, "~ShowState".getBytes());
         byte[] buf = new byte[toSend.length];
         int index = 0;
 
@@ -767,7 +764,7 @@ public class ZKTerminal {
     
     //
     public String getDeviceIP() throws IOException {
-        int[] toSend = ZKCommand.getPackets(CommandCodeEnum.CMD_OPTIONS_RRQ, sessionId, replyNo, "IPAddress".getBytes());
+        int[] toSend = ZKCommand.getPacketByte(CommandCodeEnum.CMD_OPTIONS_RRQ, sessionId, replyNo, "IPAddress".getBytes());
         byte[] buf = new byte[toSend.length];
         int index = 0;
 
@@ -800,7 +797,7 @@ public class ZKTerminal {
     
     // Get TCP port from device
     public String getDevicePORT() throws IOException {
-        int[] toSend = ZKCommand.getPackets(CommandCodeEnum.CMD_OPTIONS_RRQ, sessionId, replyNo, "UDPPort".getBytes());
+        int[] toSend = ZKCommand.getPacketByte(CommandCodeEnum.CMD_OPTIONS_RRQ, sessionId, replyNo, "UDPPort".getBytes());
         byte[] buf = new byte[toSend.length];
         int index = 0;
 
@@ -833,7 +830,7 @@ public class ZKTerminal {
 
     // Get Communication key from device
     public String getCommKey() throws IOException {
-        int[] toSend = ZKCommand.getPackets(CommandCodeEnum.CMD_OPTIONS_RRQ, sessionId, replyNo, "COMKey".getBytes());
+        int[] toSend = ZKCommand.getPacketByte(CommandCodeEnum.CMD_OPTIONS_RRQ, sessionId, replyNo, "COMKey".getBytes());
         byte[] buf = new byte[toSend.length];
         int index = 0;
 
@@ -866,7 +863,7 @@ public class ZKTerminal {
 
     // Get device Id from device
     public String getDeviceId() throws IOException {
-        int[] toSend = ZKCommand.getPackets(CommandCodeEnum.CMD_OPTIONS_RRQ, sessionId, replyNo, "DeviceID".getBytes());
+        int[] toSend = ZKCommand.getPacketByte(CommandCodeEnum.CMD_OPTIONS_RRQ, sessionId, replyNo, "DeviceID".getBytes());
         byte[] buf = new byte[toSend.length];
         int index = 0;
 
@@ -898,7 +895,7 @@ public class ZKTerminal {
     }
 
     public String iSDHCP() throws IOException {
-        int[] toSend = ZKCommand.getPackets(CommandCodeEnum.CMD_OPTIONS_RRQ, sessionId, replyNo, "DHCP".getBytes());
+        int[] toSend = ZKCommand.getPacketByte(CommandCodeEnum.CMD_OPTIONS_RRQ, sessionId, replyNo, "DHCP".getBytes());
         byte[] buf = new byte[toSend.length];
         int index = 0;
 
@@ -930,7 +927,7 @@ public class ZKTerminal {
     }
 
     public String getDNS() throws IOException {
-        int[] toSend = ZKCommand.getPackets(CommandCodeEnum.CMD_OPTIONS_RRQ, sessionId, replyNo, "DNS".getBytes());
+        int[] toSend = ZKCommand.getPacketByte(CommandCodeEnum.CMD_OPTIONS_RRQ, sessionId, replyNo, "DNS".getBytes());
         byte[] buf = new byte[toSend.length];
         int index = 0;
 
@@ -962,7 +959,7 @@ public class ZKTerminal {
     }
 
     public String isEnableProxyServer() throws IOException {
-        int[] toSend = ZKCommand.getPackets(CommandCodeEnum.CMD_OPTIONS_RRQ, sessionId, replyNo, "EnableProxyServer".getBytes());
+        int[] toSend = ZKCommand.getPacketByte(CommandCodeEnum.CMD_OPTIONS_RRQ, sessionId, replyNo, "EnableProxyServer".getBytes());
         byte[] buf = new byte[toSend.length];
         int index = 0;
 
@@ -994,7 +991,7 @@ public class ZKTerminal {
     }
 
     public String getProxyServerIP() throws IOException {
-        int[] toSend = ZKCommand.getPackets(CommandCodeEnum.CMD_OPTIONS_RRQ, sessionId, replyNo, "ProxyServerIP".getBytes());
+        int[] toSend = ZKCommand.getPacketByte(CommandCodeEnum.CMD_OPTIONS_RRQ, sessionId, replyNo, "ProxyServerIP".getBytes());
         byte[] buf = new byte[toSend.length];
         int index = 0;
 
@@ -1026,7 +1023,7 @@ public class ZKTerminal {
     }
 
     public String getProxyServerPort() throws IOException {
-        int[] toSend = ZKCommand.getPackets(CommandCodeEnum.CMD_OPTIONS_RRQ, sessionId, replyNo, "ProxyServerPort".getBytes());
+        int[] toSend = ZKCommand.getPacketByte(CommandCodeEnum.CMD_OPTIONS_RRQ, sessionId, replyNo, "ProxyServerPort".getBytes());
         byte[] buf = new byte[toSend.length];
         int index = 0;
 
@@ -1059,7 +1056,7 @@ public class ZKTerminal {
 
     // (wrong working i think)
     public String isDaylightSavingTime() throws IOException {
-        int[] toSend = ZKCommand.getPackets(CommandCodeEnum.CMD_OPTIONS_RRQ, sessionId, replyNo, "DaylightSavingTime".getBytes());
+        int[] toSend = ZKCommand.getPacketByte(CommandCodeEnum.CMD_OPTIONS_RRQ, sessionId, replyNo, "DaylightSavingTime".getBytes());
         byte[] buf = new byte[toSend.length];
         int index = 0;
 
@@ -1092,7 +1089,7 @@ public class ZKTerminal {
 
     // 69 english
     public String getLanguage() throws IOException {
-        int[] toSend = ZKCommand.getPackets(CommandCodeEnum.CMD_OPTIONS_RRQ, sessionId, replyNo, "Language".getBytes());
+        int[] toSend = ZKCommand.getPacketByte(CommandCodeEnum.CMD_OPTIONS_RRQ, sessionId, replyNo, "Language".getBytes());
         byte[] buf = new byte[toSend.length];
         int index = 0;
 
@@ -1124,7 +1121,7 @@ public class ZKTerminal {
     }
 
     public String isLockPowerKey() throws IOException {
-        int[] toSend = ZKCommand.getPackets(CommandCodeEnum.CMD_OPTIONS_RRQ, sessionId, replyNo, "LockPowerKey".getBytes());
+        int[] toSend = ZKCommand.getPacketByte(CommandCodeEnum.CMD_OPTIONS_RRQ, sessionId, replyNo, "LockPowerKey".getBytes());
         byte[] buf = new byte[toSend.length];
         int index = 0;
 
@@ -1157,7 +1154,7 @@ public class ZKTerminal {
 
     //Get voice on/off status
     public String isVoiceOn() throws IOException {
-        int[] toSend = ZKCommand.getPackets(CommandCodeEnum.CMD_OPTIONS_RRQ, sessionId, replyNo, "VoiceOn".getBytes());
+        int[] toSend = ZKCommand.getPacketByte(CommandCodeEnum.CMD_OPTIONS_RRQ, sessionId, replyNo, "VoiceOn".getBytes());
         byte[] buf = new byte[toSend.length];
         int index = 0;
 
@@ -1191,7 +1188,7 @@ public class ZKTerminal {
     // set Device IP Address
     public ZKCommandReply setIPAddress(String ipaddress) throws IOException {
     	byte[] ipaddressbyte = ("IPAddress=" + ipaddress).getBytes();
-        int[] toSend = ZKCommand.getPackets(CommandCodeEnum.CMD_OPTIONS_WRQ, sessionId, replyNo, ipaddressbyte);
+        int[] toSend = ZKCommand.getPacketByte(CommandCodeEnum.CMD_OPTIONS_WRQ, sessionId, replyNo, ipaddressbyte);
         byte[] buf = new byte[toSend.length];
         int index = 0;
 
@@ -1219,7 +1216,7 @@ public class ZKTerminal {
     // set Communication key
     public ZKCommandReply setCommKey(int key) throws IOException {
     	byte[] COMKeybyte = ("COMKey=" + key).getBytes();
-        int[] toSend = ZKCommand.getPackets(CommandCodeEnum.CMD_OPTIONS_WRQ, sessionId, replyNo, COMKeybyte);
+        int[] toSend = ZKCommand.getPacketByte(CommandCodeEnum.CMD_OPTIONS_WRQ, sessionId, replyNo, COMKeybyte);
         byte[] buf = new byte[toSend.length];
         int index = 0;
 
@@ -1248,7 +1245,7 @@ public class ZKTerminal {
     // set on off device voice
     public ZKCommandReply setVoiceOnOff(OnOffenum state) throws IOException {
     	byte[] voiceOn = ("VoiceOn=" + state.getOnOffState()).getBytes();
-        int[] toSend = ZKCommand.getPackets(CommandCodeEnum.CMD_OPTIONS_WRQ, sessionId, replyNo, voiceOn);
+        int[] toSend = ZKCommand.getPacketByte(CommandCodeEnum.CMD_OPTIONS_WRQ, sessionId, replyNo, voiceOn);
         byte[] buf = new byte[toSend.length];
         int index = 0;
 
@@ -1276,7 +1273,7 @@ public class ZKTerminal {
     // set on off device voice
     public ZKCommandReply setShowStateOnOff(OnOffenum state) throws IOException {
     	byte[] ShowState = ("~ShowState=" + state.getOnOffState()).getBytes();
-        int[] toSend = ZKCommand.getPackets(CommandCodeEnum.CMD_OPTIONS_WRQ, sessionId, replyNo, ShowState);
+        int[] toSend = ZKCommand.getPacketByte(CommandCodeEnum.CMD_OPTIONS_WRQ, sessionId, replyNo, ShowState);
         byte[] buf = new byte[toSend.length];
         int index = 0;
 
@@ -1303,7 +1300,7 @@ public class ZKTerminal {
     
     // get platform name
     public String getPlatform() throws IOException {
-        int[] toSend = ZKCommand.getPackets(CommandCodeEnum.CMD_OPTIONS_RRQ, sessionId, replyNo, "~Platform".getBytes());
+        int[] toSend = ZKCommand.getPacketByte(CommandCodeEnum.CMD_OPTIONS_RRQ, sessionId, replyNo, "~Platform".getBytes());
         byte[] buf = new byte[toSend.length];
         int index = 0;
 
@@ -1338,7 +1335,7 @@ public class ZKTerminal {
     // lock power down key by device
     public ZKCommandReply setLockPowerKey(OnOffenum state) throws IOException {
         byte[] LockPowerKey = ("LockPowerKey=" + state.getOnOffState()).getBytes();
-        int[] toSend = ZKCommand.getPackets(CommandCodeEnum.CMD_OPTIONS_WRQ, sessionId, replyNo, LockPowerKey);
+        int[] toSend = ZKCommand.getPacketByte(CommandCodeEnum.CMD_OPTIONS_WRQ, sessionId, replyNo, LockPowerKey);
         byte[] buf = new byte[toSend.length];
         int index = 0;
 
@@ -1368,7 +1365,7 @@ public class ZKTerminal {
     // wrong working i think
     public ZKCommandReply setDaylightSavingTime(OnOffenum state) throws IOException {
         byte[] DaylightSavingTime = ("DaylightSavingTime=" + state.getOnOffState()).getBytes();
-        int[] toSend = ZKCommand.getPackets(CommandCodeEnum.CMD_OPTIONS_WRQ, sessionId, replyNo, DaylightSavingTime);
+        int[] toSend = ZKCommand.getPacketByte(CommandCodeEnum.CMD_OPTIONS_WRQ, sessionId, replyNo, DaylightSavingTime);
         byte[] buf = new byte[toSend.length];
         int index = 0;
 
@@ -1396,7 +1393,7 @@ public class ZKTerminal {
     // Set cloud server proxy port
     public ZKCommandReply setProxyServerPort(int devport) throws IOException {
         byte[] ProxyServerPort = ("ProxyServerPort=" + devport).getBytes();
-        int[] toSend = ZKCommand.getPackets(CommandCodeEnum.CMD_OPTIONS_WRQ, sessionId, replyNo, ProxyServerPort);
+        int[] toSend = ZKCommand.getPacketByte(CommandCodeEnum.CMD_OPTIONS_WRQ, sessionId, replyNo, ProxyServerPort);
         byte[] buf = new byte[toSend.length];
         int index = 0;
 
@@ -1424,7 +1421,7 @@ public class ZKTerminal {
     //Set device cloud Proxy Server IP
     public ZKCommandReply setProxyServerIP(String devIP) throws IOException {
         byte[] ProxyServerIP = ("ProxyServerIP=" + devIP).getBytes();
-        int[] toSend = ZKCommand.getPackets(CommandCodeEnum.CMD_OPTIONS_WRQ, sessionId, replyNo, ProxyServerIP);
+        int[] toSend = ZKCommand.getPacketByte(CommandCodeEnum.CMD_OPTIONS_WRQ, sessionId, replyNo, ProxyServerIP);
         byte[] buf = new byte[toSend.length];
         int index = 0;
 
@@ -1452,7 +1449,7 @@ public class ZKTerminal {
     // on, off proxy server cloud server
     public ZKCommandReply setEnableProxyServer(OnOffenum state) throws IOException {
         byte[] EnableProxyServer = ("EnableProxyServer=" + state.getOnOffState()).getBytes();
-        int[] toSend = ZKCommand.getPackets(CommandCodeEnum.CMD_OPTIONS_WRQ, sessionId, replyNo, EnableProxyServer);
+        int[] toSend = ZKCommand.getPacketByte(CommandCodeEnum.CMD_OPTIONS_WRQ, sessionId, replyNo, EnableProxyServer);
         byte[] buf = new byte[toSend.length];
         int index = 0;
 
@@ -1480,7 +1477,7 @@ public class ZKTerminal {
     // set dns to device
     public ZKCommandReply setDNS(String DNS) throws IOException {
         byte[] DNSbyte = ("DNS=" + DNS).getBytes();
-        int[] toSend = ZKCommand.getPackets(CommandCodeEnum.CMD_OPTIONS_WRQ, sessionId, replyNo, DNSbyte);
+        int[] toSend = ZKCommand.getPacketByte(CommandCodeEnum.CMD_OPTIONS_WRQ, sessionId, replyNo, DNSbyte);
         byte[] buf = new byte[toSend.length];
         int index = 0;
 
@@ -1508,7 +1505,7 @@ public class ZKTerminal {
     // on and off Ethernet DHCP
     public ZKCommandReply setDHCP(OnOffenum state) throws IOException {
         byte[] DHCPbyte = ("DHCP=" + state.getOnOffState()).getBytes();
-        int[] toSend = ZKCommand.getPackets(CommandCodeEnum.CMD_OPTIONS_WRQ, sessionId, replyNo, DHCPbyte);
+        int[] toSend = ZKCommand.getPacketByte(CommandCodeEnum.CMD_OPTIONS_WRQ, sessionId, replyNo, DHCPbyte);
         byte[] buf = new byte[toSend.length];
         int index = 0;
 
@@ -1536,7 +1533,7 @@ public class ZKTerminal {
     // Set device id PC connection
     public ZKCommandReply setDeviceID(int DeviceID) throws IOException {
         byte[] DeviceIDbyte = ("DeviceID=" + DeviceID).getBytes();
-        int[] toSend = ZKCommand.getPackets(CommandCodeEnum.CMD_OPTIONS_WRQ, sessionId, replyNo, DeviceIDbyte);
+        int[] toSend = ZKCommand.getPacketByte(CommandCodeEnum.CMD_OPTIONS_WRQ, sessionId, replyNo, DeviceIDbyte);
         byte[] buf = new byte[toSend.length];
         int index = 0;
 
@@ -1564,7 +1561,7 @@ public class ZKTerminal {
 
     // Get Device Serial Number
     public String getSerialNumber() throws IOException {
-        int[] toSend = ZKCommand.getPackets(CommandCodeEnum.CMD_OPTIONS_RRQ, sessionId, replyNo, "~SerialNumber".getBytes());
+        int[] toSend = ZKCommand.getPacketByte(CommandCodeEnum.CMD_OPTIONS_RRQ, sessionId, replyNo, "~SerialNumber".getBytes());
         byte[] buf = new byte[toSend.length];
         int index = 0;
 
@@ -1597,7 +1594,7 @@ public class ZKTerminal {
 
     // get Device MAC address
     public String getMAC() throws IOException {
-        int[] toSend = ZKCommand.getPackets(CommandCodeEnum.CMD_OPTIONS_RRQ, sessionId, replyNo, "MAC".getBytes());
+        int[] toSend = ZKCommand.getPacketByte(CommandCodeEnum.CMD_OPTIONS_RRQ, sessionId, replyNo, "MAC".getBytes());
         byte[] buf = new byte[toSend.length];
         int index = 0;
 
@@ -1633,7 +1630,7 @@ public class ZKTerminal {
 
     // Device Fingerprint Version
     public String getFaceVersion() throws IOException {
-        int[] toSend = ZKCommand.getPackets(CommandCodeEnum.CMD_OPTIONS_RRQ, sessionId, replyNo, "ZKFaceVersion".getBytes());
+        int[] toSend = ZKCommand.getPacketByte(CommandCodeEnum.CMD_OPTIONS_RRQ, sessionId, replyNo, "ZKFaceVersion".getBytes());
         byte[] buf = new byte[toSend.length];
         int index = 0;
 
@@ -1669,7 +1666,7 @@ public class ZKTerminal {
     
     // get fingerprint version
     public int getFPVersion() throws IOException {
-        int[] toSend = ZKCommand.getPackets(CommandCodeEnum.CMD_OPTIONS_RRQ, sessionId, replyNo, "~ZKFPVersion".getBytes());
+        int[] toSend = ZKCommand.getPacketByte(CommandCodeEnum.CMD_OPTIONS_RRQ, sessionId, replyNo, "~ZKFPVersion".getBytes());
         byte[] buf = new byte[toSend.length];
         int index = 0;
         for (int byteToSend : toSend) {
@@ -1704,7 +1701,7 @@ public class ZKTerminal {
     
     // Device OEM name
     public String getOEMVendor() throws IOException {
-        int[] toSend = ZKCommand.getPackets(CommandCodeEnum.CMD_OPTIONS_RRQ, sessionId, replyNo, "~OEMVendor".getBytes());
+        int[] toSend = ZKCommand.getPacketByte(CommandCodeEnum.CMD_OPTIONS_RRQ, sessionId, replyNo, "~OEMVendor".getBytes());
         byte[] buf = new byte[toSend.length];
         int index = 0;
 
@@ -1803,7 +1800,7 @@ public class ZKTerminal {
 
     // Get work code
     public boolean getWorkCode() throws IOException {
-        int[] toSend = ZKCommand.getPackets(CommandCodeEnum.CMD_OPTIONS_RRQ, sessionId, replyNo, "WorkCode".getBytes());
+        int[] toSend = ZKCommand.getPacketByte(CommandCodeEnum.CMD_OPTIONS_RRQ, sessionId, replyNo, "WorkCode".getBytes());
         byte[] buf = new byte[toSend.length];
         int index = 0;
 
@@ -1839,7 +1836,7 @@ public class ZKTerminal {
     // Get devices capacity
     public Map<String, Integer> getDeviceStatus() throws IOException {
     	
-	    int[] toSend = ZKCommand.getPackets(CommandCodeEnum.CMD_GET_FREE_SIZES, sessionId, replyNo, null);
+	    int[] toSend = ZKCommand.getPacketByte(CommandCodeEnum.CMD_GET_FREE_SIZES, sessionId, replyNo, null);
 	    byte[] buf = new byte[toSend.length];
 	    int index = 0;
 	
@@ -1892,7 +1889,7 @@ public class ZKTerminal {
     
     // Ensure the machine to be at the authentication (Not verify)
     public ZKCommandReply setStartVerify() throws IOException {
-        int[] toSend = ZKCommand.getPackets(CommandCodeEnum.CMD_STARTVERIFY, sessionId, replyNo, null);
+        int[] toSend = ZKCommand.getPacketByte(CommandCodeEnum.CMD_STARTVERIFY, sessionId, replyNo, null);
         byte[] buf = new byte[toSend.length];
         int index = 0;
 
@@ -2095,7 +2092,7 @@ public class ZKTerminal {
 
 //            SecurityUtils.printHexDump(commandBuffer.array());
 
-            int[] toSend = ZKCommand.getPackets(CommandCodeEnum.CMD_USER_WRQ, sessionId, replyNo, commandBuffer.array());
+            int[] toSend = ZKCommand.getPacketByte(CommandCodeEnum.CMD_USER_WRQ, sessionId, replyNo, commandBuffer.array());
             byte[] buf = new byte[toSend.length];
 
             for (int i = 0; i < toSend.length; i++) {
@@ -2128,6 +2125,10 @@ public class ZKTerminal {
             commandBuffer.putShort((short) newSms.getValidMinutes());
             commandBuffer.putShort((short) newSms.getReserved());
 
+            if(commandBuffer.capacity()>0) {
+                System.out.println(commandBuffer.capacity());
+                return null;
+            }
             // Convert startTimep to LocalDateTime
             LocalDateTime localDateTime = Instant.ofEpochMilli(startTimep).atZone(ZoneId.systemDefault()).toLocalDateTime();
 
@@ -2140,7 +2141,7 @@ public class ZKTerminal {
             // Print the hex dump (you can remove this in your actual code)
             SecurityUtils.printHexDump(commandBuffer.array());
 
-            int[] toSend = ZKCommand.getPackets(CommandCodeEnum.CMD_SMS_WRQ, sessionId, replyNo, commandBuffer.array());
+            int[] toSend = ZKCommand.getPacketByte(CommandCodeEnum.CMD_SMS_WRQ, sessionId, replyNo, commandBuffer.array());
             byte[] buf = new byte[toSend.length];
 
             for (int i = 0; i < toSend.length; i++) {
@@ -2181,23 +2182,33 @@ public class ZKTerminal {
             int replyId = response[6] + (response[7] * 0x100);
 
             byte[] byteResponse = SecurityUtils.convertIntArrayToByteArray(response);
-//            SecurityUtils.printHexDump(byteResponse);
+            SecurityUtils.printHexDump(byteResponse);
 
             int[] payloads = new int[response.length - 8];
             System.arraycopy(response, 8, payloads, 0, payloads.length);
 //            System.out.println(response.length);
             if (replyCode == CommandReplyCodeEnum.CMD_ACK_OK) {
-            	int tag = response[8];                
-            	int id = (response[9] & 0xFF) + ((response[10] & 0xFF) << 8);
-            	int validMinutes = Short.reverseBytes((short) ((response[11] << 8) | (response[10] & 0xFF))) & 0xFFFF;
+                int tag = response[8];
+                int id = (response[9] & 0xFF) + ((response[10] & 0xFF) << 8);
+                int reserved = ((response[13] & 0xFF) << 8) | (response[12] & 0xFF);
+                long startTime = (response[15] & 0xFFL) | ((response[14] & 0xFFL) << 8) | ((response[13] & 0xFFL) << 16) | ((response[12] & 0xFFL) << 24);
+                int validMinutes = Short.reverseBytes((short) ((response[11] << 8) | (response[10] & 0xFF))) & 0xFFFF; // on issue on 256
 
-            	int reserved = ((response[11] & 0xFF) << 8) | (response[10] & 0xFF);
-            	long startTime = (response[15] & 0xFFL) | ((response[14] & 0xFFL) << 8) | ((response[13] & 0xFFL) << 16) | ((response[12] & 0xFFL) << 24);
+                System.out.println("Raw response[11]: " + response[12]);
+                System.out.println("Raw response[10]: " + response[13]);
+                System.out.println("Raw response[10]: " + response[14]);
+                System.out.println("Raw response[10]: " + response[15]);
+                System.out.println("Raw response[10]: " + response[16]);
+                System.out.println("Raw response[10]: " + response[17]);
+                System.out.println("Raw response[10]: " + response[18]);
 
-            	// Assuming HexUtils.extractDate() is a method that converts the encoded date to a Date object
-            	Date startDate = HexUtils.extractDate(startTime);
-            	
-                int contentOffset = 19;  
+                long encDate = ((response[15] & 0xFFL) << 24) | ((response[14] & 0xFFL) << 16) | ((response[13] & 0xFFL) << 8) | (response[12] & 0xFFL);
+
+                System.out.println("Decoded Date: " + encDate);
+
+                Date startDate = HexUtils.extractDate(encDate);
+                System.out.println("------ daete  " + startDate);
+                int contentOffset = 19;
                 byte[] contentBytes = new byte[321];
                 for (int i = 0; i < 321; i++) {
                     contentBytes[i] = (byte) (response[i + contentOffset] & 0xFF);
@@ -2263,7 +2274,7 @@ public class ZKTerminal {
             byte[] combinedArray = new byte[enroll_dat.length + startEnrollCommand.length];
             System.arraycopy(enroll_dat, 0, combinedArray, 0, enroll_dat.length);
             System.arraycopy(startEnrollCommand, 0, combinedArray, enroll_dat.length, startEnrollCommand.length);
-            int[] startEnrollPacket = ZKCommand.getPackets(CommandCodeEnum.CMD_STARTENROLL, sessionId, replyNo, combinedArray);
+            int[] startEnrollPacket = ZKCommand.getPacketByte(CommandCodeEnum.CMD_STARTENROLL, sessionId, replyNo, combinedArray);
             sendPacket(startEnrollPacket);
             replyNo++;
 

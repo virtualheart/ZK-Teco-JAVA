@@ -32,7 +32,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Autowired
     private DeviceService deviceService;
     ZKTerminal terminal;
-    public boolean connectto() throws IOException {
+    public boolean connectTo() throws IOException {
         try {
             terminal = deviceGateway.getClient();
             return true;
