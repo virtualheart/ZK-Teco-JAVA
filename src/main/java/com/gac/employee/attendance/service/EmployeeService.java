@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface EmployeeService {
-     boolean connectto() throws IOException;
+     boolean connectTo() throws IOException;
      List<EmployeeModel> getAllEmployeeFromDB();
      Optional<EmployeeModel> getEmployeeFromDB(int empId);
      List<EmployeeModel> getAllEmployeeFromDevice() throws Exception;

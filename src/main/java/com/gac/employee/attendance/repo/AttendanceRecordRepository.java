@@ -11,4 +11,6 @@ import java.util.List;
 @Repository
 public interface AttendanceRecordRepository extends JpaRepository<AttendanceRecordModel,Integer> {
 
-    List<AttendanceRecordModel> findByRecordTimeAfterAndRecordTimeBeforeAndVerifyState(Date recordTime, Date recordTime2, AttendanceState verifyState);}
+    List<AttendanceRecordModel> findByRecordTimeAfterAndRecordTimeBeforeAndVerifyState(Date recordTime, Date recordTime2, AttendanceState verifyState);
+    List<AttendanceRecordModel> findByRecordTimeGreaterThanEqual(Date lastMonth);
+}

@@ -16,6 +16,7 @@ import java.net.DatagramSocket;
 import java.text.ParseException;
 import java.time.LocalDate;
 import java.time.ZoneId;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -51,5 +52,14 @@ public class AttendanceRecordServiceImpl implements AttendanceRecordService {
 //        System.out.println(todayStart + " \n " + todayEnd);
         checkout = attendanceRecordRepo.findByRecordTimeAfterAndRecordTimeBeforeAndVerifyState(todayStart, todayEnd,AttendanceState.CHECK_OUT).stream().count();
         return checkout;
+    }
+
+    @Override
+    public List<AttendanceRecordModel> getAttendanceRecordsLastMonth() {
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.MONTH, -1);
+        Date lastMonth = calendar.getTime();
+
+        return attendanceRecordRepo.findByRecordTimeGreaterThanEqual(lastMonth);
     }
 }

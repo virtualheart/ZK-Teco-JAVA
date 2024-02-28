@@ -83,7 +83,7 @@ public class DashboardController {
 
     @GetMapping("/list/user/device")
     public String addEmployee(Model model) throws Exception {
-        if (employeeService.connectto()) {
+        if (employeeService.connectTo()) {
             model.addAttribute("employeeList", employeeService.getAllEmployeeFromDevice());
         } else {
             model.addAttribute("employeeList", null);

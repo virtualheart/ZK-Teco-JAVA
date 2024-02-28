@@ -7,6 +7,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
+import com.gac.employee.attendance.AttendanceApplication;
 import com.gac.employee.attendance.enums.AttendanceState;
 import com.gac.employee.attendance.enums.AttendanceType;
 import com.gac.employee.attendance.enums.SmsEnum;
@@ -17,6 +18,8 @@ import com.gac.employee.attendance.repo.AttendanceRecordRepository;
 import com.zkteco.commands.AttendanceRecord;
 import com.zkteco.commands.UserInfo;
 import com.zkteco.terminal.ZKTerminal;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -30,6 +33,7 @@ public class DeviceServiceImpl implements DeviceService {
 	private DeviceGateway deviceGateway;
 	@Autowired
 	private AttendanceRecordRepository attendanceRecordRepo;
+	private static final Logger log = LoggerFactory.getLogger(AttendanceApplication.class);
 
 	ZKTerminal terminal;
 
@@ -54,14 +58,14 @@ public class DeviceServiceImpl implements DeviceService {
 
 			return true;
 		}catch (DeviceNotConnectException e){
-			System.out.println();
+			log.info("Device Not Connect Exception");
 		} catch (BindException e){
-			System.out.println("BindException: " + e.getMessage());
+			log.error("BindException: " + e.getMessage());
 			if (e.getMessage().contains("Address already in use")) {
-				System.out.println("Address already in use. Closing the connection.");
+				log.info("Address already in use. Closing the connection.");
 				terminal.disconnect();
 			} else {
-				System.out.println("Other BindException: " + e.getMessage());
+				log.error("Other BindException: " + e.getMessage());
 			}
 		}
 		return false;
@@ -94,15 +98,14 @@ public class DeviceServiceImpl implements DeviceService {
 	}
 
 	@Override
-	public String getDeviceTimeDate() throws IOException, ParseException {
+	public String getDeviceTimeDate() {
 		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("hh:mm a - dd/MM/yyyy");
 		Date date;
 		try{
 			date = terminal.getDeviceTime();
 			return simpleDateFormat.format(date);
 		} catch (Exception e){
-			System.out.println();
-
+			log.info("");
 		}
 //		System.out.println(date);
 		return simpleDateFormat.format(new Date());

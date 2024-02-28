@@ -12,13 +12,11 @@ import com.zkteco.commands.UserInfo;
 
 public interface DeviceService {
     boolean connectTo() throws IOException ;
-
     void addNewEmployee(UserInfo userInfo) throws IOException, ParseException, DeviceNotConnectException;
     boolean synkTimDate() throws IOException,DeviceNotConnectException;
     void devicePowerDown() throws DeviceNotConnectException, IOException, ParseException;
     void deviceRestart() throws DeviceNotConnectException, IOException, ParseException;
-
-    String getDeviceTimeDate() throws IOException, ParseException, DeviceNotConnectException;
+    String getDeviceTimeDate() ;
     boolean deviceOnlineCheck() throws IOException, ParseException, DeviceNotConnectException;
     List<AttendanceRecordModel> getAttendanceList() throws ParseException, DeviceNotConnectException, IOException;
     String getDeviceName() throws IOException;

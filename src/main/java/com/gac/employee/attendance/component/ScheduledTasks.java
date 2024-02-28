@@ -37,25 +37,32 @@ public class ScheduledTasks {
 
 	private static final SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
 
+//	@Scheduled(cron = "* * 0/1 * * *")
+//	public void testcron() throws IOException {
+//		log.info("The time is now testcron {}", dateFormat.format(new Date()));
+//		if(deviceService.connectTo()){
+//			System.out.println("Device connected");
+//
+//		} else {
+//			log.warn("Device not connected Cron fail...!");
+//		}
+//	}
+
 	@Scheduled(cron = "0 0 * * * *") // Runs every hour at the 0th minute
 	public void attendancePullHourlyCron() throws IOException {
 		log.info("The time is now {}", dateFormat.format(new Date()));
-		if(deviceService.connectTo()){
-			System.out.println();
-
-		} else {
-			log.warn("Device not connected Cron fail...!");
-		}
+		
 	}
 
 	@Scheduled(cron = "0 0 15 * * 5") // Runs every Friday at 3 PM (15:00)
 	public void ReportGenWeeklyCron() throws IOException {
-		log.info("The time is now {}", dateFormat.format(new Date()));
+		log.info("The time is now ReportGenWeeklyCron {}", dateFormat.format(new Date()));
 	}
+
 	@Scheduled(cron = "0 0 10 1 * ?") // Runs at 10 AM on the 1st day of the month
 	@Scheduled(cron = "0 15 9-17 * * MON-SAT")
 	public void ReportGenMonthlyCron() throws IOException {
-		log.info("The time is now {}", dateFormat.format(new Date()));
+		log.info("The time is now ReportGenMonthlyCron {}", dateFormat.format(new Date()));
 	}
 
 	@Scheduled(cron = "0 0 18 28-31 * ?")

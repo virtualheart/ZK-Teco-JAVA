@@ -10,6 +10,8 @@ import com.zkteco.Enum.UserRoleEnum;
 import com.zkteco.Exception.DeviceNotConnectException;
 import com.zkteco.commands.UserInfo;
 import com.zkteco.terminal.ZKTerminal;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
@@ -28,16 +30,16 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Autowired
     private DeviceGateway deviceGateway;
     @Autowired
-    private AttendanceRecordRepository attendanceRecordRepository;
-    @Autowired
     private DeviceService deviceService;
+
+    private static final Logger log = LoggerFactory.getLogger(EmployeeServiceImpl.class);
     ZKTerminal terminal;
     public boolean connectTo() throws IOException {
         try {
             terminal = deviceGateway.getClient();
             return true;
         }catch (DeviceNotConnectException e){
-            System.out.println();
+            log.info("Device Not Connect Exception");
         }
         return false;
     }
@@ -89,9 +91,9 @@ public class EmployeeServiceImpl implements EmployeeService {
         } catch (IOException | ParseException e) {
             throw new RuntimeException(e);
         } catch (DeviceNotConnectException e) {
-            System.out.println();
+            log.info("Device Not Connect Exception");
         }catch (DataIntegrityViolationException s){
-            System.out.println("Duplicate Record Entry");
+            log.warn("Duplicate Record Entry");
         }
         finally {
             deviceService.end();

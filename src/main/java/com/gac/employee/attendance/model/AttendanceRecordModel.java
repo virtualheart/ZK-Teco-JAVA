@@ -19,11 +19,9 @@ public class AttendanceRecordModel {
     private int recordId;
     private int userSN;
     private String userID;
-
     private AttendanceType verifyType;
     @Temporal(TemporalType.DATE)
     private Date recordTime;
-
     private AttendanceState verifyState;
 
 }

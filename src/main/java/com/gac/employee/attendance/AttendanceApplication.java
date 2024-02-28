@@ -1,15 +1,21 @@
 package com.gac.employee.attendance;
 
+import com.gac.employee.attendance.gateway.DeviceGateway;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.scheduling.annotation.EnableScheduling;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
 @SpringBootApplication
+@EnableScheduling
 public class AttendanceApplication {
 
+    private static final Logger log = LoggerFactory.getLogger(AttendanceApplication.class);
     public static void main(String[] args) throws IOException {
         startDatabaseServer();
         SpringApplication.run(AttendanceApplication.class, args);
@@ -22,19 +28,19 @@ public class AttendanceApplication {
                 if (!isMariaDBRunningOnLinux()) {
                     startMySQLOnLinux();
                 } else {
-                    System.out.println("MariaDB is already running on Linux.");
+                    log.info("MariaDB is already running on Linux.");
                 }
             } else if (osName.contains("win")) {
                 if (!isMariaDBRunningOnWindows()) {
                     startMariaDBOnWindows();
                 } else {
-                    System.out.println("MariaDB is already running on Windows.");
+                    log.info("MariaDB is already running on Windows.");
                 }
             } else {
-                System.out.println("Unsupported operating system: " + osName);
+                log.error("Unsupported operating system: " + osName);
             }
         } catch (IOException e) {
-            System.err.println("Error starting database server: " + e.getMessage());
+            log.error("Error starting database server: " + e.getMessage());
         }
     }
 
@@ -49,9 +55,9 @@ public class AttendanceApplication {
         }
 
         if (exitCode == 0) {
-            System.out.println("MySQL started successfully on Linux");
+            log.info("MySQL started successfully on Linux");
         } else {
-            System.err.println("Failed to start MySQL on Linux. Exit code: " + exitCode);
+            log.error("Failed to start MySQL on Linux. Exit code: " + exitCode);
         }
     }
 
@@ -60,7 +66,7 @@ public class AttendanceApplication {
             String mariadbCommand = "DBServer\\mariadb.exe";
             Process process = Runtime.getRuntime().exec(mariadbCommand);
         } else {
-            System.out.println("MariaDB is already running on Windows.");
+            log.info("MariaDB is already running on Windows.");
         }
     }
 
@@ -74,7 +80,7 @@ public class AttendanceApplication {
             return exitCode == 0; // 0 means process is running
 
         } catch (IOException | InterruptedException e) {
-            System.err.println("Error checking if MariaDB is running on Linux: " + e.getMessage());
+            log.error("Error checking if MariaDB is running on Linux: " + e.getMessage());
         }
 
         return false; // Unable to determine if MariaDB is running
@@ -98,7 +104,7 @@ public class AttendanceApplication {
             process.waitFor();
 
         } catch (IOException | InterruptedException e) {
-            System.err.println("Error checking if MariaDB is running on Windows: " + e.getMessage());
+            log.error("Error checking if MariaDB is running on Windows: " + e.getMessage());
         }
 
         return false;
