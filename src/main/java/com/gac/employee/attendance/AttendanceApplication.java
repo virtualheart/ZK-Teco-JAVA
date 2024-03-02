@@ -1,6 +1,5 @@
 package com.gac.employee.attendance;
 
-import com.gac.employee.attendance.gateway.DeviceGateway;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
@@ -17,7 +16,7 @@ public class AttendanceApplication {
 
     private static final Logger log = LoggerFactory.getLogger(AttendanceApplication.class);
     public static void main(String[] args) throws IOException {
-        startDatabaseServer();
+//        startDatabaseServer();
         SpringApplication.run(AttendanceApplication.class, args);
     }
     private static void startDatabaseServer() {
@@ -63,7 +62,7 @@ public class AttendanceApplication {
 
     private static void startMariaDBOnWindows() throws IOException {
         if (!isMariaDBRunningOnWindows()) {
-            String mariadbCommand = "DBServer\\mariadb.exe";
+            String mariadbCommand = "mariadb\\bin\\mariadb.exe";
             Process process = Runtime.getRuntime().exec(mariadbCommand);
         } else {
             log.info("MariaDB is already running on Windows.");

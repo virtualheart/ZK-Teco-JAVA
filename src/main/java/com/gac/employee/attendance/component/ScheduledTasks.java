@@ -17,11 +17,13 @@
 package com.gac.employee.attendance.component;
 
 import java.io.IOException;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
-import com.gac.employee.attendance.service.DeviceService;
+import com.gac.employee.attendance.repo.ScheduleRepository;
+import com.zkteco.Exception.DeviceNotConnectException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,26 +34,20 @@ import org.springframework.stereotype.Component;
 public class ScheduledTasks {
 
 	@Autowired
-	private DeviceService deviceService;
 	private static final Logger log = LoggerFactory.getLogger(ScheduledTasks.class);
-
+	@Autowired
+	private AttendanceDataProcess attendanceDataProcess;
+	@Autowired
+	private ScheduleRepository scheduleRepository;
 	private static final SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
-
-//	@Scheduled(cron = "* * 0/1 * * *")
-//	public void testcron() throws IOException {
-//		log.info("The time is now testcron {}", dateFormat.format(new Date()));
-//		if(deviceService.connectTo()){
-//			System.out.println("Device connected");
-//
-//		} else {
-//			log.warn("Device not connected Cron fail...!");
-//		}
-//	}
-
 	@Scheduled(cron = "0 0 * * * *") // Runs every hour at the 0th minute
-	public void attendancePullHourlyCron() throws IOException {
-		log.info("The time is now {}", dateFormat.format(new Date()));
-		
+	public void attendancePullHourlyCron() throws IOException, DeviceNotConnectException, ParseException {
+		log.info("[attendancePullHourlyCron], The time is now {}", dateFormat.format(new Date()));
+		if (attendanceDataProcess.pullAttendanceFromDevice()){
+			log.info("Attendance Pulled successfully");
+		} else {
+			log.error("Attendance Pulled Failed...!");
+		}
 	}
 
 	@Scheduled(cron = "0 0 15 * * 5") // Runs every Friday at 3 PM (15:00)

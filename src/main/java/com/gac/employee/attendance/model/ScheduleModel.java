@@ -1,11 +1,14 @@
 package com.gac.employee.attendance.model;
 
+import com.gac.employee.attendance.enums.TaskFrequency;
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.Setter;
 
 import java.util.Date;
 
 @Getter
+@Setter
 @Entity
 @Table(name = "schedule")
 public class ScheduleModel {
@@ -14,23 +17,14 @@ public class ScheduleModel {
     private Integer id;
     @Temporal(TemporalType.DATE)
     private Date cranStartTime;
+    private String taskName;
+    private TaskFrequency taskFrequncy;
     @Temporal(TemporalType.DATE)
-    private Date attPullStartTime;
+    private Date lastStartTime;
     @Temporal(TemporalType.DATE)
-    private Date attPullEndTime;
+    private Date LastRuntime;
+    @Temporal(TemporalType.DATE)
+    private Date nextRunTime;
     @Temporal(TemporalType.DATE)
     private Date cranEndTime;
-
-    public ScheduleModel(Integer id, Date cranStartTime, Date attPullStartTime, Date attPullEndTime, Date cranEndTime) {
-        this.id = id;
-        this.cranStartTime = cranStartTime;
-        this.attPullStartTime = attPullStartTime;
-        this.attPullEndTime = attPullEndTime;
-        this.cranEndTime = cranEndTime;
-    }
-
-    public ScheduleModel() {
-
-    }
-
 }

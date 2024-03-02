@@ -8,6 +8,7 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 import com.gac.employee.attendance.AttendanceApplication;
+import com.gac.employee.attendance.dto.AttendanceDTO;
 import com.gac.employee.attendance.enums.AttendanceState;
 import com.gac.employee.attendance.enums.AttendanceType;
 import com.gac.employee.attendance.enums.SmsEnum;
@@ -148,6 +149,33 @@ public class DeviceServiceImpl implements DeviceService {
 		return null;
 	}
 
+	// Assuming terminal and AttendanceDTO are properly defined elsewhere
+
+	public List<AttendanceRecordModel> getAttendanceListFromRange(String startDate, String endDate) throws ParseException, DeviceNotConnectException, IOException {
+		if (terminal != null) {
+			List<AttendanceRecord> attendanceRecords = terminal.getAttendanceRecordsForDateRange(startDate, endDate);
+			List<AttendanceRecordModel> attendanceRecordModels = new ArrayList<>();
+
+			for (AttendanceRecord attendanceRecord : attendanceRecords) {
+				AttendanceRecordModel attendanceRecordModel = convertToAttendanceRecordModel(attendanceRecord);
+				attendanceRecordModels.add(attendanceRecordModel);
+			}
+
+			return attendanceRecordModels;
+		}
+		return null;
+	}
+
+	private AttendanceRecordModel convertToAttendanceRecordModel(AttendanceRecord attendanceRecord) {
+		AttendanceRecordModel attendanceRecordModel = new AttendanceRecordModel();
+		attendanceRecordModel.setUserID(attendanceRecord.getUserID());
+		attendanceRecordModel.setUserSN(attendanceRecord.getUserSN());
+		attendanceRecordModel.setRecordTime(attendanceRecord.getRecordTime());
+		attendanceRecordModel.setVerifyType(AttendanceType.valueOf(attendanceRecord.getVerifyType().name()));
+		attendanceRecordModel.setVerifyState(AttendanceState.valueOf(attendanceRecord.getVerifyState().name()));
+
+		return attendanceRecordModel;
+	}
 	@Override
 	public String getDeviceName() throws IOException {
 		if (terminal != null) {

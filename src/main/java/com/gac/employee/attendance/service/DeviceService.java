@@ -19,6 +19,7 @@ public interface DeviceService {
     String getDeviceTimeDate() ;
     boolean deviceOnlineCheck() throws IOException, ParseException, DeviceNotConnectException;
     List<AttendanceRecordModel> getAttendanceList() throws ParseException, DeviceNotConnectException, IOException;
+    List<AttendanceRecordModel> getAttendanceListFromRange(String startDate, String endDate) throws ParseException, DeviceNotConnectException, IOException;
     String getDeviceName() throws IOException;
     Map<String, Integer> getDeviceCapacity() throws IOException;
     String getSerialNumber() throws IOException;
