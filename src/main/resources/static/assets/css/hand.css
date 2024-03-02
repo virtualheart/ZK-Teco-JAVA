@@ -1,0 +1,118 @@
+:root {
+  font-size:16px;
+}
+.contenedor {
+  width: 500px;
+  height:auto;
+  margin: 0 auto;
+}
+h1 {
+  font-size: 1.3rem;
+  margin-top: 10%;
+}
+
+.tooltip-inner {
+    max-width: 200px;
+    padding: 3px 8px;
+    color: #fff;
+    text-align: center;
+    background-color: #0078D7;
+    border-radius: .25rem;
+  font-size: .8rem;
+}
+
+.tooltip.bs-tooltip-auto[x-placement^=top] .arrow::before, .tooltip.bs-tooltip-top .arrow::before {
+    margin-left: -3px;
+    content: "";
+    border-width: 5px 5px 0;
+    border-top-color: #0078D7;
+
+}
+
+@-webkit-keyframes sploosh {
+  0% {
+box-shadow: 0 0 0 0px rgba(51, 133, 240, 0.9);
+
+background: rgba(51, 133, 240, .9);
+  }
+  80% {
+    background: rgba(51, 133, 240, 0);
+  }
+  100% {
+box-shadow: 0 0 0 20px rgba(66, 166, 223, 0);
+    
+  }
+}
+
+.finger_1,.finger_2,.finger_3,.finger_4,.finger_5,.finger_6,.finger_7,.finger_8,.finger_9,.finger_10 {
+  position: relative;
+background: transparent;
+border-radius: 100px;
+padding: 13px;
+
+}
+.finger {
+  background: #599dea33;
+  -webkit-transition: all .3s ease-in-out;
+  -moz-transition: all .3s ease-in-out;
+  -o-transition: all .3s ease-in-out;
+  transition: all .3s ease-in-out;
+}
+.finger:hover {
+  background: #0078d7cc;
+}
+.animate_finger {
+    -webkit-animation: sploosh 1s cubic-bezier(0.165, 0.84, 0.44, 1);
+animation-iteration-count: 1;
+-webkit-animation-iteration-count: 1;
+  background-color:#0078d7cc;
+}
+.finger_1 {
+top: 98px;
+left: 20px;
+
+}
+.finger_2 {
+top: 47px;
+left: 46px;
+}
+.finger_3 {
+top: 36px;
+left: 85px;
+}
+
+.finger_4 {
+top: 52px;
+left: 108px;
+}
+
+.finger_5 {
+top: 175px;
+left: 145px;
+}
+.finger_6{
+top: 175px;
+left: 176px;
+}
+.finger_7 {
+top: 54px;
+left: 214px;
+}
+.finger_8 {
+top: 37px;
+left: 237px;
+}
+.finger_9 {
+top: 45px;
+left: 275px;
+}
+.finger_10 {
+top: 98px;
+left: 300px;
+}
+.capture {
+    position: absolute;
+    top: 75%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
