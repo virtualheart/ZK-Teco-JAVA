@@ -16,7 +16,7 @@ public class AttendanceApplication {
 
     private static final Logger log = LoggerFactory.getLogger(AttendanceApplication.class);
     public static void main(String[] args) throws IOException {
-//        startDatabaseServer();
+        startDatabaseServer();
         SpringApplication.run(AttendanceApplication.class, args);
     }
     private static void startDatabaseServer() {

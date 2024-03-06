@@ -20,8 +20,7 @@ public class AttendanceRecordModel {
     private int userSN;
     private String userID;
     private AttendanceType verifyType;
-    @Temporal(TemporalType.DATE)
-    private Date recordTime;
+    private String recordTime;
     private AttendanceState verifyState;
 
 }

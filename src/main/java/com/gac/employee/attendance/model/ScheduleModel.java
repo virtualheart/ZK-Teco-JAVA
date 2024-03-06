@@ -15,16 +15,11 @@ public class ScheduleModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    @Temporal(TemporalType.DATE)
-    private Date cranStartTime;
+    private String cranStartTime;
     private String taskName;
     private TaskFrequency taskFrequncy;
-    @Temporal(TemporalType.DATE)
-    private Date lastStartTime;
-    @Temporal(TemporalType.DATE)
-    private Date LastRuntime;
-    @Temporal(TemporalType.DATE)
-    private Date nextRunTime;
-    @Temporal(TemporalType.DATE)
-    private Date cranEndTime;
+    private String lastStartTime;
+    private String LastRuntime;
+    private String nextRunTime;
+    private String cranEndTime;
 }

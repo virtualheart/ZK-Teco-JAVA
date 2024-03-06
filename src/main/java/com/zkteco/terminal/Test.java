@@ -34,6 +34,7 @@ public class Test {
       reply = terminal.connectAuth(100);
       reply = terminal.disableDevice();
         System.out.println(reply.getCode());
+          List<AttendanceRecord> attendanceRecord = terminal.getAttendanceRecordsForDateRange("2024-02-21 00:00:00", "2024-02-21 23:59:00");
 
       reply = terminal.FreeDeviceBuffer();
 

@@ -37,8 +37,8 @@ public class AttendanceRecordServiceImpl implements AttendanceRecordService {
     @Override
     public long getTodayCheckinCount() {
         long checkin = 0;
-        Date todayStart = Date.from(LocalDate.now().atStartOfDay(ZoneId.systemDefault()).toInstant());
-        Date todayEnd = Date.from(LocalDate.now().atStartOfDay(ZoneId.systemDefault()).plusDays(1).minusSeconds(1).toInstant());
+        String todayStart = String.valueOf(Date.from(LocalDate.now().atStartOfDay(ZoneId.systemDefault()).toInstant()));
+        String todayEnd = String.valueOf(Date.from(LocalDate.now().atStartOfDay(ZoneId.systemDefault()).plusDays(1).minusSeconds(1).toInstant()));
 //        System.out.println(todayStart + " \n " + todayEnd);
         checkin = attendanceRecordRepo.findByRecordTimeAfterAndRecordTimeBeforeAndVerifyState(todayStart, todayEnd,AttendanceState.CHECK_IN).stream().count();
         return checkin;
@@ -47,8 +47,8 @@ public class AttendanceRecordServiceImpl implements AttendanceRecordService {
     @Override
     public long getTodayCheckoutCount() {
         long checkout = 0;
-        Date todayStart = Date.from(LocalDate.now().atStartOfDay(ZoneId.systemDefault()).toInstant());
-        Date todayEnd = Date.from(LocalDate.now().atStartOfDay(ZoneId.systemDefault()).plusDays(1).minusSeconds(1).toInstant());
+        String todayStart = String.valueOf(Date.from(LocalDate.now().atStartOfDay(ZoneId.systemDefault()).toInstant()));
+        String todayEnd = String.valueOf(Date.from(LocalDate.now().atStartOfDay(ZoneId.systemDefault()).plusDays(1).minusSeconds(1).toInstant()));
 //        System.out.println(todayStart + " \n " + todayEnd);
         checkout = attendanceRecordRepo.findByRecordTimeAfterAndRecordTimeBeforeAndVerifyState(todayStart, todayEnd,AttendanceState.CHECK_OUT).stream().count();
         return checkout;
@@ -58,7 +58,7 @@ public class AttendanceRecordServiceImpl implements AttendanceRecordService {
     public List<AttendanceRecordModel> getAttendanceRecordsLastMonth() {
         Calendar calendar = Calendar.getInstance();
         calendar.add(Calendar.MONTH, -1);
-        Date lastMonth = calendar.getTime();
+        String lastMonth = calendar.getTime();
 
         return attendanceRecordRepo.findByRecordTimeGreaterThanEqual(lastMonth);
     }

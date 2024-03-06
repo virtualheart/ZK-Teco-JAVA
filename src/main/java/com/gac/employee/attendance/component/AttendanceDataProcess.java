@@ -1,5 +1,6 @@
 package com.gac.employee.attendance.component;
 
+import com.gac.employee.attendance.AttendanceApplication;
 import com.gac.employee.attendance.enums.AttendanceState;
 import com.gac.employee.attendance.enums.AttendanceType;
 import com.gac.employee.attendance.enums.TaskFrequency;
@@ -9,6 +10,8 @@ import com.gac.employee.attendance.repo.AttendanceRecordRepository;
 import com.gac.employee.attendance.repo.ScheduleRepository;
 import com.gac.employee.attendance.service.DeviceService;
 import com.zkteco.Exception.DeviceNotConnectException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -29,19 +32,19 @@ public class AttendanceDataProcess {
     private ScheduleRepository scheduleRepository;
     @Autowired
     private AttendanceRecordRepository attendanceRecordRepository;
+    private static final Logger log = LoggerFactory.getLogger(AttendanceDataProcess.class);
 
     public boolean pullAttendanceFromDevice() throws IOException, DeviceNotConnectException, ParseException {
-
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"); // 2024-02-21 00:00:00
         if (deviceService.connectTo()) {
 
-            Optional<ScheduleModel> scheduleOptional = scheduleRepository.findTopByTaskFrequencyAndTaskName(TaskFrequency.HOURLY, "AttendaceFromDevice");
+            Optional<ScheduleModel> scheduleOptional = scheduleRepository.findTopByTaskName("AttendanceFromDevice");
 
             if (scheduleOptional.isPresent()) {
                 ScheduleModel schedule = scheduleOptional.get();
 
-                Date startDate = schedule.getCranEndTime();
+                String startDate = schedule.getCranEndTime();
                 Date endDate = new Date();
-                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("hh:mm a - dd/MM/yyyy");
 
                 try {
                     List<AttendanceRecordModel> attendanceRecords = deviceService.getAttendanceListFromRange(simpleDateFormat.format(startDate), simpleDateFormat.format(endDate));
@@ -53,20 +56,35 @@ public class AttendanceDataProcess {
                     }
                     attendanceRecordRepository.saveAll(attendanceData);
 
-                    schedule.setCranEndTime(endDate);
-                    schedule.setLastRuntime(new Date());
+                    schedule.setCranEndTime(endDate.toString());
+                    schedule.setLastRuntime(new Date().toString());
 
                     scheduleRepository.save(schedule);
 
                     return true;
                 } catch (Exception e) {
-                    // Update only LastRuntime on failure
-                    schedule.setLastRuntime(new Date());
+                    log.error(e.getMessage());
+                    deviceService.end();
+                    schedule.setLastRuntime(new Date().toString());
                     scheduleRepository.save(schedule);
                     return false;
                 }
+            } else{
+                String dateTimeString = "2000/01/01 12:00:00"; //yyyy-MM-dd HH:mm:ss
+
+                ScheduleModel schedule = new ScheduleModel();
+                schedule.setTaskName("AttendanceFromDevice");
+                schedule.setLastRuntime(new Date().toString());
+                schedule.setLastStartTime(new Date().toString());
+                schedule.setCranEndTime(simpleDateFormat.parse(dateTimeString).toString());
+                schedule.setTaskFrequncy(TaskFrequency.HOURLY);
+                schedule.setCranEndTime(new Date().toString());
+                scheduleRepository.save(schedule);
+
             }
+            deviceService.end();
         }
+        deviceService.end();
         return false;
     }
 

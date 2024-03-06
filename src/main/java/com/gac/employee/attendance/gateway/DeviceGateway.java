@@ -1,6 +1,5 @@
 package com.gac.employee.attendance.gateway;
 
-import com.gac.employee.attendance.component.ScheduledTasks;
 import com.gac.employee.attendance.model.DeviceModel;
 import com.gac.employee.attendance.repo.DeviceRepository;
 import com.zkteco.Exception.DeviceNotConnectException;
@@ -19,7 +18,7 @@ public class DeviceGateway {
     @Autowired
     private final DeviceRepository  deviceRepository;
     private static final Logger log = LoggerFactory.getLogger(DeviceGateway.class);
-    private static final String DEFAULT_IP = "117.253.89.114";
+    private static final String DEFAULT_IP = "192.168.1.205";
     private static final Integer DEFAULT_PORT = 4370;
     private static final Integer DEFAULT_COMM = 0;
     private ZKTerminal terminal;

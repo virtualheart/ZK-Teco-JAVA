@@ -137,7 +137,7 @@ public class DeviceServiceImpl implements DeviceService {
 				model.setUserSN(record.getUserSN());
 				model.setUserID(String.valueOf(record.getUserID()));
 				model.setVerifyType(AttendanceType.valueOf(record.getVerifyType().name()));
-				model.setRecordTime(record.getRecordTime());
+				model.setRecordTime(record.getRecordTime().toString());
 				model.setVerifyState(AttendanceState.valueOf(record.getVerifyState().name()));
 
 				attendanceRecords.add(model);
@@ -170,7 +170,7 @@ public class DeviceServiceImpl implements DeviceService {
 		AttendanceRecordModel attendanceRecordModel = new AttendanceRecordModel();
 		attendanceRecordModel.setUserID(attendanceRecord.getUserID());
 		attendanceRecordModel.setUserSN(attendanceRecord.getUserSN());
-		attendanceRecordModel.setRecordTime(attendanceRecord.getRecordTime());
+		attendanceRecordModel.setRecordTime(attendanceRecord.getRecordTime().toString());
 		attendanceRecordModel.setVerifyType(AttendanceType.valueOf(attendanceRecord.getVerifyType().name()));
 		attendanceRecordModel.setVerifyState(AttendanceState.valueOf(attendanceRecord.getVerifyState().name()));
 
