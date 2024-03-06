@@ -58,7 +58,7 @@ public class AttendanceRecordServiceImpl implements AttendanceRecordService {
     public List<AttendanceRecordModel> getAttendanceRecordsLastMonth() {
         Calendar calendar = Calendar.getInstance();
         calendar.add(Calendar.MONTH, -1);
-        String lastMonth = calendar.getTime();
+        String lastMonth = String.valueOf(calendar.getTime());
 
         return attendanceRecordRepo.findByRecordTimeGreaterThanEqual(lastMonth);
     }
