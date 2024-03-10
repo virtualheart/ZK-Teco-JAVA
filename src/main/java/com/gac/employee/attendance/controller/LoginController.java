@@ -37,6 +37,6 @@ public class LoginController {
     @PostMapping("/addUser")
     public String addUser(UserDTO userDTO) {
         userService.addUser(userDTO);
-        return "Redirect:/dashboard";
+        return "Redirect:/login";
     }
 }

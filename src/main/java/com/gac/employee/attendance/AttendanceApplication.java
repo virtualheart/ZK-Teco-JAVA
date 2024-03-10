@@ -62,7 +62,7 @@ public class AttendanceApplication {
 
     private static void startMariaDBOnWindows() throws IOException {
         if (!isMariaDBRunningOnWindows()) {
-            String mariadbCommand = "mariadb\\bin\\mariadb.exe";
+            String mariadbCommand = "mariadb\\bin\\mysqld.exe";
             Process process = Runtime.getRuntime().exec(mariadbCommand);
         } else {
             log.info("MariaDB is already running on Windows.");

@@ -39,11 +39,17 @@ public class DashboardController {
 //    Dashboard
     @GetMapping({"/","/dashboard"})
     public String dashboard(Model model) throws IOException, ParseException, DeviceNotConnectException{
-        deviceService.connectTo();
-        model.addAttribute("deviceStatus", deviceService.deviceOnlineCheck());
-        model.addAttribute("deviceTime", deviceService.getDeviceTimeDate());
-        model.addAttribute("attendanceRecords", deviceService.getAttendanceList());
-        deviceService.end();
+        if(deviceService.connectTo()) {
+            model.addAttribute("deviceStatus", deviceService.deviceOnlineCheck());
+            model.addAttribute("deviceTime", deviceService.getDeviceTimeDate());
+            model.addAttribute("attendanceRecords", deviceService.getAttendanceList());
+            deviceService.end();
+        } else {
+            model.addAttribute("deviceStatus", deviceService.deviceOnlineCheck());
+            model.addAttribute("deviceTime", deviceService.getDeviceTimeDate());
+            model.addAttribute("attendanceRecords", null);
+
+        }
 
         model.addAttribute("checkout", attendanceRecordService.getTodayCheckoutCount());
         model.addAttribute("checkin", attendanceRecordService.getTodayCheckinCount());
@@ -85,11 +91,11 @@ public class DashboardController {
     public String addEmployee(Model model) throws Exception {
         if (employeeService.connectTo()) {
             model.addAttribute("employeeList", employeeService.getAllEmployeeFromDevice());
+            employeeService.end();
         } else {
             model.addAttribute("employeeList", null);
         }
         model.addAttribute("uri", "admin/list/user/device");
-        employeeService.end();
         return "admin/listEmployee";
     }
 

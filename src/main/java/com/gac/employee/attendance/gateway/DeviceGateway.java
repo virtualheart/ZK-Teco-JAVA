@@ -44,8 +44,8 @@ public class DeviceGateway {
                 return terminal;
             }
         }
-        ZKTerminal terminal = new ZKTerminal(DEFAULT_IP, DEFAULT_PORT);
-        terminal.connect();
+//        ZKTerminal terminal = new ZKTerminal(DEFAULT_IP, DEFAULT_PORT);
+      //  terminal.connect();
         return terminal;
     }
 

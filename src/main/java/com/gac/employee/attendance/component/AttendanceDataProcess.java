@@ -60,11 +60,10 @@ public class AttendanceDataProcess {
                     schedule.setLastRuntime(new Date().toString());
 
                     scheduleRepository.save(schedule);
-
+                    deviceService.end();
                     return true;
                 } catch (Exception e) {
                     log.error(e.getMessage());
-                    deviceService.end();
                     schedule.setLastRuntime(new Date().toString());
                     scheduleRepository.save(schedule);
                     return false;
@@ -76,15 +75,13 @@ public class AttendanceDataProcess {
                 schedule.setTaskName("AttendanceFromDevice");
                 schedule.setLastRuntime(new Date().toString());
                 schedule.setLastStartTime(new Date().toString());
-                schedule.setCranEndTime(simpleDateFormat.parse(dateTimeString).toString());
+                schedule.setCranEndTime(dateTimeString);
                 schedule.setTaskFrequncy(TaskFrequency.HOURLY);
                 schedule.setCranEndTime(new Date().toString());
                 scheduleRepository.save(schedule);
 
             }
-            deviceService.end();
         }
-        deviceService.end();
         return false;
     }
 

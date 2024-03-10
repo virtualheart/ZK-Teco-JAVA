@@ -117,6 +117,10 @@ public class ZKTerminal {
         socket.send(packet);
         socket.close();
     }
+
+    public void socketClose() {
+        socket.close();
+    }
     
     // Enable devices
     public ZKCommandReply enableDevice() throws IOException {

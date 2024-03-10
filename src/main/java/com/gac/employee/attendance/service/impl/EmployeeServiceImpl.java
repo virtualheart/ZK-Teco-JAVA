@@ -37,6 +37,8 @@ public class EmployeeServiceImpl implements EmployeeService {
     public boolean connectTo() throws IOException {
         try {
             terminal = deviceGateway.getClient();
+            if (terminal == null)
+                return false;
             return true;
         }catch (DeviceNotConnectException e){
             log.info("Device Not Connect Exception");
@@ -101,7 +103,8 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     public void end() throws IOException {
-        if (terminal != null)
-            terminal.disconnect();
+        terminal.socketClose();
+//        if (terminal != null)
+//            terminal.disconnect();
     }
 }

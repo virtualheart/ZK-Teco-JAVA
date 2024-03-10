@@ -52,11 +52,8 @@ public class DeviceServiceImpl implements DeviceService {
 	public boolean connectTo() throws IOException {
 		try {
 			terminal = deviceGateway.getClient();
-
-//			terminal= new ZKTerminal("192.168.1.201", 4370);
-//			terminal.connect();
-//			terminal.connectAuth(0);
-
+			if (terminal == null)
+				return false;
 			return true;
 		}catch (DeviceNotConnectException e){
 			log.info("Device Not Connect Exception");
@@ -64,7 +61,8 @@ public class DeviceServiceImpl implements DeviceService {
 			log.error("BindException: " + e.getMessage());
 			if (e.getMessage().contains("Address already in use")) {
 				log.info("Address already in use. Closing the connection.");
-				terminal.disconnect();
+				end();
+
 			} else {
 				log.error("Other BindException: " + e.getMessage());
 			}
