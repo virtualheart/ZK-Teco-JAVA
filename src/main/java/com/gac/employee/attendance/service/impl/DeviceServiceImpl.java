@@ -61,7 +61,9 @@ public class DeviceServiceImpl implements DeviceService {
 			log.error("BindException: " + e.getMessage());
 			if (e.getMessage().contains("Address already in use")) {
 				log.info("Address already in use. Closing the connection.");
-				end();
+				if (terminal != null) {
+					terminal.socketClose();
+				}
 
 			} else {
 				log.error("Other BindException: " + e.getMessage());
@@ -291,6 +293,7 @@ public class DeviceServiceImpl implements DeviceService {
 	@Override
 
 	public void end() throws IOException {
+//		terminal.socketClose();
 		if (terminal != null)
 			terminal.disconnect();
 	}

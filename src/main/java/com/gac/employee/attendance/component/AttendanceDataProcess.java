@@ -47,7 +47,7 @@ public class AttendanceDataProcess {
                 Date endDate = new Date();
 
                 try {
-                    List<AttendanceRecordModel> attendanceRecords = deviceService.getAttendanceListFromRange(simpleDateFormat.format(startDate), simpleDateFormat.format(endDate));
+                    List<AttendanceRecordModel> attendanceRecords = deviceService.getAttendanceListFromRange(startDate, simpleDateFormat.format(endDate));
                     List<AttendanceRecordModel> attendanceData = new ArrayList<>();
 
                     for (AttendanceRecordModel record : attendanceRecords) {
@@ -56,28 +56,30 @@ public class AttendanceDataProcess {
                     }
                     attendanceRecordRepository.saveAll(attendanceData);
 
-                    schedule.setCranEndTime(endDate.toString());
-                    schedule.setLastRuntime(new Date().toString());
+                    schedule.setCranEndTime(simpleDateFormat.format(endDate));
+                    schedule.setLastRuntime(simpleDateFormat.format(new Date()));
 
                     scheduleRepository.save(schedule);
                     deviceService.end();
                     return true;
                 } catch (Exception e) {
                     log.error(e.getMessage());
-                    schedule.setLastRuntime(new Date().toString());
+                    String LastRuntime= simpleDateFormat.format(new Date());
+                    schedule.setLastRuntime(LastRuntime);
                     scheduleRepository.save(schedule);
+                    deviceService.end();
                     return false;
                 }
             } else{
-                String dateTimeString = "2000/01/01 12:00:00"; //yyyy-MM-dd HH:mm:ss
-
+                String dateTimeString = "2000-01-01 00:00:10"; //yyyy-MM-dd HH:mm:ss
+                String LastRuntime= simpleDateFormat.format(new Date());
                 ScheduleModel schedule = new ScheduleModel();
                 schedule.setTaskName("AttendanceFromDevice");
-                schedule.setLastRuntime(new Date().toString());
-                schedule.setLastStartTime(new Date().toString());
+                schedule.setLastRuntime(LastRuntime);
+                schedule.setLastStartTime(LastRuntime);
                 schedule.setCranEndTime(dateTimeString);
                 schedule.setTaskFrequncy(TaskFrequency.HOURLY);
-                schedule.setCranEndTime(new Date().toString());
+//                schedule.setCranEndTime(new Date().toString());
                 scheduleRepository.save(schedule);
 
             }

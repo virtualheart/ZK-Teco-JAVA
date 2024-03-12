@@ -31,10 +31,11 @@ public class Test {
     public static void main(String[] args) throws Exception {
       ZKTerminal terminal = new ZKTerminal("192.168.1.205", 4370);
       ZKCommandReply reply = terminal.connect();
-      reply = terminal.connectAuth(100);
+      reply = terminal.connectAuth(0);
       reply = terminal.disableDevice();
         System.out.println(reply.getCode());
-          List<AttendanceRecord> attendanceRecord = terminal.getAttendanceRecordsForDateRange("2024-02-21 00:00:00", "2024-02-21 23:59:00");
+//          List<AttendanceRecord> attendanceRecord = terminal.getAttendanceRecordsForDateRange("2024-02-21 00:00:00", "2024-02-21 23:59:00");
+        reply = terminal.syncTime();
 
       reply = terminal.FreeDeviceBuffer();
 

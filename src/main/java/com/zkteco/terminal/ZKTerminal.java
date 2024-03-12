@@ -2001,7 +2001,10 @@ public class ZKTerminal {
     
     // Set current system time to device time
     	public ZKCommandReply syncTime() throws IOException {
-    	    long encodedTime = HexUtils.encodeTime(new Date());
+//    	    long encodedTime = HexUtils.encodeTime(new Date());
+
+    	    long encodedTime = HexUtils.convertToSeconds();
+
     	    int[] timeBytes = HexUtils.convertLongToLittleEndian(encodedTime);
     	    int[] toSend = ZKCommand.getPacket(CommandCodeEnum.CMD_SET_TIME, sessionId, replyNo, timeBytes);
     	    byte[] buf = new byte[toSend.length];
@@ -2019,7 +2022,13 @@ public class ZKTerminal {
     	    int[] payloads = new int[response.length - 8];
     	    System.arraycopy(response, 8, payloads, 0, payloads.length);
 
-    	    // TODO:
+            try {
+                System.out.println(HexUtils.extractDate(encodedTime));
+
+            } catch (ParseException e) {
+                throw new RuntimeException(e);
+            }
+            // TODO:
             if (replyCode == CommandReplyCodeEnum.CMD_ACK_OK) {
             	
             }

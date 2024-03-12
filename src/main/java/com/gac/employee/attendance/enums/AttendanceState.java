@@ -1,5 +1,8 @@
 package com.gac.employee.attendance.enums;
 
+import lombok.Getter;
+
+@Getter
 public enum AttendanceState {
     CHECK_IN(0),
     CHECK_OUT(1),
@@ -14,7 +17,4 @@ public enum AttendanceState {
         this.attendanceState=attendanceState;
     }
 
-    public int getAttendanceState(){
-        return attendanceState;
-    }
 }

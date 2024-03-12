@@ -180,8 +180,9 @@ public class DashboardController {
         if (deviceService.connectTo()) {
             deviceService.synkTimDate();
             model.addAttribute("mgs","Device Time Set Successfully.");
+            deviceService.end();
+            return "/admin/done";
         }
-        deviceService.end();
     	return "/admin/deviceOffline";
     }
 

@@ -103,8 +103,8 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     public void end() throws IOException {
-        terminal.socketClose();
-//        if (terminal != null)
-//            terminal.disconnect();
+//        terminal.socketClose();
+        if (terminal != null)
+            terminal.disconnect();
     }
 }

@@ -94,3 +94,47 @@ Version: '11.3.2-MariaDB'  socket: ''  port: 3306  mariadb.org binary distributi
 2024-03-10 10:39:30 31 [Warning] Aborted connection 31 to db: 'gac' user: 'root' host: 'localhost' (Got an error reading communication packets)
 2024-03-10 10:39:30 24 [Warning] Aborted connection 24 to db: 'gac' user: 'root' host: 'localhost' (Got an error reading communication packets)
 2024-03-10 10:49:40 33 [Warning] Aborted connection 33 to db: 'gac' user: 'root' host: 'localhost' (Got an error reading communication packets)
+2024-03-10 11:39:25 0 [Note] console_event_handler: received CTRL_CLOSE_EVENT event, terminating
+2024-03-11 19:05:37 0 [Note] Starting MariaDB 11.3.2-MariaDB source revision 068a6819eb63bcb01fdfa037c9bf3bf63c33ee42 as process 2204
+2024-03-11 19:05:37 0 [Note] InnoDB: innodb_page_size=65536
+2024-03-11 19:05:37 0 [Note] InnoDB: Compressed tables use zlib 1.3
+2024-03-11 19:05:37 0 [Note] InnoDB: Number of transaction pools: 1
+2024-03-11 19:05:37 0 [Note] InnoDB: Using crc32 + pclmulqdq instructions
+2024-03-11 19:05:37 0 [Note] InnoDB: Initializing buffer pool, total size = 0.987GiB, chunk size = 15.797MiB
+2024-03-11 19:05:38 0 [Note] InnoDB: Completed initialization of buffer pool
+2024-03-11 19:05:38 0 [Note] InnoDB: File system buffers for log disabled (block size=4096 bytes)
+2024-03-11 19:05:38 0 [Note] InnoDB: Starting crash recovery from checkpoint LSN=47926
+2024-03-11 19:05:38 0 [Note] InnoDB: End of log at LSN=124127
+2024-03-11 19:05:38 0 [Note] InnoDB: To recover: 122 pages
+2024-03-11 19:05:39 0 [Note] InnoDB: Opened 3 undo tablespaces
+2024-03-11 19:05:39 0 [Note] InnoDB: 128 rollback segments in 3 undo tablespaces are active.
+2024-03-11 19:05:39 0 [Note] InnoDB: Removed temporary tablespace data file: "./ibtmp1"
+2024-03-11 19:05:39 0 [Note] InnoDB: Setting file './ibtmp1' size to 12.000MiB. Physically writing the file full; Please wait ...
+2024-03-11 19:05:39 0 [Note] InnoDB: File './ibtmp1' size is now 12.000MiB.
+2024-03-11 19:05:39 0 [Note] InnoDB: log sequence number 124127; transaction id 261
+2024-03-11 19:05:39 0 [Note] InnoDB: Loading buffer pool(s) from C:\Users\SMK\IdeaProjects\ZK-Teco-JAVA\mariadb\data\ib_buffer_pool
+2024-03-11 19:05:39 0 [Note] Plugin 'FEEDBACK' is disabled.
+2024-03-11 19:05:39 0 [Note] mysqld.exe: SSPI: using principal name 'localhost', mech 'Negotiate'
+2024-03-11 19:05:39 0 [Note] InnoDB: Buffer pool(s) load completed at 240311 19:05:39
+2024-03-11 19:05:40 0 [Note] Recovering after a crash using tc.log
+2024-03-11 19:05:40 0 [Note] Starting table crash recovery...
+2024-03-11 19:05:40 0 [Note] Crash table recovery finished.
+2024-03-11 19:05:40 0 [Note] Server socket created on IP: '::'.
+2024-03-11 19:05:40 0 [Note] Server socket created on IP: '0.0.0.0'.
+2024-03-11 19:05:42 0 [Note] mysqld.exe: Event Scheduler: Loaded 0 events
+2024-03-11 19:05:42 0 [Note] mysqld.exe: ready for connections.
+Version: '11.3.2-MariaDB'  socket: ''  port: 3306  mariadb.org binary distribution
+2024-03-11 21:35:06 0 [Note] console_event_handler: received CTRL_C_EVENT event, shutting down
+2024-03-11 21:35:06 0 [Note] mysqld.exe (initiated by: unknown): Normal shutdown
+2024-03-11 21:35:06 0 [Note] console_event_handler: received CTRL_C_EVENT event, shutting down
+2024-03-11 21:35:06 0 [Note] InnoDB: FTS optimize thread exiting.
+2024-03-11 21:35:06 0 [Note] console_event_handler: received CTRL_C_EVENT event, shutting down
+2024-03-11 21:35:06 0 [Note] console_event_handler: received CTRL_C_EVENT event, shutting down
+2024-03-11 21:35:06 0 [Note] console_event_handler: received CTRL_C_EVENT event, shutting down
+2024-03-11 21:35:08 0 [Note] InnoDB: Starting shutdown...
+2024-03-11 21:35:08 0 [Note] InnoDB: Dumping buffer pool(s) to C:\Users\SMK\IdeaProjects\ZK-Teco-JAVA\mariadb\data\ib_buffer_pool
+2024-03-11 21:35:08 0 [Note] InnoDB: Buffer pool(s) dump completed at 240311 21:35:08
+2024-03-11 21:35:11 0 [Note] InnoDB: Removed temporary tablespace data file: "./ibtmp1"
+2024-03-11 21:35:11 0 [Note] InnoDB: Shutdown completed; log sequence number 260910; transaction id 561
+2024-03-11 21:35:13 0 [Note] mysqld.exe: Shutdown complete
+
