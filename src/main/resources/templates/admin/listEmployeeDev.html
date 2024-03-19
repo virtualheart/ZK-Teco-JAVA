@@ -1,0 +1,196 @@
+<head th:replace="~{/includes/header::header}"></head>
+<div th:replace="~{/includes/sidebar::sidebar}"></div>
+<div class="main-content">
+    <!-- header area start -->
+    <div class="header-area">
+        <div class="row align-items-center">
+            <!-- nav and search button -->
+            <div class="col-md-6 col-sm-8 clearfix">
+                <div class="nav-btn pull-left">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
+            <!-- profile info & task notification -->
+            <div class="col-md-6 col-sm-4 clearfix">
+                <ul class="notification-area pull-right">
+                    <li id="full-view"><i class="ti-fullscreen"></i></li>
+                    <li id="full-view-exit"><i class="ti-zoom-out"></i></li>
+
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!-- header area end -->
+    <!-- page title area start -->
+    <div class="page-title-area">
+        <div class="row align-items-center">
+            <div class="col-sm-6">
+                <div class="breadcrumbs-area clearfix">
+                    <ul class="breadcrumbs pull-left">
+                        <li><a href="index.html">Users</a></li>
+                        <li><span>Add User</span></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-sm-6 clearfix">
+                <div class="user-profile pull-right">
+                    <img alt="avatar" class="avatar user-thumb" th:src="@{/assets/images/author/avatar.png}">
+                    <h4 class="user-name dropdown-toggle" data-toggle="dropdown">Admin <i class="fa fa-angle-down"></i>
+                    </h4>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item" href="#">Message</a>
+                        <a class="dropdown-item" href="#">Settings</a>
+                        <a class="dropdown-item" th:href="@{/logout}">Log Out</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-12">
+        <div class="card">
+            <!--    -->
+                <!-- Hoverable Rows Table start -->
+                <div class="">
+                    <div class="card">
+                        <div class="card-body">
+                            <h4 class="header-title" th:if="${uri == 'admin/list/user/device'}">Employee List(Device)</h4>
+                            <div class="single-table">
+                                <div class="table-responsive">
+                                    <table class="table table-hover text-center" id="dataTable1">
+                                        <thead class="text-uppercase">
+                                        <tr>
+                                            <th scope="col">ID</th>
+                                            <th scope="col">Name</th>
+                                            <th scope="col">Role</th>
+                                            <th scope="col">PassKey</th>
+                                            <th scope="col">RF Number</th>
+                                            <th scope="col">Action</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr th:each="employee : ${employeeList}">
+                                            <td th:text="${employee.employeeId}">employeeId</td>
+                                            <td th:text="${employee.employeeName}">employeeName</td>
+                                            <td th:text="${employee.userRole}">v</td>
+                                            <td th:text="${employee.password}">password</td>
+                                            <td th:text="${employee.cardNumber}">cardNumber</td>
+                                            <td>
+                                                <a th:href="@{'admin/employee/synk/toDb/' + ${employee.id}}" class="btn btn-primary">
+                                                    <span class="ti-direction-alt"></span>
+                                                </a>
+
+                                                <button class="btn btn-info" data-toggle="modal" th:data-target="'#'+${employee.employeeId}">
+                                                    <i class="svg-icon">
+                                                        <img th:src="@{/assets/images/fingerprint.svg}" width="13px" height="13">
+                                                    </i>
+                                                </button>
+
+                                                <!-- Modal -->
+                                                <div class="modal fade" th:id="${employee.employeeId}">
+                                                    <div class="modal-dialog modal-dialog-centered" role="document">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <h5 class="modal-title">Select the finger to capture</h5>
+                                                                <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                <!--                                                                            -->
+                                                                    <div class="container text-center">
+                                                                    <h4 th:text="'User : ' + ${employee.employeeName}">user</h4>
+                                                                    <h4 th:text="'User Id : ' + ${employee.id}">user</h4>
+                                                                    <h5 th:text="'employee Id : ' + ${employee.employeeId}" > userid</h5>
+                                                                </div>
+                                                                <div class="contenedor">
+                                                                    <form action="#" th:action="enrollFinger" method="post">
+                                                                        <input type="hidden" name="empId" th:value="${employee.employeeId}">
+                                                                        <input type="hidden" name="uID" th:value="${employee.id}">
+
+                                                                        <input data-toggle="tooltip" data-placement="top" value="0" title="Left Little finger" type="radio" class="btn finger finger_1" name="finger_selection" />
+                                                                        <input data-toggle="tooltip" data-placement="top" value="1" title="Left Ring finger" type="radio" class="btn finger finger_2" name="finger_selection" />
+                                                                        <input data-toggle="tooltip" data-placement="top" value="2" title="Left Middle finger" type="radio" class="btn finger finger_3" name="finger_selection" />
+                                                                        <input data-toggle="tooltip" data-placement="top" value="3" title="Left Index finger" type="radio" class="btn finger finger_4" name="finger_selection" />
+                                                                        <input data-toggle="tooltip" data-placement="top" value="4" title="Left Thumb" type="radio" class="btn finger finger_5" name="finger_selection" />
+                                                                        <input data-toggle="tooltip" data-placement="top" value="5" title="Right Thumb" type="radio" class="btn finger finger_6" name="finger_selection" />
+                                                                        <input data-toggle="tooltip" data-placement="top" value="6" title="Right Index finger" type="radio" class="btn finger finger_7" name="finger_selection" />
+                                                                        <input data-toggle="tooltip" data-placement="top" value="7" title="Right Middle finger" type="radio" class="btn finger finger_8" name="finger_selection" />
+                                                                        <input data-toggle="tooltip" data-placement="top" value="8" title="Right Ring finger" type="radio" class="btn finger finger_9" name="finger_selection" />
+                                                                        <input data-toggle="tooltip" data-placement="top" value="9" title="Right Little finger" type="radio" class="btn finger finger_10" name="finger_selection" />
+                                                                        <input type="submit" class="btn btn-success capture" name="finger_capture" value="capture" />
+                                                                    </form>
+                                                                    <svg version="1.0" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                                                                         viewBox="0 0 600 400" enable-background="new 0 0 600 400" xml:space="preserve">
+                                                                                    <g id="XMLID_4_">
+                                                                                    <path id="XMLID_5_" fill="#F4C5B0" d="M441,374.3l0.9-72.9c0,0-24.7-11.3-37.5-34.4c-12.8-23.1-43.7-50.3-50.9-52.9
+                                                                                        c0,0-12-7.5-17-8c-5-0.5-15.1,1-17-3.6c-1.9-4.6,2.4-18,27.9-15.4c25.5,2.6,33.6,13.4,43.8,14.6c10.3,1.2,15.9-5.1,17.2-10.8
+                                                                                        c1.4-5.6-0.9-33.7-1.9-41.2c-1-7.4-10.5-38.3-14.4-55s-10-47-2.6-55c7.4-8,15.2,1,17.5,8c2.3,6.9,10.3,35.4,13.6,42.9
+                                                                                        c3.3,7.4,10.3,39.6,12.1,42.4c1.8,2.8,4.4,8,9.5,4.6c5.1-3.3-4.9-34.7-4.4-51.1S436,54,434.5,39.2c-1.5-14.9,4.6-24.7,12.6-24.7
+                                                                                        c8,0,12.1,9.5,14.1,26.2c2.1,16.7,7.2,47.3,8.5,55.2c1.3,8,1.8,32.6,5.9,36.7c4.1,4.1,10.3,4.6,12.8-4.6c2.6-9.2,2.6-29,6.2-41.9
+                                                                                        c3.6-12.8,8.2-42.4,8.2-43.1c0-0.8,1.3-14.6,12.3-14.4c11,0.3,11.6,14.6,10,31.3c-1.5,16.7-2.3,41.3-4.1,47.8s-3.6,34.2-2.8,37
+                                                                                        c0.8,2.8,9.2,10.3,17-3.9c7.7-14.1,27.7-49.3,33.6-49.6c5.9-0.3,9.8,2.1,10.3,11c0.5,9-21.1,47.8-23.9,52.6
+                                                                                        c-2.8,4.9-13.1,24.9-15.2,34c-2.1,9.1,3.7,35.5,3.4,52.8c-0.5,27.8-15.6,31.7-14.2,40.7c0.5,3,2.7,91.8,2.7,91.8H441z"/>
+                                                                                    </g>
+                                                                        <g id="XMLID_1_">
+                                                                                    <path id="XMLID_2_" fill="#F4C5B0" d="M159,374.3l-0.9-72.9c0,0,24.7-11.3,37.5-34.4c12.8-23.1,43.7-50.3,50.9-52.9
+                                                                                        c0,0,12-7.5,17-8c5-0.5,15.1,1,17-3.6c1.9-4.6-2.4-18-27.9-15.4c-25.5,2.6-33.6,13.4-43.8,14.6c-10.3,1.2-15.9-5.1-17.2-10.8
+                                                                                        c-1.4-5.6,0.9-33.7,1.9-41.2c1-7.4,10.5-38.3,14.4-55c3.9-16.7,10-47,2.6-55s-15.2,1-17.5,8c-2.3,6.9-10.3,35.4-13.6,42.9
+                                                                                        c-3.3,7.4-10.3,39.6-12.1,42.4c-1.8,2.8-4.4,8-9.5,4.6c-5.1-3.3,4.9-34.7,4.4-51.1s2.1-32.4,3.6-47.3c1.5-14.9-4.6-24.7-12.6-24.7
+                                                                                        s-12.1,9.5-14.1,26.2c-2.1,16.7-7.2,47.3-8.5,55.2c-1.3,8-1.8,32.6-5.9,36.7c-4.1,4.1-10.3,4.6-12.8-4.6c-2.6-9.2-2.6-29-6.2-41.9
+                                                                                        S97.2,43.8,97.2,43c0-0.8-1.3-14.6-12.3-14.4c-11,0.3-11.6,14.6-10,31.3c1.5,16.7,2.3,41.3,4.1,47.8c1.8,6.4,3.6,34.2,2.8,37
+                                                                                        c-0.8,2.8-9.2,10.3-17-3.9c-7.7-14.1-27.7-49.3-33.6-49.6c-5.9-0.3-9.8,2.1-10.3,11c-0.5,9,21.1,47.8,23.9,52.6
+                                                                                        c2.8,4.9,13.1,24.9,15.2,34c2.1,9.1-3.7,35.5-3.4,52.8c0.5,27.8,15.6,31.7,14.2,40.7c-0.5,3-2.7,91.8-2.7,91.8H159z"/>
+                                                                                     </g>
+
+                                                                                  </svg>
+                                                                </div>
+
+                                                                <script type="text/javascript" href="hand.js" ></script>
+                                                                <script type="text/javascript" href="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" ></script>
+                                                                <script type="text/javascript" href="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" ></script>
+                                                                <script type="text/javascript" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/js/bootstrap.bundle.min.js" ></script>
+
+                                                                <!--                                                                            -->
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <button class="btn btn-danger" th:onclick="'deleteEmployee(\'' + ${employee.id} + '\'); return false;'">
+                                                    <i class="fa fa-trash"></i>
+                                                </button>
+                                            </td>
+
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Hoverable Rows Table end -->
+                <!--    -->
+        </div>
+    </div>
+    <div th:replace="/includes/footer::footer"></div>
+
+    <script>
+        function deleteEmployee(employeeId) {
+            // Make an AJAX request to the server to delete the employee
+            $.ajax({
+                type: 'DELETE',
+                url: '/api/deleteEmployee/' + employeeId,
+                success: function (data) {
+                    alert("User Deleted...!");
+                    window.location.reload();
+                },
+                error: function (error) {
+                    // Handle error, e.g., show an error message
+                }
+            });
+        }
+    </script>

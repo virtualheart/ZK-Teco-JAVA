@@ -42,7 +42,7 @@
                     <div class="dropdown-menu">
                         <a class="dropdown-item" href="#">Message</a>
                         <a class="dropdown-item" href="#">Settings</a>
-                        <a class="dropdown-item" href="./logout">Log Out</a>
+                        <a class="dropdown-item" th:href="@{/logout}">Log Out</a>
                     </div>
                 </div>
             </div>
@@ -79,7 +79,6 @@
                                 <th class="text-left">FP Version</th>
                                 <th class="text-left">Platform</th>
                                 <th class="text-left">OEM Vendor</th>
-                                <th class="text-left">Fetch</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -94,7 +93,6 @@
                                 <td class="text-left" th:text="${device.fw_version}">test </td>
                                 <td class="text-left" th:text="${device.platform}">test </td>
                                 <td class="text-left" th:text="${device.OEMVendor}">test Vendor </td>
-                                <td class="text-left" >test Vendor </td>
                             </tr>
                             </tbody>
                         </table>

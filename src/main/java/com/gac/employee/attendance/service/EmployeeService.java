@@ -11,6 +11,6 @@ public interface EmployeeService {
      List<EmployeeModel> getAllEmployeeFromDB();
      Optional<EmployeeModel> getEmployeeFromDB(int empId);
      List<EmployeeModel> getAllEmployeeFromDevice() throws Exception;
-     void addUser(EmployeeModel employeeModel) throws  IOException;
+     String addUser(EmployeeModel employeeModel) throws  IOException;
      void end() throws IOException;
-     }
+}

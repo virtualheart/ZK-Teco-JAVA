@@ -2,7 +2,6 @@ package com.gac.employee.attendance.service.impl;
 
 import com.gac.employee.attendance.gateway.DeviceGateway;
 import com.gac.employee.attendance.model.EmployeeModel;
-import com.gac.employee.attendance.repo.AttendanceRecordRepository;
 import com.gac.employee.attendance.repo.EmployeeRepository;
 import com.gac.employee.attendance.service.DeviceService;
 import com.gac.employee.attendance.service.EmployeeService;
@@ -67,7 +66,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     private EmployeeModel mapUserInfoToEmployeeModel(UserInfo userInfo) {
         EmployeeModel employeeModel = new EmployeeModel();
-
+        employeeModel.setId(userInfo.getUid());
         employeeModel.setEmployeeId(Integer.parseInt(userInfo.getUserid().trim()));
         employeeModel.setEmployeeName(userInfo.getName().trim());
         employeeModel.setUserRole(com.gac.employee.attendance.enums.UserRole.valueOf(userInfo.getRole().name()));
@@ -78,7 +77,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public void addUser(EmployeeModel employeeModel) throws IOException {
+    public String addUser(EmployeeModel employeeModel) throws IOException {
         UserInfo userInfo = new UserInfo();
         userInfo.setName(employeeModel.getEmployeeName());
         userInfo.setPassword(String.valueOf(employeeModel.getPassword()));
@@ -96,10 +95,12 @@ public class EmployeeServiceImpl implements EmployeeService {
             log.info("Device Not Connect Exception");
         }catch (DataIntegrityViolationException s){
             log.warn("Duplicate Record Entry");
+            return "Duplicate Record Entry...!";
         }
         finally {
             deviceService.end();
         }
+        return "User Added...!";
     }
 
     public void end() throws IOException {

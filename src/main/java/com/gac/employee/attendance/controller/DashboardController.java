@@ -1,6 +1,5 @@
 package com.gac.employee.attendance.controller;
 
-import com.gac.employee.attendance.enums.DeviceSupport;
 import com.gac.employee.attendance.model.DeviceModel;
 import com.gac.employee.attendance.model.EmployeeModel;
 import com.gac.employee.attendance.service.AttendanceRecordService;
@@ -10,17 +9,17 @@ import com.gac.employee.attendance.service.EmployeeService;
 import com.zkteco.Exception.DeviceNotConnectException;
 
 import java.io.IOException;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.text.ParseException;
+import java.time.LocalDateTime;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequestMapping(value = "/admin")
@@ -36,10 +35,10 @@ public class DashboardController {
     private DBservice dBservice;
 
 
-//    Dashboard
-    @GetMapping({"/","/dashboard"})
-    public String dashboard(Model model) throws IOException, ParseException, DeviceNotConnectException{
-        if(deviceService.connectTo()) {
+    //    Dashboard
+    @GetMapping({"/", "/dashboard"})
+    public String dashboard(Model model) throws IOException, ParseException, DeviceNotConnectException {
+        if (deviceService.connectTo()) {
             model.addAttribute("deviceStatus", deviceService.deviceOnlineCheck());
             model.addAttribute("deviceTime", deviceService.getDeviceTimeDate());
             model.addAttribute("attendanceRecords", deviceService.getAttendanceList());
@@ -59,29 +58,29 @@ public class DashboardController {
 
     //
     @GetMapping("/employee/{empId}")
-    public String employeeDetails(@PathVariable int empId, Model model){
+    public String employeeDetails(@PathVariable int empId, Model model) {
         model.addAttribute("allemplist", employeeService.getEmployeeFromDB(empId));
-        return "admin/listEmployee";
+        return "admin/listEmployeeDb";
     }
 
     @GetMapping("/add/user")
-    public String addUser(Model model)  {
+    public String addUser(Model model) {
         EmployeeModel employeeModel = new EmployeeModel();
-        model.addAttribute("employeeModel",employeeModel);
+        model.addAttribute("employeeModel", employeeModel);
         return "admin/addEmployee";
     }
 
     @GetMapping("/list/user/db")
-    public String listEmloyee(Model model){
+    public String listEmloyee(Model model) {
         model.addAttribute("uri", "admin/list/user/db");
-        model.addAttribute("employeeList",employeeService.getAllEmployeeFromDB());
-        return "admin/listEmployee";
+        model.addAttribute("employeeList", employeeService.getAllEmployeeFromDB());
+        return "admin/listEmployeeDb";
     }
 
     @GetMapping("/list/device/sms")
     public String smsList(Model model) throws IOException, ParseException {
-        if (deviceService.connectTo()){
-            model.addAttribute("smslists",deviceService.getSmsList());
+        if (deviceService.connectTo()) {
+            model.addAttribute("smslists", deviceService.getSmsList());
         }
         deviceService.end();
         return "admin/smsList";
@@ -95,47 +94,44 @@ public class DashboardController {
         } else {
             model.addAttribute("employeeList", null);
         }
-        model.addAttribute("uri", "admin/list/user/device");
-        return "admin/listEmployee";
+        return "admin/listEmployeeDev";
     }
 
     @GetMapping("/add/attendance")
-    public String addAttendance(){
+    public String addAttendance() {
         return "admin/blank";
     }
 
     @GetMapping("/attendance/db")
-    public String dbAttendance(Model model){
-        model.addAttribute("uri", "admin/attendance/db");
-        model.addAttribute("attendanceRecords",attendanceRecordService.getAttendanceFormDB());
-        return "admin/attendance";
+    public String dbAttendance(Model model) {
+        model.addAttribute("attendanceRecords", attendanceRecordService.getAttendanceFormDB());
+        return "admin/attendanceDb";
     }
 
     @GetMapping("/attendance/device")
     public String deviceAttendance(Model model) throws IOException, DeviceNotConnectException, ParseException {
         if (deviceService.connectTo()) {
-            model.addAttribute("uri", "admin/attendance/device");
             model.addAttribute("attendanceRecords", deviceService.getAttendanceList());
             deviceService.end();
         }
-        return "admin/attendance";
+        return "admin/attendanceDev";
     }
 
     @GetMapping("/device/new")
-    public String addDevice(Model model){
-        DeviceModel deviceModel= new DeviceModel();
-        model.addAttribute("deviceModel",deviceModel);
+    public String addDevice(Model model) {
+        DeviceModel deviceModel = new DeviceModel();
+        model.addAttribute("deviceModel", deviceModel);
         return "admin/addDevice";
     }
 
     @GetMapping("/device/smslist")
-    public String deviceSMSlist(){
+    public String deviceSMSlist() {
         return "admin/smsList";
     }
 
     @GetMapping("/list/Devices")
-    public String devicelist(Model model){
-        model.addAttribute("devices",dBservice.getDeviceFromDB());
+    public String devicelist(Model model) {
+        model.addAttribute("devices", dBservice.getDeviceFromDB());
         return "admin/deviceList";
     }
 
@@ -179,24 +175,25 @@ public class DashboardController {
     public String setTime(Model model) throws IOException, DeviceNotConnectException {
         if (deviceService.connectTo()) {
             deviceService.synkTimDate();
-            model.addAttribute("mgs","Device Time Set Successfully.");
+            model.addAttribute("mgs", "Device Time Set Successfully.");
+            model.addAttribute("localDateTime", LocalDateTime.now());
             deviceService.end();
             return "/admin/done";
         }
-    	return "/admin/deviceOffline";
+        return "/admin/deviceOffline";
     }
 
     @PostMapping("/add/user")
     public String setaddUser(EmployeeModel employeeModel) throws IOException {
-        employeeService.addUser(employeeModel);
-        return "redirect:/admin/add/user";
+        String mgs = employeeService.addUser(employeeModel);
+        return "redirect:/admin/add/user?message=" + URLEncoder.encode(mgs, StandardCharsets.UTF_8);
     }
 
     @PostMapping("/poweroff")
     public String DevicePowerDown(Model model) throws DeviceNotConnectException, IOException, ParseException {
         if (deviceService.connectTo()) {
             deviceService.devicePowerDown();
-            model.addAttribute("mgs","Device Shutdown Successfully.");
+            model.addAttribute("mgs", "Device Shutdown Successfully.");
         }
         return "/admin/deviceOffline";
     }
@@ -205,7 +202,7 @@ public class DashboardController {
     public String DeviceRestart(Model model) throws DeviceNotConnectException, IOException, ParseException {
         if (deviceService.connectTo()) {
             deviceService.deviceRestart();
-            model.addAttribute("mgs","Device Shutdown Successfully.");
+            model.addAttribute("mgs", "Device Shutdown Successfully.");
         }
         return "/admin/deviceOffline";
     }
@@ -216,4 +213,16 @@ public class DashboardController {
         return "redirect:/admin/device/new";
     }
 
+    @PostMapping("/list/user/enrollFinger")
+    public String enrollFinger(@RequestParam("uID") int uID,
+                              @RequestParam("finger_selection") int fingerSelection,
+                              @RequestParam("empId") String empId) throws IOException {
+
+        if (deviceService.connectTo()) {
+            deviceService.enrollFinger(uID, fingerSelection,empId);
+            deviceService.end();
+        }
+
+        return "redirect:/admin/list/user/device";
+    }
 }

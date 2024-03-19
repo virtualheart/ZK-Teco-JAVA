@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta content="ie=edge" http-equiv="x-ua-compatible">
-    <title>Device Offline - Error</title>
+    <title>Device Update - Done</title>
     <meta content="width=device-width, initial-scale=1" name="viewport">
     <link rel="shortcut icon" th:href="@{/assets/images/icon/favicon.ico}" type="image/png">
     <link rel="stylesheet" th:href="@{/assets/css/bootstrap.min.css}">
@@ -38,7 +38,8 @@
     <div class="container">
         <div class="error-content">
             <h2>Time Changed...!</h2>
-            <p>Time Changed ${#dates.format(#dates.createNow(), 'dd MMM yyyy HH:mm')}</p>
+            <p th:text="${#temporals.format(localDateTime, 'dd-MM-yyyy HH:mm')}"></p>
+
             <a th:href="@{/admin/dashboard}">Back to Dashboard</a>
         </div>
     </div>

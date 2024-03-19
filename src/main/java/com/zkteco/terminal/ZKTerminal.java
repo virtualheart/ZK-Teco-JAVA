@@ -119,7 +119,9 @@ public class ZKTerminal {
     }
 
     public void socketClose() {
-        socket.close();
+        if (!socket.isClosed()) {
+            socket.close();
+        }
     }
     
     // Enable devices

@@ -256,7 +256,7 @@ public class Test {
 //            
 //            System.out.println(HexUtils.bytesToHex(response));
 //        }
-        
+//        
 //
 //        try {
 //            List<UserInfo> userList = terminal.getAllUsers();
@@ -269,7 +269,7 @@ public class Test {
 //	              System.out.println("Card Number: " + user.getCardno());
 //	              System.out.println("Group Number: " + user.getGroupNumber());
 //	              System.out.println("User TimeZone Flag: " + user.getUserTimeZoneFlag());
-//	              System.out.println("TimeZone1: " + user.getTimeZone1()); 
+//	              System.out.println("TimeZone1: " + user.getTimeZone1());
 //	              System.out.println("TimeZone2: " + user.getTimeZone2());
 //	              System.out.println("TimeZone3: " + user.getTimeZone3());
 //	              System.out.println("User Serial Number: " + user.getUid());
@@ -278,8 +278,8 @@ public class Test {
 //            }
 //        } catch (IOException e) {
 //            e.printStackTrace(); // Handle exceptions appropriately
-//        }              
-//        
+//        }
+
 //        try {
 //            List<AttendanceRecord> attendanceRecord = terminal.getAttendanceRecords();
 //

@@ -40,7 +40,7 @@ public class ScheduledTasks {
 	@Autowired
 	private ScheduleRepository scheduleRepository;
 	private static final SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
-	@Scheduled(cron = "0 0/1 * 1/1 * ?") // Runs every 15 minute
+	@Scheduled(cron = "0 0/30 * 1/1 * ?") // Runs every 15 minute
 //	@Scheduled(cron = "0 0 * * * *") // Runs every hour at the 0th minute
 	public void attendancePullHourlyCron() throws IOException, DeviceNotConnectException, ParseException {
 		log.info("[attendancePullHourlyCron], The time is now {}", dateFormat.format(new Date()));

@@ -62,8 +62,22 @@ public class AttendanceApplication {
 
     private static void startMariaDBOnWindows() throws IOException {
         if (!isMariaDBRunningOnWindows()) {
-            String mariadbCommand = "mariadb\\bin\\mysqld.exe";
-            Process process = Runtime.getRuntime().exec(mariadbCommand);
+            Process process = Runtime.getRuntime().exec("runas /profile /user:Administrator \\\"cmd.exe /c  net start MariaDB");
+            int exitCode;
+            try {
+                exitCode = process.waitFor();
+            } catch (InterruptedException e) {
+                throw new IOException("Error waiting for process completion", e);
+            }
+
+            if (exitCode == 0) {
+                log.info("MySQL started successfully on windows");
+            } else {
+                log.error("Failed to start MySQL on windows. Exit code: " + exitCode);
+            }
+
+//            String mariadbCommand = "mariadb\\bin\\mysqld.exe";
+//            Process process = Runtime.getRuntime().exec(mariadbCommand);
         } else {
             log.info("MariaDB is already running on Windows.");
         }

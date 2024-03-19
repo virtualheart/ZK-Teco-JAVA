@@ -69,46 +69,46 @@ animation-iteration-count: 1;
 }
 .finger_1 {
 top: 98px;
-left: 20px;
+left: -146px;
 
 }
 .finger_2 {
 top: 47px;
-left: 46px;
+left: -119px;
 }
 .finger_3 {
 top: 36px;
-left: 85px;
+left: -80px;
 }
 
 .finger_4 {
 top: 52px;
-left: 108px;
+left: -54px;
 }
 
 .finger_5 {
-top: 175px;
-left: 145px;
+top: 171px;
+left: -18px;
 }
 .finger_6{
-top: 175px;
-left: 176px;
+top: 171px;
+left: 19px;
 }
 .finger_7 {
 top: 54px;
-left: 214px;
+left: 55px;
 }
 .finger_8 {
 top: 37px;
-left: 237px;
+left: 80px;
 }
 .finger_9 {
 top: 45px;
-left: 275px;
+left: 119px;
 }
 .finger_10 {
 top: 98px;
-left: 300px;
+left: 145px;
 }
 .capture {
     position: absolute;

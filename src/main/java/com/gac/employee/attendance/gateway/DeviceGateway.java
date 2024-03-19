@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.net.BindException;
 import java.util.Optional;
 
 @Service
@@ -37,30 +38,61 @@ public class DeviceGateway {
                 return terminal;
             } catch (DeviceNotConnectException dne) {
                 log.warn("Device Not Connect Exception");
+            } catch (BindException be){
+                log.error("BindException: " + be.getMessage());
+                if (be.getMessage().contains("Address already in use")) {
+                    log.info("Address already in use. Closing the connection.");
+                    if (terminal != null) {
+                        try{
+                            terminal.socketClose();
+                        } catch (Exception e){
+                            log.error("Other BindException: " + e.getMessage());
+                        }
+                    }
+                } else {
+                    log.error("Other BindException: " + be.getMessage());
+                }
+            }
+        } else {
+            try {
                 log.info("Connecting from DB IP " + DEFAULT_IP + " Port " + DEFAULT_PORT + " Comm key " + DEFAULT_COMM);
                 terminal = new ZKTerminal(DEFAULT_IP, DEFAULT_PORT);
                 terminal.connect();
                 terminal.connectAuth(DEFAULT_COMM);
                 return terminal;
+            } catch (BindException be) {
+                if (be.getMessage().contains("Address already in use")) {
+                    log.info("Address already in use. Closing the connection.");
+                    if (terminal != null) {
+                        try{
+                            terminal.socketClose();
+                        } catch (Exception e){
+                            log.error("Other BindException: " + e.getMessage());
+                        }
+                    }
+                } else {
+                    log.error("Other BindException: " + be.getMessage());
+                }
             }
         }
-//        ZKTerminal terminal = new ZKTerminal(DEFAULT_IP, DEFAULT_PORT);
-      //  terminal.connect();
-        return terminal;
+        return null;
     }
 
     public String getIPFromDB(){
-        Optional<DeviceModel> device = deviceRepository.findById(1);
+//        Optional<DeviceModel> device = deviceRepository.findById(1);
+        Optional<DeviceModel> device = deviceRepository.findByPort(4370);
         return device.map(DeviceModel::getIp_address).orElse(null);
     }
 
     public Integer getPortFromDB() {
-        Optional<DeviceModel> device = deviceRepository.findById(1);
+//        Optional<DeviceModel> device = deviceRepository.findById(1);
+        Optional<DeviceModel> device = deviceRepository.findByPort(4370);
         return device.isPresent() ? device.get().getPort() : null;
     }
 
     public Integer getCommKeyFromDB(){
-        Optional<DeviceModel> device = deviceRepository.findById(1);
+//        Optional<DeviceModel> device = deviceRepository.findById(1);
+        Optional<DeviceModel> device = deviceRepository.findByPort(4370);
         return device.isPresent() ? device.get().getDevicecommkey() : null;
     }
 

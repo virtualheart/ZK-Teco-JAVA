@@ -37,7 +37,6 @@ public class DeviceModel {
 	private DeviceSupport support_remote_palm_print;
 	private String model;
 	private int primaryDevice;
-
 	private String fa_version;  // face version
 	private String OEMVendor;
 	private String Platform;

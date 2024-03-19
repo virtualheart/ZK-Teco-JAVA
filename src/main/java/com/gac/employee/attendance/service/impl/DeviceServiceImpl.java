@@ -2,13 +2,11 @@ package com.gac.employee.attendance.service.impl;
 
 import java.io.IOException;
 
-import java.net.BindException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
 import com.gac.employee.attendance.AttendanceApplication;
-import com.gac.employee.attendance.dto.AttendanceDTO;
 import com.gac.employee.attendance.enums.AttendanceState;
 import com.gac.employee.attendance.enums.AttendanceType;
 import com.gac.employee.attendance.enums.SmsEnum;
@@ -57,17 +55,6 @@ public class DeviceServiceImpl implements DeviceService {
 			return true;
 		}catch (DeviceNotConnectException e){
 			log.info("Device Not Connect Exception");
-		} catch (BindException e){
-			log.error("BindException: " + e.getMessage());
-			if (e.getMessage().contains("Address already in use")) {
-				log.info("Address already in use. Closing the connection.");
-				if (terminal != null) {
-					terminal.socketClose();
-				}
-
-			} else {
-				log.error("Other BindException: " + e.getMessage());
-			}
 		}
 		return false;
 	}
@@ -115,9 +102,7 @@ public class DeviceServiceImpl implements DeviceService {
 	@Override
 	public boolean deviceOnlineCheck()  {
 		if (terminal != null) {
-			boolean test = terminal.testPing();
-//			terminal.disconnect();
-			return test;
+			return terminal.testPing();
 		}
 		return false;
 	}
@@ -241,6 +226,21 @@ public class DeviceServiceImpl implements DeviceService {
 	}
 
 	@Override
+	public String getDeviceId() throws IOException {
+		if (terminal != null) {
+			return terminal.getDeviceId();
+		}
+		return "0";
+	}
+
+	@Override
+	public void delUser(int userId) throws IOException {
+		if (terminal != null) {
+			terminal.delUser(userId);
+		}
+	}
+
+	@Override
 	public String getOEMVendor() throws IOException {
 		if (terminal != null) {
 			return terminal.getOEMVendor();
@@ -276,7 +276,7 @@ public class DeviceServiceImpl implements DeviceService {
 					smsInfo.setContent(smslist.getContent());
 					smsInfo.setStartTime(smslist.getStartTime());
 					smsInfo.setValidMinutes(smslist.getValidMinutes());
-					smsInfo.setReserved(smslist.getReserved());
+					smsInfo.setDevreserved(smslist.getReserved());
 
 					smsInfoList.add(smsInfo);
 				}
@@ -288,6 +288,13 @@ public class DeviceServiceImpl implements DeviceService {
 		}
 
 		return null;
+	}
+
+	@Override
+	public void enrollFinger(int uid, int tempId, String userId) throws IOException {
+		if (terminal != null) {
+			terminal.enrollFinger(uid, tempId, userId);
+		}
 	}
 
 	@Override

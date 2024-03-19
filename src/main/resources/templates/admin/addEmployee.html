@@ -42,7 +42,7 @@
                     <div class="dropdown-menu">
                         <a class="dropdown-item" href="#">Message</a>
                         <a class="dropdown-item" href="#">Settings</a>
-                        <a class="dropdown-item" href="./logout">Log Out</a>
+                        <a class="dropdown-item" th:href="@{/logout}">Log Out</a>
                     </div>
                 </div>
             </div>
@@ -54,6 +54,7 @@
             <div class="card-body">
                 <h4 class="header-title">Server side</h4>
                 <form class="needs-validation" action="#" th:action="@{/admin/add/user}" method="post" th:object="${employeeModel}">
+                    <h3><div th:if="${param.message}" th:text="${param.message}"></div></h3>
 
                     <div class="form-row">
                         <div class="col-md-4 mb-3">

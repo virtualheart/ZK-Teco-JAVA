@@ -28,7 +28,10 @@ public interface DeviceService {
     String getPlatform() throws IOException;
     boolean getWorkCode() throws IOException;
     int getFPVersion() throws IOException;
+    String getDeviceId() throws IOException;
+    void delUser(int userId) throws IOException;
     String getOEMVendor() throws IOException;
     List<SmsInfo> getSmsList() throws IOException, ParseException;
+    void enrollFinger(int uid, int tempId, String userId) throws IOException;
     void end() throws IOException;
 }

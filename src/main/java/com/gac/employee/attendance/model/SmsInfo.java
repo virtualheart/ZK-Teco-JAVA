@@ -10,7 +10,7 @@ public class SmsInfo {
     private SmsEnum tag;
     private int id;
     private int validMinutes;
-    private int reserved;
+    private int devreserved;
     private long startTime;
 
     private String content;
