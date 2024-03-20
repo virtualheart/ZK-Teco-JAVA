@@ -25,12 +25,25 @@ public class ApiController {
     @Autowired
     private DBservice dBservice;
 
+    // get methods
     @GetMapping("/lastMonth")
     public ResponseEntity<List<AttendanceRecordModel>> getAttendanceLastMonth() {
         List<AttendanceRecordModel> attendanceRecords = attendanceService.getAttendanceRecordsLastMonth();
         return new ResponseEntity<>(attendanceRecords, HttpStatus.OK);
     }
 
+    // post methods
+    @GetMapping("/voiceTest/{voiceIndex}")
+    public HttpStatus testVoice(@PathVariable int voiceIndex) throws IOException {
+        if (deviceService.connectTo()){
+            deviceService.voiceTest(voiceIndex);
+            deviceService.end();
+            return HttpStatus.OK;
+        }
+        return HttpStatus.EXPECTATION_FAILED;
+    }
+
+    // delete methods
     @DeleteMapping("/deleteEmployee/{userId}")
     public HttpStatus delUser(@PathVariable int userId) throws IOException, ParseException {
         if (deviceService.connectTo()) {

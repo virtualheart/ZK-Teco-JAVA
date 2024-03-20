@@ -69,19 +69,58 @@
                             </ul>
                             <div class="tab-content" id="pills-tabContent">
                                 <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
+                                    <!-- Tab 1 -->
+
+                                </div>
+
+                                <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">
+                                    <!-- Tab 2 -->
                                     <form>
-                                        <input type="text" >
+                                        <div class="invoice-buttons text-right">
+                                            <div class="col-md-6 mb-3">
+                                                <label for="validationCustom04" class="col-form-label">Voice Test(Device Only)</label>
+
+                                                <select name="voiceId" id="validationCustom04" class="custom-select" onchange="testVoice()">
+                                                    <option value="">Select User Type</option>
+                                                    <option value="0">Thank You</option>
+                                                    <option value="1">Incorrect Password</option>
+                                                    <option value="2">Access Denied</option>
+                                                    <option value="3">Invalid ID</option>
+                                                    <option value="4">Please try again</option>
+                                                    <option value="5">Duplicate ID</option>
+                                                    <option value="6">The clock is flow</option>
+                                                    <option value="7">The clock is full</option>
+                                                    <option value="8">Duplicate finger</option>
+                                                    <option value="9">Duplicated punch</option>
+                                                    <option value="10">Beep kuko</option>
+                                                    <option value="11">Beep siren</option>
+                                                    <option value="13">Beep bell</option>
+                                                    <option value="18">Windows(R) opening sound</option>
+                                                    <option value="20">Fingerprint not emolt</option>
+                                                    <option value="21">Password not emolt</option>
+                                                    <option value="22">Badges not emolt</option>
+                                                    <option value="23">Face not emolt</option>
+                                                    <option value="24">Beep standard</option>
+                                                    <option value="30">Invalid user</option>
+                                                    <option value="31">Invalid time period</option>
+                                                    <option value="32">Invalid combination</option>
+                                                    <option value="33">Illegal Access</option>
+                                                    <option value="34">Disk space full</option>
+                                                    <option value="35">Duplicate fingerprint</option>
+                                                    <option value="36">Fingerprint not registered</option>
+                                                    <option value="51">Focus eyes on the green box</option>
+                                                </select>
+                                                <div class="invalid-feedback">
+                                                    Please provide a valid state.
+                                                </div>
+                                            </div>
+                                        </div>
                                     </form>
                                 </div>
-                                <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">
-                                    <form>
-                                        <input type="text" >
-                                    </form>
                                 </div>
                                 <div class="tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab">
-                                    <form>
-                                        <input type="text" >
-                                    </form>
+                                    <!-- Tab 3 -->
+
                                 </div>
                             </div>
                         </div>
@@ -92,3 +131,22 @@
         </div>
     </div>
     <div th:replace="/includes/footer::footer"></div>
+
+
+
+<script>
+    function testVoice() {
+        var voiceId = $("#validationCustom04").val();
+
+        $.ajax({
+            type: 'GET',
+            url: '/api/voiceTest/' + voiceId,
+            success: function (data) {
+                alert("Please check Device is audible..!");
+            },
+            error: function (error) {
+                console.error("Error:", error);
+            }
+        });
+    }
+</script>

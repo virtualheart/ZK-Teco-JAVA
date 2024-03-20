@@ -27,7 +27,6 @@ import com.zkteco.Exception.DeviceNotConnectException;
 
 @Service
 public class DeviceServiceImpl implements DeviceService {
-
 	@Autowired
 	private DeviceGateway deviceGateway;
 	@Autowired
@@ -296,6 +295,35 @@ public class DeviceServiceImpl implements DeviceService {
 			terminal.enrollFinger(uid, tempId, userId);
 		}
 	}
+
+	@Override
+	public void voiceTest(int voiceIndex) throws IOException {
+		if (terminal != null) {
+			terminal.testVoice(voiceIndex);
+		}
+	}
+
+	public Map<Object, String> isSettings() throws IOException {
+		Map<Object, String> transformedDeviceCapacity = new LinkedHashMap<>();
+
+		if (terminal != null) {
+
+			transformedDeviceCapacity.put("iSDHCP", terminal.iSDHCP());
+			transformedDeviceCapacity.put("isEnableProxyServer", terminal.isEnableProxyServer());
+			transformedDeviceCapacity.put("isLockPowerKey", terminal.isLockPowerKey());
+			transformedDeviceCapacity.put("isVoiceOn", terminal.isVoiceOn());
+			transformedDeviceCapacity.put("IsOnlyRFMachine", terminal.IsOnlyRFMachine());
+			transformedDeviceCapacity.put("getDNS", terminal.getDNS());
+			transformedDeviceCapacity.put("getShowState", terminal.getShowState());
+			transformedDeviceCapacity.put("getDeviceId", terminal.getDeviceId());
+			transformedDeviceCapacity.put("getDeviceIP", terminal.getDeviceIP());
+			transformedDeviceCapacity.put("getProxyServerIP", terminal.getProxyServerIP());
+			transformedDeviceCapacity.put("getProxyServerPort", terminal.getProxyServerPort());
+
+		}
+		return transformedDeviceCapacity;
+	}
+
 
 	@Override
 

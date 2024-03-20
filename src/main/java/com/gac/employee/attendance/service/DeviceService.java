@@ -33,5 +33,6 @@ public interface DeviceService {
     String getOEMVendor() throws IOException;
     List<SmsInfo> getSmsList() throws IOException, ParseException;
     void enrollFinger(int uid, int tempId, String userId) throws IOException;
+    void voiceTest(int voiceIndex) throws IOException;
     void end() throws IOException;
 }
