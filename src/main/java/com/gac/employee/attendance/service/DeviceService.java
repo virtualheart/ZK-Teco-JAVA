@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.gac.employee.attendance.model.AttendanceRecordModel;
+import com.gac.employee.attendance.model.EmployeeModel;
 import com.gac.employee.attendance.model.SmsInfo;
 import com.zkteco.Exception.DeviceNotConnectException;
 import com.zkteco.commands.UserInfo;
@@ -34,5 +35,8 @@ public interface DeviceService {
     List<SmsInfo> getSmsList() throws IOException, ParseException;
     void enrollFinger(int uid, int tempId, String userId) throws IOException;
     void voiceTest(int voiceIndex) throws IOException;
+    String addUser(EmployeeModel employeeModel) throws  IOException;
+    List<EmployeeModel> getAllEmployeeFromDevice() throws Exception;
+
     void end() throws IOException;
 }

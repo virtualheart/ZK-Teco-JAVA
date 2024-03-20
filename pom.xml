@@ -14,6 +14,7 @@
     <name>Attendance</name>
     <description>Attendance</description>
     <packaging>jar</packaging>
+
     <properties>
         <java.version>17</java.version>
     </properties>
@@ -92,6 +93,11 @@
             <artifactId>poi-ooxml</artifactId>
             <version>5.2.5</version>
         </dependency>
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi-ooxml</artifactId>
+            <version>5.1.0</version>
+        </dependency>
     </dependencies>
 
     <build>
@@ -99,8 +105,10 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <mainClass>com.gac.employee.attendance.AttendanceApplication</mainClass>
+                </configuration>
             </plugin>
         </plugins>
     </build>
-
 </project>

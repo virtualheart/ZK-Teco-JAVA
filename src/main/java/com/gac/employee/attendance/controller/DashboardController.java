@@ -88,9 +88,9 @@ public class DashboardController {
 
     @GetMapping("/list/user/device")
     public String addEmployee(Model model) throws Exception {
-        if (employeeService.connectTo()) {
-            model.addAttribute("employeeList", employeeService.getAllEmployeeFromDevice());
-            employeeService.end();
+        if (deviceService.connectTo()) {
+            model.addAttribute("employeeList", deviceService.getAllEmployeeFromDevice());
+            deviceService.end();
         } else {
             model.addAttribute("employeeList", null);
         }
@@ -190,7 +190,7 @@ public class DashboardController {
 
     @PostMapping("/add/user")
     public String setaddUser(EmployeeModel employeeModel) throws IOException {
-        String mgs = employeeService.addUser(employeeModel);
+        String mgs = deviceService.addUser(employeeModel);
         return "redirect:/admin/add/user?message=" + URLEncoder.encode(mgs, StandardCharsets.UTF_8);
     }
 

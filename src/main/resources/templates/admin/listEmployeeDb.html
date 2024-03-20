@@ -57,6 +57,7 @@
                     <div class="card">
                         <div class="card-body">
                             <h4 class="header-title" >Employee List(Database)</h4>
+                            <button class="btn btn-md btn-info" type="submit" onclick="synkallUsers()">sync User to DB </button>
                             <div class="single-table">
                                 <div class="table-responsive">
                                     <table class="table table-hover text-center">
@@ -117,3 +118,20 @@
             });
         }
     </script>
+
+    <script>
+    function synkallUsers() {
+        // Make an AJAX request to the server to delete the employee
+        $.ajax({
+            type: 'GET',
+            url: '/api/synckusertodb/',
+            success: function (data) {
+                alert("Data Synced...!");
+                window.location.reload();
+            },
+            error: function (error) {
+                // Handle error, e.g., show an error message
+            }
+        });
+    }
+</script>

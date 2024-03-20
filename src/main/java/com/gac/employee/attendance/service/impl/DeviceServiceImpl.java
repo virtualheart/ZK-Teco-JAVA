@@ -12,14 +12,18 @@ import com.gac.employee.attendance.enums.AttendanceType;
 import com.gac.employee.attendance.enums.SmsEnum;
 import com.gac.employee.attendance.gateway.DeviceGateway;
 import com.gac.employee.attendance.model.AttendanceRecordModel;
+import com.gac.employee.attendance.model.EmployeeModel;
 import com.gac.employee.attendance.model.SmsInfo;
 import com.gac.employee.attendance.repo.AttendanceRecordRepository;
+import com.gac.employee.attendance.repo.EmployeeRepository;
+import com.zkteco.Enum.UserRoleEnum;
 import com.zkteco.commands.AttendanceRecord;
 import com.zkteco.commands.UserInfo;
 import com.zkteco.terminal.ZKTerminal;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import com.gac.employee.attendance.service.DeviceService;
@@ -31,6 +35,9 @@ public class DeviceServiceImpl implements DeviceService {
 	private DeviceGateway deviceGateway;
 	@Autowired
 	private AttendanceRecordRepository attendanceRecordRepo;
+	@Autowired
+	private EmployeeRepository employeeRepository;
+
 	private static final Logger log = LoggerFactory.getLogger(AttendanceApplication.class);
 
 	ZKTerminal terminal;
@@ -288,6 +295,54 @@ public class DeviceServiceImpl implements DeviceService {
 
 		return null;
 	}
+
+	public List<EmployeeModel> getAllEmployeeFromDevice() throws Exception {
+		List<UserInfo> userList = terminal.getAllUsers();
+		List<EmployeeModel> employeeModelList = new ArrayList<>();
+		for (UserInfo userInfo : userList) {
+			EmployeeModel employeeModel = mapUserInfoToEmployeeModel(userInfo);
+			employeeModelList.add(employeeModel);
+		}
+		return employeeModelList;
+	}
+
+	private EmployeeModel mapUserInfoToEmployeeModel(UserInfo userInfo) {
+		EmployeeModel employeeModel = new EmployeeModel();
+		employeeModel.setId(userInfo.getUid());
+		employeeModel.setEmployeeId(Integer.parseInt(userInfo.getUserid().trim()));
+		employeeModel.setEmployeeName(userInfo.getName().trim());
+		employeeModel.setUserRole(com.gac.employee.attendance.enums.UserRole.valueOf(userInfo.getRole().name()));
+		employeeModel.setPassword(Integer.parseInt(userInfo.getPassword().trim()));
+		employeeModel.setCardNumber(Integer.parseInt(String.valueOf(userInfo.getCardno()).trim()));
+
+		return employeeModel;
+	}
+	@Override
+	public String addUser(EmployeeModel employeeModel) throws IOException {
+		UserInfo userInfo = new UserInfo();
+		userInfo.setName(employeeModel.getEmployeeName());
+		userInfo.setPassword(String.valueOf(employeeModel.getPassword()));
+		userInfo.setCardno(employeeModel.getCardNumber());
+		userInfo.setRole(UserRoleEnum.USER_DEFAULT);
+		userInfo.setUserid(String.valueOf(employeeModel.getEmployeeId()));
+		employeeModel.setUserRole(com.gac.employee.attendance.enums.UserRole.USER_DEFAULT);
+		try {
+			employeeRepository.save(employeeModel);
+			addNewEmployee(userInfo);
+		} catch (IOException | ParseException e) {
+			throw new RuntimeException(e);
+		} catch (DeviceNotConnectException e) {
+			log.info("Device Not Connect Exception");
+		}catch (DataIntegrityViolationException s){
+			log.warn("Duplicate Record Entry");
+			return "Duplicate Record Entry...!";
+		}
+		finally {
+			end();
+		}
+		return "User Added...!";
+	}
+
 
 	@Override
 	public void enrollFinger(int uid, int tempId, String userId) throws IOException {

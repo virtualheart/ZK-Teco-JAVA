@@ -12,6 +12,6 @@ public interface AttendanceRecordService {
     List<AttendanceRecordModel> getAttendanceFormDB();
     long getTodayCheckinCount();
     long getTodayCheckoutCount();
-    public List<AttendanceRecordModel> getAttendanceRecordsLastMonth();
+    List<AttendanceRecordModel> getAttendanceRecordsLastMonth();
 
 }
