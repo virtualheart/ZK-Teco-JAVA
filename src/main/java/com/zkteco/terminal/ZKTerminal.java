@@ -2290,7 +2290,15 @@ public class ZKTerminal {
             System.arraycopy(enroll_dat, 0, combinedArray, 0, enroll_dat.length);
             System.arraycopy(startEnrollCommand, 0, combinedArray, enroll_dat.length, startEnrollCommand.length);
             int[] startEnrollPacket = ZKCommand.getPacketByte(CommandCodeEnum.CMD_STARTENROLL, sessionId, replyNo, combinedArray);
-            sendPacket(startEnrollPacket);
+//            sendPacket(startEnrollPacket);
+            byte[] buf = new byte[startEnrollPacket.length];
+
+            for (int i = 0; i < startEnrollPacket.length; i++) {
+                buf[i] = (byte) startEnrollPacket[i];
+            }
+
+            DatagramPacket packet = new DatagramPacket(buf, buf.length, address, port);
+            socket.send(packet);
             replyNo++;
 
             int[] response = readResponse();
@@ -2397,7 +2405,6 @@ public class ZKTerminal {
 
     	    DatagramPacket packet = new DatagramPacket(buf, buf.length, address, port);
     	    socket.send(packet);
-//    	    System.out.println("Sending CMD_TESTVOICE packet. Payload: " + Arrays.toString(buf));
     	    replyNo++;
 
     	    int[] response = readResponse();

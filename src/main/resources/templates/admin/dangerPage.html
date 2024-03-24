@@ -70,6 +70,44 @@
                             <div class="tab-content" id="pills-tabContent">
                                 <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
                                     <!-- Tab 1 -->
+                                    <form>
+                                        <div class="invoice-buttons text-right">
+                                            <div class="col-md-6 mb-3">
+                                                <label for="validationCustom01" class="col-form-label">Voice Enable(Device Only)</label>
+
+                                                <select name="voiceId" id="validationCustom01" class="custom-select" >
+                                                    <option value="">Select User Type</option>
+                                                    <option value="0" selected>On</option>
+                                                    <option value="1">Off</option>
+                                                </select>
+                                                <div class="invalid-feedback">
+                                                    Please provide a valid state.
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-6 mb-3">
+                                                <label for="validationCustom02" class="col-form-label">Lock power down key(Device Only)</label>
+
+                                                <select name="voiceId" id="validationCustom02" class="custom-select" >
+                                                    <option value="">Select User Type</option>
+                                                    <option value="0" selected>On</option>
+                                                    <option value="1">Off</option>
+                                                </select>
+                                                <div class="invalid-feedback">
+                                                    Please provide a valid state.
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-6 mb-3">
+                                                <label for="validationCustom03" class="col-form-label">IP Address(Device Only)</label>
+                                                <input type="text" class="form-control" id="validationCustom03" value="192.168.1.7">
+                                                <div class="invalid-feedback">
+                                                    Please provide a valid state.
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </form>
 
                                 </div>
 
@@ -117,11 +155,18 @@
                                         </div>
                                     </form>
                                 </div>
-                                </div>
+
                                 <div class="tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab">
                                     <!-- Tab 3 -->
-
+                                    <div class="col-md-6 mb-3">
+                                        <label for="validationCustom03" class="col-form-label">Reset Device(Device Only)</label>
+                                        <input type="button" class="form-control" value="Reset Device">
+                                        <div class="invalid-feedback">
+                                            Please provide a valid state.
+                                        </div>
+                                    </div>
                                 </div>
+                            </div>
                             </div>
                         </div>
                     </div>
