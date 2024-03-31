@@ -62,4 +62,10 @@ public class AttendanceRecordServiceImpl implements AttendanceRecordService {
 
         return attendanceRecordRepo.findByRecordTimeGreaterThanEqual(lastMonth);
     }
+
+    @Override
+    public String insertData(AttendanceRecordModel attendanceRecordModel) {
+        attendanceRecordRepo.save(attendanceRecordModel);
+        return "";
+    }
 }

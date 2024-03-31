@@ -20,7 +20,7 @@ public class EmployeeModel {
     private UserRole userRole;
 
     @Column(nullable = true)
-    private int password;
+    private String password;
     @Column(nullable = true)
     private int cardNumber;
 }

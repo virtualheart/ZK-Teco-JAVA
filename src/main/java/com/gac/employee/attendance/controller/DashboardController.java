@@ -1,7 +1,12 @@
 package com.gac.employee.attendance.controller;
 
+import com.gac.employee.attendance.dto.AttendanceDTO;
+import com.gac.employee.attendance.enums.AttendanceState;
+import com.gac.employee.attendance.enums.AttendanceType;
+import com.gac.employee.attendance.model.AttendanceRecordModel;
 import com.gac.employee.attendance.model.DeviceModel;
 import com.gac.employee.attendance.model.EmployeeModel;
+import com.gac.employee.attendance.repo.AttendanceRecordRepository;
 import com.gac.employee.attendance.service.AttendanceRecordService;
 import com.gac.employee.attendance.service.DBservice;
 import com.gac.employee.attendance.service.DeviceService;
@@ -11,9 +16,15 @@ import com.zkteco.Exception.DeviceNotConnectException;
 import java.io.IOException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import java.text.DateFormat;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.LinkedHashMap;
+import java.util.Locale;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -98,8 +109,11 @@ public class DashboardController {
     }
 
     @GetMapping("/add/attendance")
-    public String addAttendance() {
-        return "admin/blank";
+    public String addAttendance(Model model) {
+        AttendanceDTO attendanceDTO = new AttendanceDTO();
+        model.addAttribute("AttendanceDTO",attendanceDTO);
+        model.addAttribute("Users",employeeService.getAllEmployeeFromDB());
+        return "admin/add_Attendance";
     }
 
     @GetMapping("/attendance/db")
@@ -193,6 +207,25 @@ public class DashboardController {
         String mgs = deviceService.addUser(employeeModel);
         return "redirect:/admin/add/user?message=" + URLEncoder.encode(mgs, StandardCharsets.UTF_8);
     }
+
+    @PostMapping("/add/attendance")
+    public String addAttendance(AttendanceDTO attendanceDTO) throws IOException, ParseException {
+        DateFormat outputFormat = new SimpleDateFormat("E MMM dd HH:mm:ss z yyyy", Locale.ENGLISH);
+        LocalDateTime localDateTime = LocalDateTime.parse(attendanceDTO.getRecordTime());
+        Date recordTime = Date.from(localDateTime.atZone(ZoneId.systemDefault()).toInstant());
+
+        AttendanceRecordModel attendanceRecordModel = new AttendanceRecordModel();
+
+        attendanceRecordModel.setRecordTime(outputFormat.format(recordTime));
+        attendanceRecordModel.setUserID(attendanceDTO.getUserID());
+        attendanceRecordModel.setVerifyType(attendanceDTO.getVerifyType());
+        attendanceRecordModel.setVerifyState(attendanceDTO.getVerifyState());
+
+
+        String mgs = attendanceRecordService.insertData(attendanceRecordModel);
+        return "redirect:/admin/add/attendance";
+    }
+
 
     @PostMapping("/poweroff")
     public String DevicePowerDown(Model model) throws DeviceNotConnectException, IOException, ParseException {

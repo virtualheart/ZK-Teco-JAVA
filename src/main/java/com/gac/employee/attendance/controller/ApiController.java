@@ -66,16 +66,16 @@ public class ApiController {
     }
 
     @GetMapping("/synckusertodb")
-    public HttpStatus SynkAllUser() throws Exception {
+    public HttpStatus SynkAllUser() throws IOException, ParseException {
         if (deviceService.connectTo()) {
             List<EmployeeModel> lists = deviceService.getAllEmployeeFromDevice();
+            employeeRepository.deleteAll();
             employeeRepository.saveAll(lists);
             deviceService.end();
             return HttpStatus.OK;
         }
         return HttpStatus.EXPECTATION_FAILED;
     }
-
 
     // delete methods
     @DeleteMapping("/deleteEmployee/{userId}")

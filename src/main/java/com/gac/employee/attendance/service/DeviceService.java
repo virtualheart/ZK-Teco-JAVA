@@ -36,7 +36,7 @@ public interface DeviceService {
     void enrollFinger(int uid, int tempId, String userId) throws IOException;
     void voiceTest(int voiceIndex) throws IOException;
     String addUser(EmployeeModel employeeModel) throws  IOException;
-    List<EmployeeModel> getAllEmployeeFromDevice() throws Exception;
+    List<EmployeeModel> getAllEmployeeFromDevice() throws IOException, ParseException;
 
     void end() throws IOException;
 }

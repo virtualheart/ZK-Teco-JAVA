@@ -1,0 +1,110 @@
+<head th:replace="~{/includes/header::header}"></head>
+<div th:replace="~{/includes/sidebar::sidebar}"></div>
+<div class="main-content">
+    <!-- header area start -->
+    <div class="header-area">
+        <div class="row align-items-center">
+            <!-- nav and search button -->
+            <div class="col-md-6 col-sm-8 clearfix">
+                <div class="nav-btn pull-left">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
+            <!-- profile info & task notification -->
+            <div class="col-md-6 col-sm-4 clearfix">
+                <ul class="notification-area pull-right">
+                    <li id="full-view"><i class="ti-fullscreen"></i></li>
+                    <li id="full-view-exit"><i class="ti-zoom-out"></i></li>
+
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!-- header area end -->
+    <!-- page title area start -->
+    <div class="page-title-area">
+        <div class="row align-items-center">
+            <div class="col-sm-6">
+                <div class="breadcrumbs-area clearfix">
+                    <ul class="breadcrumbs pull-left">
+                        <li><a href="#">Users</a></li>
+                        <li><span>Add User</span></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-sm-6 clearfix">
+                <div class="user-profile pull-right">
+                    <img alt="avatar" class="avatar user-thumb" th:src="@{/assets/images/author/avatar.png}">
+                    <h4 class="user-name dropdown-toggle" data-toggle="dropdown">Admin <i class="fa fa-angle-down"></i>
+                    </h4>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item" href="#">Message</a>
+                        <a class="dropdown-item" href="#">Settings</a>
+                        <a class="dropdown-item" th:href="@{/logout}">Log Out</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-12">
+        <div class="card mt-5">
+            <div class="card-body">
+                <!--    -->
+                <form th:action="attendance" method="post" th:object="${AttendanceDTO}">
+                    <div class="row">
+
+                        <div class="col-md-6 mb-3">
+                            <label for="validationCustom02" class="col-form-label">Employee Name</label>
+                            <select class="form-control" id="validationCustom02" th:field="*{userID}" required>
+                                <option value="">-- Select Employee --</option>
+                                <option th:each="employee : ${Users}" th:value="${employee.employeeId}" th:text="${employee.employeeName}"></option>
+                            </select>
+                            <div class="invalid-feedback">
+                                Please provide a valid Employee.
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="validationCustom05" class="col-form-label">Verify Type</label>
+                            <select class="form-control" id="validationCustom05" th:field="*{verifyState}" th:value="${AttendanceDTO.verifyState}" required>
+                                <option value="CHECK_IN">CHECK_IN</option>
+                                <option value="CHECK_IN">CHECK_OUT</option>
+                                <option value="OT_IN">OT_IN</option>
+                                <option value="OT_OUT">OT_OUT</option>
+                            </select>
+                            <div class="invalid-feedback">
+                                Please provide a valid Verify Type.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="validationCustom01" class="col-form-label">Record Time</label>
+                            <input type="datetime-local" class="form-control" id="validationCustom01" th:field="*{recordTime}" th:value="${AttendanceDTO.recordTime}" required>
+                            <div class="invalid-feedback">
+                                    Please provide a valid User ID.
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="validationCustom04" class="col-form-label">Verify Type</label>
+                            <select class="form-control" id="validationCustom04" th:field="*{verifyType}" th:value="${AttendanceDTO.verifyType}" required>
+                                <option value="PASSWORD">PASSWORD</option>
+                                <option value="FINGERPRINT">FINGERPRINT</option>
+                                <option value="RF_CARD">RF_CARD</option>
+                            </select>
+                            <div class="invalid-feedback">
+                                Please provide a valid Verify Type.
+                            </div>
+                        </div>
+
+                    </div>
+                    <button class="btn btn-primary" type="submit">Submit form</button>
+                </form>
+
+                <!--    -->
+            </div>
+        </div>
+    </div>
+    <div th:replace="/includes/footer::footer"></div>

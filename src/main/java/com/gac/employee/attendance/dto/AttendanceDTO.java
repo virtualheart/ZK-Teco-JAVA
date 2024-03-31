@@ -13,6 +13,6 @@ public class AttendanceDTO {
     private int userSN;
     private String userID;
     private AttendanceType verifyType;
-    private Date recordTime;
+    private String recordTime;
     private AttendanceState verifyState;
 }

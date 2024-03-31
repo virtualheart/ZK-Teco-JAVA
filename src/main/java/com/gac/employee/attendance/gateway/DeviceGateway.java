@@ -27,7 +27,6 @@ public class DeviceGateway {
         this.deviceRepository = deviceRepository;
     }
 
-
     public ZKTerminal getClient() throws IOException, DeviceNotConnectException {
         if (getIPFromDB() != null && getPortFromDB() != null) {
             try {
@@ -40,18 +39,18 @@ public class DeviceGateway {
                 log.warn("Device Not Connect Exception");
             } catch (BindException be){
                 log.error("BindException: " + be.getMessage());
-                if (be.getMessage().contains("Address already in use")) {
-                    log.info("Address already in use. Closing the connection.");
-                    if (terminal != null) {
-                        try{
-                            terminal.socketClose();
-                        } catch (Exception e){
-                            log.error("Other BindException: " + e.getMessage());
-                        }
-                    }
-                } else {
-                    log.error("Other BindException: " + be.getMessage());
-                }
+//                if (be.getMessage().contains("Address already in use")) {
+//                    log.info("Address already in use. Closing the connection.");
+//                    if (terminal != null) {
+//                        try{
+//                          //  terminal.socketClose();
+//                        } catch (Exception e){
+//                            log.error("Other BindException: " + e.getMessage());
+//                        }
+//                    }
+//                } else {
+//                    log.error("Other BindException: " + be.getMessage());
+//                }
             }
         } else {
             try {
@@ -61,18 +60,19 @@ public class DeviceGateway {
                 terminal.connectAuth(DEFAULT_COMM);
                 return terminal;
             } catch (BindException be) {
-                if (be.getMessage().contains("Address already in use")) {
-                    log.info("Address already in use. Closing the connection.");
-                    if (terminal != null) {
-                        try{
-                            terminal.socketClose();
-                        } catch (Exception e){
-                            log.error("Other BindException: " + e.getMessage());
-                        }
-                    }
-                } else {
-                    log.error("Other BindException: " + be.getMessage());
-                }
+                log.error("BindException: " + be.getMessage());
+//                if (be.getMessage().contains("Address already in use")) {
+//                    log.info("Address already in use. Closing the connection.");
+//                    if (terminal != null) {
+//                        try{
+//                           // terminal.socketClose();
+//                        } catch (Exception e){
+//                            log.error("Other BindException: " + e.getMessage());
+//                        }
+//                    }
+//                } else {
+//                    log.error("Other BindException: " + be.getMessage());
+//                }
             }
         }
         return null;

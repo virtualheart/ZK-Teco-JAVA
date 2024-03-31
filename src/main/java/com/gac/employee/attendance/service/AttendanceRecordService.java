@@ -13,5 +13,5 @@ public interface AttendanceRecordService {
     long getTodayCheckinCount();
     long getTodayCheckoutCount();
     List<AttendanceRecordModel> getAttendanceRecordsLastMonth();
-
+    String insertData(AttendanceRecordModel attendanceRecordModel);
 }

@@ -296,7 +296,7 @@ public class DeviceServiceImpl implements DeviceService {
 		return null;
 	}
 
-	public List<EmployeeModel> getAllEmployeeFromDevice() throws Exception {
+	public List<EmployeeModel> getAllEmployeeFromDevice() throws IOException, ParseException {
 		List<UserInfo> userList = terminal.getAllUsers();
 		List<EmployeeModel> employeeModelList = new ArrayList<>();
 		for (UserInfo userInfo : userList) {
@@ -312,7 +312,7 @@ public class DeviceServiceImpl implements DeviceService {
 		employeeModel.setEmployeeId(Integer.parseInt(userInfo.getUserid().trim()));
 		employeeModel.setEmployeeName(userInfo.getName().trim());
 		employeeModel.setUserRole(com.gac.employee.attendance.enums.UserRole.valueOf(userInfo.getRole().name()));
-		employeeModel.setPassword(Integer.parseInt(userInfo.getPassword().trim()));
+		employeeModel.setPassword(userInfo.getPassword().trim());
 		employeeModel.setCardNumber(Integer.parseInt(String.valueOf(userInfo.getCardno()).trim()));
 
 		return employeeModel;
@@ -329,6 +329,7 @@ public class DeviceServiceImpl implements DeviceService {
 		try {
 			employeeRepository.save(employeeModel);
 			addNewEmployee(userInfo);
+			end();
 		} catch (IOException | ParseException e) {
 			throw new RuntimeException(e);
 		} catch (DeviceNotConnectException e) {
@@ -337,12 +338,8 @@ public class DeviceServiceImpl implements DeviceService {
 			log.warn("Duplicate Record Entry");
 			return "Duplicate Record Entry...!";
 		}
-		finally {
-			end();
-		}
-		return "User Added...!";
+			return "User Added...!";
 	}
-
 
 	@Override
 	public void enrollFinger(int uid, int tempId, String userId) throws IOException {

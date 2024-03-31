@@ -124,13 +124,14 @@
         // Make an AJAX request to the server to delete the employee
         $.ajax({
             type: 'GET',
-            url: '/api/synckusertodb/',
+            url: '/api/synckusertodb',
             success: function (data) {
                 alert("Data Synced...!");
                 window.location.reload();
             },
             error: function (error) {
                 // Handle error, e.g., show an error message
+                alert("Data not Synced...!");
             }
         });
     }
