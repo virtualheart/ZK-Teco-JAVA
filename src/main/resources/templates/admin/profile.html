@@ -1,0 +1,92 @@
+<head th:replace="~{/includes/header::header}"></head>
+<div th:replace="~{/includes/sidebar::sidebar}"></div>
+<div class="main-content">
+    <!-- header area start -->
+    <div class="header-area">
+        <div class="row align-items-center">
+            <!-- nav and search button -->
+            <div class="col-md-6 col-sm-8 clearfix">
+                <div class="nav-btn pull-left">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
+            <!-- profile info & task notification -->
+            <div class="col-md-6 col-sm-4 clearfix">
+                <ul class="notification-area pull-right">
+                    <li id="full-view"><i class="ti-fullscreen"></i></li>
+                    <li id="full-view-exit"><i class="ti-zoom-out"></i></li>
+
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!-- header area end -->
+    <!-- page title area start -->
+    <div class="page-title-area">
+        <div class="row align-items-center">
+            <div class="col-sm-6">
+                <div class="breadcrumbs-area clearfix">
+                    <ul class="breadcrumbs pull-left">
+                        <li><a href="#">Users</a></li>
+                        <li><span>Add User</span></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-sm-6 clearfix">
+                <div class="user-profile pull-right">
+                    <img alt="avatar" class="avatar user-thumb" th:src="@{/assets/images/author/avatar.png}">
+                    <h4 class="user-name dropdown-toggle" data-toggle="dropdown">Admin <i class="fa fa-angle-down"></i>
+                    </h4>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item" href="#">Message</a>
+                        <a class="dropdown-item" href="#">Settings</a>
+                        <a class="dropdown-item" th:href="@{/logout}">Log Out</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-12">
+        <div class="card mt-5">
+            <div class="card-body">
+                <!--    -->
+                <div class="invoice-area">
+                    <div class="invoice-head">
+                        <div class="row">
+                            <div class="iv-left col-6">
+                                <span>Add Device</span>
+                            </div>
+                            <div class="iv-right col-6 text-md-right">
+                                <span></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <form method="post" action="">
+                            <div class="form-group">
+                                <label for="ip" class="col-form-label">Username</label>
+                                <input type="text" class="form-control" minlength="7" placeholder="Admin" id="ip" autocomplete="off" maxlength="15" size="15" value="Admin" >
+                            </div>
+
+                            <div class="form-group">
+                                <label for="comm" class="col-form-label">Password</label>
+                                <input class="form-control" type="password" value="admn" id="comm" >
+                            </div>
+                            <div class="invoice-buttons text-right">
+                                <input type="submit" class="btn btn-sm mb-3 invoice-btn" value="Update">
+                                <input type="reset" class="btn btn-sm mb-3 invoice-btn" value="clear">
+                            </div>
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+
+                <!--    -->
+            </div>
+        </div>
+    </div>
+    <div th:replace="/includes/footer::footer"></div>

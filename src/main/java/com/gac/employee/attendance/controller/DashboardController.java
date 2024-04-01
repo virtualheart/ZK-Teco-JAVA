@@ -1,12 +1,9 @@
 package com.gac.employee.attendance.controller;
 
 import com.gac.employee.attendance.dto.AttendanceDTO;
-import com.gac.employee.attendance.enums.AttendanceState;
-import com.gac.employee.attendance.enums.AttendanceType;
 import com.gac.employee.attendance.model.AttendanceRecordModel;
 import com.gac.employee.attendance.model.DeviceModel;
 import com.gac.employee.attendance.model.EmployeeModel;
-import com.gac.employee.attendance.repo.AttendanceRecordRepository;
 import com.gac.employee.attendance.service.AttendanceRecordService;
 import com.gac.employee.attendance.service.DBservice;
 import com.gac.employee.attendance.service.DeviceService;
@@ -21,7 +18,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.Locale;
@@ -86,6 +82,11 @@ public class DashboardController {
         model.addAttribute("uri", "admin/list/user/db");
         model.addAttribute("employeeList", employeeService.getAllEmployeeFromDB());
         return "admin/listEmployeeDb";
+    }
+
+    @GetMapping("/profile")
+    public String AdminProfile(Model model) {
+        return "admin/profile";
     }
 
     @GetMapping("/list/device/sms")
